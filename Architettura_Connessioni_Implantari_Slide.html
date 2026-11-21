@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architettura delle Connessioni Implantari e Componentistica Protesica</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #0f172a;
+            --bg-color: #f8fafc;
+            --slide-bg: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --accent: #38bdf8;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slides-wrapper {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 85%;
+            max-width: 1050px;
+            height: 80vh;
+            max-height: 680px;
+            background: var(--slide-bg);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transform: scale(0.95);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* Slide Header */
+        .slide-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-category {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .slide-title {
+            font-size: 2.1rem;
+            color: var(--secondary);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Slide Body */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            justify-content: center;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-color);
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .card h4 {
+            color: var(--secondary);
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+        }
+
+        ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        li {
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        li strong {
+            color: var(--secondary);
+        }
+
+        /* Slide Footer & Navigation */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        button.nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button.nav-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        button.nav-btn:active {
+            transform: scale(0.96);
+        }
+
+        button.nav-btn:disabled {
+            background: var(--border-color);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* Highlight box */
+        .highlight-box {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            color: #0369a1;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Title Slide special style */
+        .slide.title-slide {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide.title-slide .slide-body {
+            align-items: center;
+            text-align: center;
+        }
+        .slide.title-slide h1 {
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        .slide.title-slide p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div class="slides-wrapper">
+
+        <!-- Slide 0: Copertina -->
+        <div class="slide title-slide active" data-slide="0">
+            <div class="slide-body">
+                <div class="slide-category" style="margin-bottom: 1rem;">Corso Odontotecnico — Sezione Teorica e Clinica Integrata</div>
+                <h1>Protocollo Avanzato: Architettura delle Connessioni Implantari e Componentistica Protesica</h1>
+                <p>Analisi biomeccanica, biologica e tecnologica dell'interfaccia impianto-abutment.</p>
+            </div>
+            <div class="slide-footer" style="width: 100%;">
+                <span>Presentazione Interattiva HTML</span>
+                <span class="slide-counter">Slide 1 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()" id="prev-btn" disabled>Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()" id="next-btn">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: Introduzione -->
+        <div class="slide" data-slide="1">
+            <div class="slide-header">
+                <div class="slide-category">Introduzione</div>
+                <h2 class="slide-title">L'Interfaccia Impianto-Abutment come Sistema Dinamico</h2>
+            </div>
+            <div class="slide-body">
+                <p>La giunzione tra fixture e moncone non è un semplice raccordo statico, ma un sistema tribològico e biologico complesso sottoposto a milioni di cicli masticatori.</p>
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Precarico e Settling Effect</h4>
+                        <p>Allungamento elastico (25–35 Ncm). Perdita fisiologica del 2–10% per appiattimento microscopico delle rugosità nei primi cicli.</p>
+                    </div>
+                    <div class="card">
+                        <h4>Affondamento Assiale</h4>
+                        <p>Nelle connessioni coniche, il moncone scivola apicalmente fino al bloccaggio per attrito (cold welding). La libreria CAD deve replicare questa quota.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 2 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Sigillo Biologico -->
+        <div class="slide" data-slide="2">
+            <div class="slide-header">
+                <div class="slide-category">Introduzione</div>
+                <h2 class="slide-title">Sigillo Biologico e Microgap</h2>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Soglia Critica:</strong> Un microgap inferiore a <strong>1–2 µm</strong> blocca l'accesso ai batteri.</li>
+                    <li><strong>Prevenzione del Pumping Effect:</strong> Evita l'effetto pompa che veicola fluidi e batteri nei tessuti peri-implantari.</li>
+                    <li><strong>Maturazione Tissutale:</strong> Consente la corretta e stabile maturazione dell'ampiezza biologica.</li>
+                </ul>
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <strong>Nota Clinica:</strong> La precisione d'accoppiamento geometrico è il requisito fondamentale per prevenire il fallimento precoce dei tessuti peri-implantari.
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 3 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Capitolo 1 - Connessione Conica -->
+        <div class="slide" data-slide="3">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 1</div>
+                <h2 class="slide-title">Razionale Biomeccanico e Biologico della Connessione Conica</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card" style="border-left-color: #0284c7;">
+                        <h4>Vantaggi Biomeccanici</h4>
+                        <p>Distribuzione uniforme dei carichi assiali e obliqui lungo l'intera superficie interna, eliminazione dei micromovimenti e protezione della vite passante (che lavora quasi solo in trazione).</p>
+                    </div>
+                    <div class="card" style="border-left-color: #10b981;">
+                        <h4>Vantaggi Biologici</h4>
+                        <p>Azzeramento del microgap e Platform Switching nativo che medializza l'infiltrato infiammatorio lontano dall'osso crestale.</p>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong>Criticità Cliniche:</strong> Richiede precisione micrometrica ed estrema cura nell'allineamento per evitare impuntamenti.
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 4 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Capitolo 2 - Impianti con Collarino -->
+        <div class="slide" data-slide="4">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 2</div>
+                <h2 class="slide-title">Impianti con Collarino (Tissue Level e Prama)</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Tissue Level Classico</h4>
+                        <p>Spalla orizzontale progettata per spostare il microgap lontano dall'osso crestale, collocandolo in una posizione favorevole sopragengivale.</p>
+                    </div>
+                    <div class="card">
+                        <h4>Sweden & Martina Prama</h4>
+                        <p>Collarino convergente iperbolico basato sulla filosofia BOPT; assenza di spigoli vivi, tessuti molli che abbracciano il colletto e chiusura protesica "a finire" (finishing line free).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 5 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Capitolo 3 - Esagono Interno -->
+        <div class="slide" data-slide="5">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 3</div>
+                <h2 class="slide-title">Esagono Interno senza Collarino (Bone Level Piatto)</h2>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Principio Meccanico:</strong> Appoggio piatto (butt-joint) associato a un esagono interno a 6 posizioni per un ingaggio rapido, sicuro e stabile.</li>
+                    <li><strong>Vincolo Biologico:</strong> L'appoggio a livello crestale rende obbligatorio l'uso dello <strong>Switching Platform</strong> per prevenire il riassorbimento osseo a cratere.</li>
+                </ul>
+                <div class="highlight-box" style="margin-top: 1.5rem;">
+                    <strong>Attenzione Protesica:</strong> La corretta gestione dello spazio biologico è vitale per preservare il livello dell'osso crestale nel tempo.
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 6 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Capitolo 4 - Classificazione Abutment -->
+        <div class="slide" data-slide="6">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 4</div>
+                <h2 class="slide-title">Componentistica Protesica: Classificazione Abutment</h2>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Ti-Base:</strong> Basi in titanio certificate per supportare sovrastrutture fresate in zirconio o disilicato di litio.</li>
+                    <li><strong>Abutment Individualizzati:</strong> Fresati dal pieno o su cilindro fusibile per profili di emergenza anatomici ottimali e personalizzati.</li>
+                    <li><strong>Multi-Unit Abutment (MUA):</strong> Componenti intermedi per riabilitazioni multiple avvitate (es. Toronto Bridge) che convertono connessioni profonde in piattaforme piane sopragengivali, garantendo la passivazione.</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 7 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Metallurgia e Compatibili -->
+        <div class="slide" data-slide="7">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 4</div>
+                <h2 class="slide-title">Metallurgia e Rischi dei Componenti Compatibili</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Metallurgia</h4>
+                        <p><strong>Titanio Grado 4</strong> per la fixture (massima osteointegrazione). <strong>Lega Grado 5 (Ti-6Al-4V)</strong> per viti e abutment (resistenza). Trattamenti superficiali DLC contro il grippaggio.</p>
+                    </div>
+                    <div class="card" style="border-left-color: #ef4444;">
+                        <h4>Rischi Componenti Aftermarket</h4>
+                        <p>Mismatch angolari (0,5°–1°): contatto puntiforme, affondamento irregolare, sovraccarico vite, perdita sigillo batterico e deformazione del pozzetto (Grado 5 su Grado 4).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 8 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()">Avanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Regole d'Oro -->
+        <div class="slide" data-slide="8">
+            <div class="slide-header">
+                <div class="slide-category">Capitolo 4</div>
+                <h2 class="slide-title">Regole d'Oro di Laboratorio</h2>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Viti Dedicate:</strong> Utilizzare sempre viti di laboratorio dedicate durante le fasi di lavorazione per preservare le viti cliniche.</li>
+                    <li><strong>Protezione della Connessione:</strong> Proteggere sempre il colletto transmucoso e la connessione con cera o silicone prima di procedere.</li>
+                    <li><strong>Sabbiatura Controllata:</strong> Sabbiare il camino ritentivo con $	ext{Al}_2	ext{O}_3$ a una pressione calibrata di <strong>1,5–2 bar</strong>.</li>
+                </ul>
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <strong>Conclusione:</strong> La precisione esecutiva e il rispetto dei protocolli originali garantiscono il successo protesico a lungo termine.
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Protocollo Avanzato Connessioni Implantari</span>
+                <span class="slide-counter">Slide 9 di 9</span>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prevSlide()" id="prev-btn-last">Indietro</button>
+                    <button class="nav-btn" onclick="nextSlide()" id="next-btn-last" disabled>Avanti</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function updateSlides() {
+        slides.forEach((slide, index) => {
+            if (index === currentSlide) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+
+        // Update buttons
+        document.querySelectorAll('[id^="prev-btn"]').forEach(btn => {
+            btn.disabled = currentSlide === 0;
+        });
+        document.querySelectorAll('[id^="next-btn"]').forEach(btn => {
+            btn.disabled = currentSlide === totalSlides - 1;
+        });
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateSlides();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlides();
+        }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            prevSlide();
+        }
+    });
+
+    updateSlides();
+</script>
+
+</body>
+</html>

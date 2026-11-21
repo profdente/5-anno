@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - 09. Zirconia Integrale e Multilayer EBM</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 15px; }
+    header { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-bottom: 3px solid #ef4444; }
+    h1 { margin: 0; font-size: 18px; color: #ef4444; }
+    p.sub { margin: 4px 0 0 0; font-size: 12px; color: #94a3b8; }
+    
+    .container { max-width: 850px; margin: 0 auto; }
+
+    /* STRUTTURA STATICA RIGIDA PER GARANTIRE 100% VISIBILITÀ SENZA SCRIPT */
+    .slide-panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 22px; margin-bottom: 25px; display: block !important; }
+
+    .slide-tag { display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 15px; margin-bottom: 12px; }
+    
+    h2 { margin-top: 0; font-size: 18px; color: #ffffff; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    p { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; }
+    ul { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    
+    .box { background: #0f172a; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 6px; font-size: 13px; margin: 15px 0; line-height: 1.5; }
+    .box-title { font-weight: bold; color: #ef4444; margin-bottom: 6px; }
+
+    /* TABELLA MATERIALI EBM */
+    table.data-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; background: #0f172a; border-radius: 6px; overflow: hidden; }
+    table.data-table th, table.data-table td { padding: 10px; text-align: left; border-bottom: 1px solid #334155; color: #cbd5e1; }
+    table.data-table th { background: #1e293b; color: #ef4444; font-weight: bold; }
+    
+    /* QUIZ NON-SCRIPTED CON DETAILS E SUMMARY (RISPOSTE NASCOSTE FINO AL CLICK) */
+    .quiz { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 20px; border: 1px solid #334155; }
+    .quiz-title { font-size: 11px; font-weight: bold; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-q { font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #f8fafc; }
+    .quiz-q-en { font-weight: normal; color: #94a3b8; font-size: 12px; }
+    
+    .opt-list { margin-bottom: 10px; }
+    .opt-item { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+
+    details { margin-top: 10px; }
+    summary { background: #1e293b; border: 1px solid #ef4444; color: #ef4444; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; list-style: none; display: inline-block; }
+    summary:hover { background: #ef4444; color: #ffffff; }
+    
+    .res { padding: 10px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; font-weight: bold; line-height: 1.5; }
+    .res.ok { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>LAB 4.0 // 09. ZIRCONIA INTEGRALE E MULTILAYER EBM</h1>
+    <p class="sub">Corso Serale IDA • Modulo Didattico Integrato per la Lezione Clinico-Tecnologica (Corso Avanzato)</p>
+  </header>
+
+  <div class="container">
+
+    <!-- SLIDE 1 -->
+    <div id="slide-1" class="slide-panel">
+      <span class="slide-tag">SLIDE 1 DI 5 // FASI CRISTALLINE E FENOMENOLOGIA D'INDURIMENTO</span>
+      <h2>1. Chimica e Cristallografia della Zirconia: Polimorfismo e Indurimento per Trasformazione</h2>
+      <p>Il diossido di zirconio puro (ZrO₂) è un ossido ceramico policristallino polimorfo che si presenta in tre differenti strutture reticolari in funzione della temperatura <strong>[Denry &amp; Kelly, 2008]</strong>. In odontoiatria, l'introduzione dell'ossido di ittrio (Y₂O₃) permette di stabilizzare a temperatura ambiente la <strong>fase tetragonale (t)</strong>, metastabile, responsabile delle straordinarie proprietà meccaniche della zirconia convenzionale (3Y-TZP) <strong>[Kelly &amp; Denry, 2008]</strong>.</p>
+      
+      <div class="box">
+        <div class="box-title">POLIMORFISMO DEL CRISTALLO E MECCANICA DELLE FASI:</div>
+        <ul>
+          <li><strong>Fase Monoclina (m):</strong> Stabile da temperatura ambiente fino a 1170 °C. Presenta simmetria monoclina (a ≠ b ≠ c; β ≠ 90°), bassa densità (5.68 g/cm³) e ridotte proprietà meccaniche. Ha un volume cellulare maggiore del 3-5% rispetto alla fase tetragonale.</li>
+          <li><strong>Fase Tetragonale (t):</strong> Stabile tra 1170 °C e 2370 °C. Ha simmetria tetragonale (a = b ≠ c; α = β = γ = 90°). Se stabilizzata a temperatura ambiente con 3 mol % di Y₂O₃, è in grado di innescare il fenomeno del <em>Transformational Toughening</em> <strong>[Zhang &amp; Lawn, 2018]</strong>.</li>
+          <li><strong>Fase Cubica (c):</strong> Stabile tra 2370 °C ed il punto di fusione (2680 °C). Ha simmetria cubica isotropa (a = b = c; α = β = γ = 90°). L'assenza di confini di grano anisotropi azzera la dispersione della luce (scattering), conferendo trasparenza/traslucenza paragonabile alle ceramiche vetrose, ma non subisce l'indurimento per trasformazione <strong>[Miyazaki et al., 2013]</strong>.</li>
+          <li><strong>Fenomeno del Transformational Toughening (t ➔ m):</strong> Quando una cricca da stress tenta di propagarsi nel reticolo di zirconia 3Y-TZP, la concentrazione di tensione all'apice della micro-fessura fa scattare spontaneamente la transizione dalla fase tetragonale metastabile alla fase monoclina. L'espansione volumetrica locale del 3-5% genera uno stato di forte compressione meccanica che "pinza" ed arresta istantaneamente la cricca <strong>[Chevalier et al., 2009]</strong>.</li>
+          <li><strong>Invecchiamento Idrotermico (LTD - Low Temperature Degradation):</strong> Processo di degrado lento causato dalla penetrazione delle molecole d'acqua nei confini di grano a contatto con fluidi orali, che innesca la trasformazione t ➔ m superficiale spontanea con micro-fessurazioni ed erosione progressiva <strong>[Chevalier et al., 2009]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale meccanismo fisico impedisce la propagazione delle cricche nella zirconia 3Y-TZP sottoposta a stress meccanico?<br>
+          <span class="quiz-q-en">[EN] Which physical mechanism prevents crack propagation in 3Y-TZP zirconia under mechanical stress?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Vetrificazione superficiale a caldo con sigillatura silanica. / Hot surface vitrification with silane sealing.</div>
+          <div class="opt-item">B) Trasformazione di fase localizzata da tetragonale a monoclina con espansione volumetrica del 3-5%. / Localized phase transformation from tetragonal to monoclinic with 3-5% volumetric expansion.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Trasformazione di fase localizzata da tetragonale a monoclina con espansione volumetrica del 3-5%.<br><em>Spiegazione: L'espansione volumetrica legata alla transizione t ➔ m comprime le pareti della fessura arrestando la frattura (Transformational Toughening).</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div id="slide-2" class="slide-panel">
+      <span class="slide-tag">SLIDE 2 DI 5 // EVOLUZIONE DELLE GENERAZIONI E TECNOLOGIA MULTILAYER 3D/4D</span>
+      <h2>2. Classificazione clinica delle Generazioni: 3Y-TZP, 4Y-PSZ, 5Y-PSZ e Dischi Multilayer</h2>
+      <p>Per superare il limite dell'opacità e l'obbligo del rivestimento estetico in feldspato (soggetto al <em>chipping</em>), la ricerca sui materiali ha sviluppato quattro generazioni di zirconia incrementando la percentuale di Ittria (Y₂O₃) ed introducendo dischi a gradiente continuo <strong>[Zhang &amp; Lawn, 2018; Tabatabaei et al., 2023]</strong>.</p>
+      
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Generazione Zirconia</th>
+            <th>Moli Y₂O₃ (mol %)</th>
+            <th>Resistenza Flessione (MPa)</th>
+            <th>Tenacità K₁c (MPa·m½)</th>
+            <th>Fase Cubica e Indicazioni Cliniche EBM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1ª/2ª Gen (3Y-TZP)</strong></td>
+            <td>3 mol % (~5.2 wt%)</td>
+            <td><strong>1000 - 1400 MPa</strong></td>
+            <td><strong>3.5 - 5.0</strong></td>
+            <td>0% fase cubica. Massima tenacità, elevata opacità. Indicata per strutture posteriori estese, torrette implantari e scheletri [Kelly &amp; Denry, 2008].</td>
+          </tr>
+          <tr>
+            <td><strong>3ª Gen (5Y-PSZ)</strong></td>
+            <td>5 mol % (~9.2 wt%)</td>
+            <td><strong>600 - 800 MPa</strong></td>
+            <td><strong>2.2 - 2.8</strong></td>
+            <td>~50% fase cubica. Massima traslucenza ottica. Indicata per faccette, corone singole ed elementi anteriori [Miyazaki et al., 2013].</td>
+          </tr>
+          <tr>
+            <td><strong>4ª Gen (4Y-PSZ)</strong></td>
+            <td>4 mol % (~7.5 wt%)</td>
+            <td><strong>800 - 1000 MPa</strong></td>
+            <td><strong>3.0 - 3.5</strong></td>
+            <td>~30% fase cubica. Ibrido bilanciato stabilità/estetica. Indicato per ponti fino a 3 elementi in settori premolari ed anteriori [Revel et al., 2024].</td>
+          </tr>
+          <tr>
+            <td><strong>Multilayer 3D/4D Gradient</strong></td>
+            <td>Gradiente 3Y ➔ 5Y</td>
+            <td><strong>800 ➔ 1200 MPa</strong></td>
+            <td><strong>3.0 ➔ 4.5</strong></td>
+            <td>Gradiente continuo cromatico e di resistenza: elevata tenacità al colletto (3Y), massima traslucenza al margine incisale (5Y) [Tabatabaei et al., 2023].</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box">
+        <div class="box-title">TECNOLOGIA DEI DISCHI MULTILAYER PROGREDITI (3D/4D GRADIENT DESIGN):</div>
+        <ul>
+          <li><strong>Gradiente Cromatico Sfumato:</strong> Transizione di pigmenti metallici priva di stacchi visibili tra colletto, dentina e margine incisale.</li>
+          <li><strong>Gradiente Meccanico Multistrato (Multi-Yttria):</strong> I dischi 4D combinano strati inferiori in 3Y-TZP (elevata resistenza meccanica per la chiusura marginale ed il legame con l'abutment) con strati incisali in 5Y-PSZ (traslucenza ad alta resa estetica).</li>
+          <li><strong>Sezione di Connessione Protesica EBM:</strong> Nei ponti estesi in zirconia monolitica, i connettori tra gli elementi devono avere un'area di sezione trasversale minima di <strong>9 mm² nei settori anteriori</strong> e <strong>12 mm² nei settori posteriori</strong> per prevenire fratture catastrofiche <strong>[Zhang &amp; Lawn, 2018]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è l'area minima di sezione trasversale richiesta per un connettore protesico posteriore in zirconia monolitica?<br>
+          <span class="quiz-q-en">[EN] What is the minimum cross-sectional connector area required for a posterior monolithic zirconia bridge?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Almeno 6 mm². / At least 6 mm².</div>
+          <div class="opt-item">B) Almeno 12 mm². / At least 12 mm².</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Almeno 12 mm².<br><em>Spiegazione: Nei settori posteriori soggetti ad alti carichi masticatori, le linee guida EBM impongono una sezione minima di 12 mm² per evitare rotture per fatica.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div id="slide-3" class="slide-panel">
+      <span class="slide-tag">SLIDE 3 DI 5 // SINTERIZZAZIONE, DENTIFICAZIONE ED HIGH-SPEED SINTERING</span>
+      <h2>3. Ciclo di Sinterizzazione termica, Ritiro Volumetric e Sintering Rapido</h2>
+      <p>La lavorazione sottrattiva CAD/CAM della zirconia avviene allo stato presinterizzato ("green state" o "white state"), caratterizzato da una consistenza gessosa e da una porosità intergranulare elevata. Durante il successivo ciclo termico in forno, il materiale subisce un <strong>ritiro volumetrico lineare compreso tra il 20% ed il 25% (Fattore Z / Enlargement Factor)</strong> <strong>[Stawarczyk et al., 2017]</strong>.</p>
+
+      <div class="box">
+        <div class="box-title">PARAMETRI TERMICI FONDAMENTALI ED EVIDENZE EBM:</div>
+        <ul>
+          <li><strong>Temperatura di Picco (1450 °C - 1550 °C):</strong> La densificazione sinterizza le polveri fino a raggiungere oltre il 99% della densità teorica (6.08 g/cm³). Superare i 1600 °C causa l'accrescimento anomalo dei grani (&gt; 1 µm), aumentando la degradazione idrotermica (LTD) e riducendo la tenacità <strong>[Stawarczyk et al., 2017]</strong>.</li>
+          <li><strong>Tempo di Mantenimento (Holding Time):</strong> Solitamente compreso tra 90 e 120 minuti per eliminare i pori microscopici residui.</li>
+          <li><strong>Sinterizzazione Rapida (High-Speed Sintering):</strong> Protocolli moderni condotti con rampe di riscaldamento rigide (fino a 100 °C/min) che riducono il tempo totale di ciclo a &lt; 45 minuti. Sono indicati per elementi singoli in 3Y/4Y-PSZ mantenendo contenuta la dimensione del grano cristallino <strong>[Lawson et al., 2021]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 3 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Cosa accade alla microstruttura della zirconia se la temperatura di sinterizzazione supera i 1600 °C?<br>
+          <span class="quiz-q-en">[EN] What happens to the microstructure of zirconia if the sintering temperature exceeds 1600 °C?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Si riduce la densità del materiale aumentando la porosità visibile. / Material density decreases, increasing visible porosity.</div>
+          <div class="opt-item">B) Si verifica una crescita anomala dei grani cristallini che aumenta la suscettibilità al degrado idrotermico (LTD). / Abnormal grain growth occurs, increasing susceptibility to low-temperature degradation (LTD).</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Si verifica una crescita anomala dei grani cristallini che aumenta la suscettibilità al degrado idrotermico (LTD).<br><em>Spiegazione: L'accrescimento eccessivo dei grani sopra 1 µm destabilizza i bordi di grano, facilitando l'invecchiamento idrotermico a contatto con i fluidi orali.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div id="slide-4" class="slide-panel">
+      <span class="slide-tag">SLIDE 4 DI 5 // PROTOCOLLI CAM, RITOCCO MECCANICO E FINITURA</span>
+      <h2>4. Protocolli di Fresatura CAM, Strategie Utensili e Rifinitura a Freddo</h2>
+      <p>La lavorazione nei centri fresatori CNC a 4 o 5 assi richiede strategie di taglio ottimizzate per evitare sollecitazioni di flessione sul materiale in "green state" e prevenire micro-scheggiature (chipping) sui margini di chiusura sottili <strong>[Denry &amp; Kelly, 2008]</strong>.</p>
+      
+      <div class="box">
+        <div class="box-title">PROTOCOLLO ODONTOTECNICO ED INTEGRITÀ SUPERFICIALE:</div>
+        <ul>
+          <li><strong>Utensili da Fresatura CAM:</strong> Frese sferiche e toriche in metallo duro micrograna rivestite in diamante sintetico (CVD Diamond o DLC) per resistere all'abrasione delle polveri e prolungare la durata tagliente.</li>
+          <li><strong>Infiltrazione Cromatico-Iniziale (Coloring Liquids):</strong> Applicazione di soluzioni a base di sali d'ossido di metalli di transizione (Fe, Cr, Er, Mn) per immersione o pennello sul pezzo presinterizzato prima della cottura finale.</li>
+          <li><strong>Rifinitura post-sinterizzazione:</strong> Deve essere eseguita <strong>esclusivamente a freddo sotto abbondante irrigazione d'acqua</strong> con strumenti diamantati a grana fine (&lt; 40 µm) a bassa pressione. Il ritocco meccanico a secco produce micro-surriscaldamenti locali che convertono la superficie in fase monoclina non controllata, creando micro-cricche che portano alla frattura tardiva <strong>[Chevalier et al., 2009]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 4 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Perché è fortemente sconsigliato rifinire la zirconia sinterizzata a secco ed ad alta velocità?<br>
+          <span class="quiz-q-en">[EN] Why is dry grinding of sintered zirconia at high speeds strongly discouraged?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Perché riduce la lucentezza della superficie ceramica. / Because it reduces the gloss of the ceramic surface.</div>
+          <div class="opt-item">B) Perché innesca micro-surriscaldamenti termici localizzati che generano fase monoclina superficiale e micro-cricche da stress. / Because it triggers localized thermal overheating that generates surface monoclinic phase and stress micro-cracks.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Perché innesca micro-surriscaldamenti termici localizzati che generano fase monoclina superficiale e micro-cricche da stress.<br><em>Spiegazione: Gli stress termomeccanici a secco generano una conversione superficiale irreversibile che compromette la tenacità a fatica del manufatto.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div id="slide-5" class="slide-panel">
+      <span class="slide-tag">SLIDE 5 DI 5 // PROTOCOLLO ADESIVO APC, TRIBOTECHNOLOGY ED EBM</span>
+      <h2>5. Protocollo Adesivo Validato APC (Blatz), Sabbiatura e Bibliografia EBM</h2>
+      <p>Poiché la zirconia è una bioceramica priva di fase vetrosa e priva di silice, <strong>non è mordenzabile con acido fluoridrico clinico (HF)</strong>. La ritenzione adesiva richiede un condizionamento meccano-chimico specifico espresso dal protocollo validato APC <strong>[Blatz et al., 2018; Marchesi et al., 2021]</strong>.</p>
+
+      <div class="box">
+        <div class="box-title">PROTOCOLLO ADESIVO VALIDATO APC (BLATZ ET AL.):</div>
+        <ul>
+          <li><strong>A (Air-Abrasion):</strong> Sabbiatura della superficie interna del restauro con particelle di Al₂O₃ da 50 µm (oppure particelle rivestite di silice - CoJet/Tribochimica) a pressione moderata (<strong>1.5 - 2.0 bar</strong>) ad una distanza di 10 mm per creare micro-ritenzioni meccaniche senza innescare danni microstrutturali.</li>
+          <li><strong>P (Primer):</strong> Applicazione di un primer ceramico contenente il monomero funzionale fosfato <strong>10-MDP</strong> (Methacryloyloxydecyl dihydrogen phosphate). Il gruppo fosfato del 10-MDP stabilisce un legame chimico covalente idroliticamente stabile (P-O-Zr) con gli ossidi di zirconio <strong>[Blatz et al., 2018]</strong>.</li>
+          <li><strong>C (Composite Resin):</strong> Utilizzo di cementi resinosi autoadesivi o duali privi di eugenolo per la sigillatura marginale duratura.</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-left-color: #f59e0b;">
+        <div class="box-title" style="color: #f59e0b;">📚 BIBLIOGRAFIA SCIENTIFICA DI RIFERIMENTO AGGIORNATA (EBM/EBD):</div>
+        <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin: 0;">
+          • <strong>[Blatz et al., 2018]</strong> <em>How to bond to zirconia: The APC protocol.</em> Compend Contin Educ Dent, 39(4), 224–231.<br>
+          • <strong>[Chevalier et al., 2009]</strong> <em>Low-temperature degradation of zirconia and implications for biomedical implants.</em> Biomaterials, 30(4), 527–539.<br>
+          • <strong>[Denry &amp; Kelly, 2008]</strong> <em>State of the art of zirconia for dental applications.</em> Dent Mater, 24(3), 299–307.<br>
+          • <strong>[Kelly &amp; Denry, 2008]</strong> <em>Stabilized zirconia as a structural ceramic: An overview.</em> Dent Mater, 24(3), 289–298.<br>
+          • <strong>[Lawson et al., 2021]</strong> <em>High-speed sintering of zirconia: Microstructure, flexural strength, and optical properties.</em> J Esthet Restor Dent, 33(1), 121–127.<br>
+          • <strong>[Marchesi et al., 2021]</strong> <em>Adhesive bonding to high-translucency zirconia: A systematic review and meta-analysis of surface treatments.</em> J Adhes Dent, 23(6), 487–501.<br>
+          • <strong>[Miyazaki et al., 2013]</strong> <em>Current status of zirconia restoration and future perspective.</em> Jap Dent Sci Rev, 49(2), 38–44.<br>
+          • <strong>[Revel et al., 2024]</strong> <em>Optical translucency and mechanical stability of 3Y, 4Y, and 5Y zirconia: A 5-year comparative study.</em> Int J Prosthodont, 37(2), 145–153.<br>
+          • <strong>[Stawarczyk et al., 2017]</strong> <em>The impact of sintering temperature on mechanical properties of zirconia.</em> J Prosthet Dent, 118(1), 93–101.<br>
+          • <strong>[Tabatabaei et al., 2023]</strong> <em>Gradient multilayer zirconia: Microstructural characteristics and fatigue behavior.</em> Dent Mater, 39(8), 712–721.<br>
+          • <strong>[Zhang &amp; Lawn, 2018]</strong> <em>Novel zirconia materials in dentistry.</em> J Dent Res, 97(2), 140–147.
+        </p>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito Finale di Modulo [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale monomero adesivo chimico è indispensabile nel primer per formare legami covalenti stabili con gli ossidi della zirconia?<br>
+          <span class="quiz-q-en">[EN] Which adhesive monomer is mandatory in the ceramic primer to form stable covalent bonds with zirconia oxides?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Monomero Bis-GMA. / Bis-GMA Monomer.</div>
+          <div class="opt-item">B) Monomero 10-MDP. / 10-MDP Monomer.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Monomero 10-MDP.<br><em>Spiegazione: Il monomero 10-MDP possiede un gruppo fosfato terminale che reagisce chimicamente con gli ossidi di zirconio (legame P-O-Zr), fondamento del protocollo APC.</em></div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

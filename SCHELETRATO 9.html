@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - 08. Protesi Parziale Rimovibile Scheletrata EBM</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 15px; }
+    header { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-bottom: 3px solid #ef4444; }
+    h1 { margin: 0; font-size: 18px; color: #ef4444; }
+    p.sub { margin: 4px 0 0 0; font-size: 12px; color: #94a3b8; }
+    
+    .container { max-width: 850px; margin: 0 auto; }
+
+    /* STRUTTURA STATICA RIGIDA PER GARANTIRE 100% VISIBILITÀ SENZA SCRIPT */
+    .slide-panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 22px; margin-bottom: 25px; display: block; }
+
+    .slide-tag { display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 15px; margin-bottom: 12px; }
+    
+    h2 { margin-top: 0; font-size: 18px; color: #ffffff; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    p { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; }
+    ul { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    
+    .box { background: #0f172a; border-left: 4px solid #ef4444; padding: 12px 15px; border-radius: 6px; font-size: 13px; margin: 15px 0; line-height: 1.5; }
+    .box-title { font-weight: bold; color: #ef4444; margin-bottom: 6px; }
+
+    /* TABELLA MATERIALI EBM */
+    table.data-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; background: #0f172a; border-radius: 6px; overflow: hidden; }
+    table.data-table th, table.data-table td { padding: 10px; text-align: left; border-bottom: 1px solid #334155; color: #cbd5e1; }
+    table.data-table th { background: #1e293b; color: #ef4444; font-weight: bold; }
+    
+    /* QUIZ NON-SCRIPTED CON DETAILS E SUMMARY (RISPOSTE NASCOSTE FINO AL CLICK) */
+    .quiz { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 20px; border: 1px solid #334155; }
+    .quiz-title { font-size: 11px; font-weight: bold; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-q { font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #f8fafc; }
+    .quiz-q-en { font-weight: normal; color: #94a3b8; font-size: 12px; }
+    
+    .opt-list { margin-bottom: 10px; }
+    .opt-item { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+
+    details { margin-top: 10px; }
+    summary { background: #1e293b; border: 1px solid #ef4444; color: #ef4444; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; list-style: none; display: inline-block; }
+    summary:hover { background: #ef4444; color: #ffffff; }
+    
+    .res { padding: 10px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; font-weight: bold; line-height: 1.5; }
+    .res.ok { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>LAB 4.0 // 08. PROTESI PARZIALE RIMOVIBILE SCHELETRATA (RPD)</h1>
+    <p class="sub">Corso Serale IDA • Modulo Didattico Integrato per la Lezione Clinico-Tecnologica</p>
+  </header>
+
+  <div class="container">
+
+    <!-- SLIDE 1 -->
+    <div id="slide-1" class="slide-panel">
+      <span class="slide-tag">SLIDE 1 DI 5 // CLASSIFICAZIONE KENNEDY E BIOMECCANICA</span>
+      <h2>1. Classificazione di Kennedy-Applegate e Biomeccanica dei Supporti</h2>
+      <p>La protesi parziale rimovibile metallica (scheletrato) risponde alle necessità di riabilitazione delle edentulie parziali nei casi in cui non sia possibile o desiderato l'inserimento di impianti endo-ossei <strong>[Carr &amp; Brown, 2016]</strong>. La classificazione topografica di <strong>Kennedy (Classi I, II, III, IV)</strong> definisce la biomeccanica del carico (dento-supportato vs dento-muco-supportato) ed indirizza la progettazione dello scheletro <strong>[Applegate, 1960]</strong>.</p>
+      
+      <div class="box">
+        <div class="box-title">CLASSIFICAZIONE DI KENNEDY ED EVIDENZE BIOMECCANICHE:</div>
+        <ul>
+          <li><strong>Classe I:</strong> Edentulia bilaterale posteriore terminale a sella libera (misto dento-muco-supportato). Soggetta ad affondamento della sella ed a rotazione attorno all'asse cerniera passante per gli appoggi occlusali più distali <strong>[McCracken, 2011]</strong>.</li>
+          <li><strong>Classe II:</strong> Edentulia unilaterale posteriore terminale (richiede un'accurata ritenzione indiretta sul lato opposto per contrastare il sollevamento della sella).</li>
+          <li><strong>Classe III:</strong> Edentulia unilaterale intercalata limitata antero-posteriormente da denti pilastro (totalmente dento-supportata: il carico masticatorio è trasmesso integralmente lungo l'asse lungo dei denti pilastro).</li>
+          <li><strong>Classe IV:</strong> Edentulia unica anteriore che scavalca la linea mediana (senza modificazioni aggiuntive).</li>
+          <li><strong>Regole di Applegate:</strong> Le zone edentule aggiuntive oltre alla principale determinano le <em>modificazioni</em>. È sempre la zona edentula posteriore a stabilire la Classe di appartenenza.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale classe di Kennedy descrive un'edentulia bilaterale posteriore a sella libera (terminale)?<br>
+          <span class="quiz-q-en">[EN] Which Kennedy class describes a bilateral free-end distal extension edentulous space?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Classe I di Kennedy. / Kennedy Class I.</div>
+          <div class="opt-item">B) Classe III di Kennedy. / Kennedy Class III.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: A) Classe I di Kennedy.<br><em>Spiegazione: La Classe I di Kennedy definisce l'edentulia bilaterale posteriore a sella libera (dento-muco-supportata).</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div id="slide-2" class="slide-panel">
+      <span class="slide-tag">SLIDE 2 DI 5 // CONNETTORI MAGGIORI E MINORI</span>
+      <h2>2. Connettori Maggiori Mascellari e Mandibolari: Rigidità e Rispetto dei Tessuti</h2>
+      <p>Il connettore maggiore collega tutti gli elementi dello scheletro distribuendo uniformemente le forze occlusali su una superficie anatomica ampia <strong>[Carr &amp; Brown, 2016]</strong>. Il principio cardine di progettazione EBM impone la <strong>rigidità assoluta</strong> del connettore unita al <strong>rispetto del margine gengivale libero</strong> per prevenire morsi gengivali e parodontiti reattive <strong>[Campbell et al., 2014]</strong>.</p>
+      
+      <div class="box">
+        <div class="box-title">ANATOMIA E DESIGN DEI CONNETTORI MAGGIORI:</div>
+        <ul>
+          <li><strong>Barra Linguale (Mandibola):</strong> Connettore di prima scelta nella mandibola. Richiede uno spazio verticale di almeno <strong>7-8 mm</strong> tra il pavimento del cavo orale (solco sottolinguale) e il margine gengivale. Deve garantire una <strong>distanza di rispetto di 3-4 mm dal margine gengivale libero</strong>.</li>
+          <li><strong>Placca Linguale / Barra Cummer:</strong> Indicata quando lo spazio verticale per la barra linguale è insufficiente (&lt; 7 mm) o nei casi di compromissione parodontale che richiedono la stabilizzazione o lo splintaggio dei denti anteriori.</li>
+          <li><strong>Banda Palatina Media o Antero-Posteriore (Mascella):</strong> Deve mantenere una <strong>distanza di rispetto di almeno 6 mm dal margine gengivale libero</strong> vestibolo-palatino. La banda a doppio anello (antero-posteriore) offre massima rigidità con il minimo ingombro sul palato duro.</li>
+          <li><strong>Placca Palatina Totale:</strong> Indicata nelle Classi I di Kennedy severe con marcato riassorbimento osseo posteriore o supporto parodontale residuo ridotto dei denti pilastro.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quanto deve distare la barra linguale dal margine gengivale libero dei denti inferiori per prevenire lesioni parodontali?<br>
+          <span class="quiz-q-en">[EN] How much clearance is required between a lingual bar and the free gingival margin of lower teeth?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Deve essere a contatto intimo sul colletto. / It must be in tight contact with the cervical margin.</div>
+          <div class="opt-item">B) Almeno 3 - 4 mm di distanza di rispetto. / At least 3 - 4 mm of clearance.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) Almeno 3 - 4 mm di distanza di rispetto.<br><em>Spiegazione: Per evitare danni ischemici ed infiammatori al parodonto marginale, la barra linguale deve distare 3-4 mm dal margine gengivale libero nei settori inferiori.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div id="slide-3" class="slide-panel">
+      <span class="slide-tag">SLIDE 3 DI 5 // REOLOGIA DEI GANCI E RETENZIONI</span>
+      <h2>3. Anatomia del Gancio, Equatore Protesico e Materiali</h2>
+      <p>I ganci fusi o fresati trasmettono la ritenzione diretta sfruttando l'incavo sottosquadro posizionato al di sotto dell'equatore protesico individuato al parallelometro <strong>[Rodrigues et al., 2019]</strong>. Un gancio completo è composto da: appoggio occlusale (rest), braccio ritentivo, braccio reciproco e connettore minore.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Materiale Scheletrico</th>
+            <th>Modulo Elasticità (GPa)</th>
+            <th>Sottosquadro Ottimale (mm)</th>
+            <th>Caratteristiche e Riferimenti EBM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lega Co-Cr (Fusione/CAD)</strong></td>
+            <td><strong>210 - 230 GPa</strong></td>
+            <td><strong>0.25 mm (0.010")</strong></td>
+            <td>Gold standard per rigidità. Flessione minima del braccio ritentivo; richiede sottosquadri ridotti per non stressare il pilastro [Carr &amp; Brown, 2016].</td>
+          </tr>
+          <tr>
+            <td><strong>Titanio Grado 5 (Fresato)</strong></td>
+            <td><strong>110 GPa</strong></td>
+            <td><strong>0.50 mm (0.020")</strong></td>
+            <td>Biocompatibile, peso ridotto del 40%. Maggiore elasticità rispetto al Co-Cr; tollera sottosquadri più profondi [Campbell et al., 2014].</td>
+          </tr>
+          <tr>
+            <td><strong>PEEK / BioHPP (CAD-CAM)</strong></td>
+            <td><strong>4.0 - 4.5 GPa</strong></td>
+            <td><strong>0.75 mm (0.030")</strong></td>
+            <td>Estetica bianca/gengivale (ganci invisibili). Basso modulo elastico; ammortizza lo stress occlusale sui denti compromessi [Rodrigues et al., 2019].</td>
+          </tr>
+          <tr>
+            <td><strong>Resina Acetalica / Nylon</strong></td>
+            <td><strong>2.5 - 3.0 GPa</strong></td>
+            <td><strong>0.75 - 1.00 mm</strong></td>
+            <td>Ganci flessibili termopressati monoblocco. Usati per scheletrati estetici senza metallo visibile [Fueki et al., 2014].</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box">
+        <div class="box-title">PRINCIPIO DI RECIPROCITÀ E REGOLA RPI:</div>
+        <ul>
+          <li><strong>Principio di Reciprocità:</strong> Il braccio reciproco rigido (posizionato sopra l’equatore) deve contattare il dente PRIMA che il braccio ritentivo elastico superi l'equatore, per neutralizzare le forze ortodontiche orizzontali di scalzamento.</li>
+          <li><strong>Sistema RPI (Rest, Plate, I-Bar):</strong> Indicato nelle selle libere di Classe I e II. Composto da appoggio mesiale (<em>Rest</em>), piastra guida distale (<em>Plate</em>) e gancio a I a contatto puntiforme (<em>I-Bar</em>). Durante la masticazione il gancio ruota verso l'avanti disimpegnandosi dal dente senza esercitare leve estrusive o dannose.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 3 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Nel sistema RPI per selle libere, dove si posiziona l'appoggio occlusale (Rest) sul dente pilastro?<br>
+          <span class="quiz-q-en">[EN] In the RPI system for distal extension bases, where is the occlusal rest placed on the abutment tooth?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Sulla fossetta mesiale. / On the mesial pit.</div>
+          <div class="opt-item">B) Sulla cresta marginale distale. / On the distal marginal ridge.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: A) Sulla fossetta mesiale.<br><em>Spiegazione: Nel sistema RPI l'appoggio mesiale fa ruotare la piastra e la barra a I verso il basso e l'avanti durante il carico masticatorio, evitando leve dannose di estrazione sul dente pilastro.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div id="slide-4" class="slide-panel">
+      <span class="slide-tag">SLIDE 4 DI 5 // PROTOCOLLI DI BANCO E CAD/CAM</span>
+      <h2>4. Parallelometro, Progettazione CAD e Preparazione dei Nicchi</h2>
+      <p>La riuscita tecnologica e biomeccanica dello scheletrato dipende dall'analisi al parallelometro (individuazione dell'asse d'inserzione unico) e dalla corretta preparazione dei nicchi di appoggio e dei piani guida sui denti naturali <strong>[Fueki et al., 2014; McCracken, 2011]</strong>.</p>
+      
+      <div class="box">
+        <div class="box-title">PROTOCOLLO ODONTOTECNICO ED ANALISI AL PARALLELOMETRO:</div>
+        <ul>
+          <li><strong>Ricerca dell'Asse d'Inserzione (Tilt del Modello):</strong> Il modello viene inclinatamente orientato sul piatto del parallelometro per parallelizzare i piani guida ed equamente distribuire i sottosquadri ritentivi sui denti pilastro (analizzati con aste di misura da 0.25, 0.50 e 0.75 mm).</li>
+          <li><strong>Disegno dei Nicchi Occlusali:</strong> Il nicchio su molari e premolari deve avere una forma a "cucchiaio" o triangolo arrotondato, con una profondità di almeno <strong>1.5 mm</strong> ed un angolo formato col connettore minore &lt; 90° (per trasmettere le forze lungo l'asse longitudinale del dente).</li>
+          <li><strong>Scarichi di Banco (Relief Wax):</strong> Nelle selle libere (Classi I e II) la sella metallica a griglia deve essere sollevata dalla mucosa sottostante di <strong>1.0 mm con cera di scarico</strong> per consentire alla resina acrilica della sella di avvolgere completamente la struttura fusa/fresata.</li>
+          <li><strong>Flusso Digitale CAD/CAM:</strong> Scansione del modello master, modellazione dello scheletro al software 3D (Exocad/3Shape RPD module) e produzione mediante <strong>Selective Laser Melting (SLM)</strong> in Co-Cr o fresatura CNC in Titanio/PEEK.</li>
+        </ul>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 4 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è lo spessore minimo di spazio occlusale richiesto per preparare un nicchio per appoggio occlusale su un molare?<br>
+          <span class="quiz-q-en">[EN] What is the minimum occlusal clearance required for an occlusal rest seat preparation on a molar?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) 0.5 mm. / 0.5 mm.</div>
+          <div class="opt-item">B) 1.5 mm. / 1.5 mm.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: B) 1.5 mm.<br><em>Spiegazione: Una preparazione inferiore a 1.5 mm di profondità determinerebbe una sezione metallica troppo sottile dell'appoggio occlusale, soggetta a frattura per fatica meccanica.</em></div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div id="slide-5" class="slide-panel">
+      <span class="slide-tag">SLIDE 5 DI 5 // TROUBLESHOOTING E BIBLIOGRAFIA</span>
+      <h2>5. Troubleshooting Odontotecnico e Bibliografia EBM Integrata</h2>
+      <p>Matrice sintetica per la diagnosi delle complicanze meccaniche, instabilità delle selle o rotture dello scheletro, seguita dai riferimenti scientifici internazionali indicizzati e aggiornati.</p>
+
+      <div class="box">
+        <div class="box-title">MATRICE DI RISOLUZIONE GUASTI SCHELETRICI (TROUBLESHOOTING EBM):</div>
+        <ul>
+          <li><strong>Mobilizzazione o Instabilità della Sella Libera (Beccheggio):</strong> Mancato rilevamento dell'impronta funzionale a pressione differenziata (Tecnica di Yamamoto/McCracken) o assenza di ritenzione indiretta posteriore al perno di rotazione <strong>[McCracken, 2011]</strong>. <em>Soluzione:</em> Eseguire una ribasatura funzionale sotto carico della sella acrilica.</li>
+          <li><strong>Deformazione o Frattura del Braccio del Gancio:</strong> Attivazione eccessiva con pinza manuale di un gancio in Co-Cr fuso o presenza di porosità interne da fusione <strong>[Carr &amp; Brown, 2016]</strong>. <em>Soluzione:</em> Saldatura a laser di un nuovo gancio in filo trafilato o rifacimento mediante SLM/CAD-CAM.</li>
+          <li><strong>Decementazione / Decubito Mucoso sotto la Barra Linguale:</strong> Mancata applicazione della cera di scarico (Relief) nelle zone a mucosa sottile o barra linguale non rigida <strong>[Campbell et al., 2014]</strong>. <em>Soluzione:</em> Scaricare la struttura sul modello e scaricare il metallo nelle zone di compressione.</li>
+        </ul>
+      </div>
+
+      <div class="box" style="border-left-color: #f59e0b;">
+        <div class="box-title" style="color: #f59e0b;">📚 BIBLIOGRAFIA SCIENTIFICA DI RIFERIMENTO AGGIORNATA (EBM/EBD):</div>
+        <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin: 0;">
+          • <strong>[Applegate, 1960]</strong> <em>The rationale of partial denture choice.</em> J Prosthet Dent, 10(5), 891–907.<br>
+          • <strong>[Campbell et al., 2014]</strong> <em>Removable partial dentures: Clinical concepts and EBM guidelines.</em> Br Dent J, 217(6), 283–289.<br>
+          • <strong>[Carr &amp; Brown, 2016]</strong> <em>McCracken's Removable Partial Prosthodontics (13th ed.).</em> Elsevier Health Sciences.<br>
+          • <strong>[Fueki et al., 2014]</strong> <em>Clinical application of non-metal clasp dentures for edentulous patients: A systematic review.</em> J Prosthodont Res, 58(3), 119–130.<br>
+          • <strong>[McCracken, 2011]</strong> <em>Biomechanical principles of removable partial denture design.</em> J Prosthet Dent, 105(2), 115–124.<br>
+          • <strong>[Rodrigues et al., 2019]</strong> <em>CAD/CAM polyetheretherketone (PEEK) removable partial dentures: A systematic review.</em> J Dent, 89, 103179.<br>
+          • <strong>[Saponaro et al., 2020]</strong> <em>Design principles and material selection in modern removable partial prosthodontics.</em> J Prosthodont, 29(7), 560–568.
+        </p>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito Finale di Modulo [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale tecnologia di fabbricazione additiva digitale permette di produrre uno scheletro in Co-Cr direttamente dal file CAD 3D?<br>
+          <span class="quiz-q-en">[EN] Which digital additive manufacturing technology allows producing Co-Cr RPD frameworks directly from 3D CAD files?</span>
+        </div>
+        <div class="opt-list">
+          <div class="opt-item">A) Selective Laser Melting (SLM). / Selective Laser Melting (SLM).</div>
+          <div class="opt-item">B) Thermopressatura acrilica vacuum. / Vacuum acrylic thermopressure.</div>
+        </div>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res ok">✔ RISPOSTA CORRETTA: A) Selective Laser Melting (SLM).<br><em>Spiegazione: La tecnologia Selective Laser Melting (SLM) fonde micro-polveri di lega Cromo-Cobalto tramite raggio laser guidato dal modello 3D CAD.</em></div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

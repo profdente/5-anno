@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maxi Lezione: Biomeccanica e Cinematica Gnatologica</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #0284c7;
+      --accent-light: #38bdf8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --border-color: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 720px;
+    }
+
+    .top-bar {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--accent-light);
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-grow: 1;
+      max-width: 350px;
+      margin: 0 24px;
+    }
+
+    .progress-bar-bg {
+      flex-grow: 1;
+      height: 8px;
+      background: #334155;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      width: 11%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 85px;
+    }
+
+    .slide-area {
+      flex: 1;
+      padding: 32px 36px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent-light);
+      margin-bottom: 6px;
+    }
+
+    .slide-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title i { color: var(--accent-light); }
+
+    .card-body {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .ascii-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #38bdf8;
+      white-space: pre-wrap;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    .formula-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--warning);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--warning);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-table th, .custom-table td {
+      padding: 10px 14px;
+      font-size: 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .custom-table th {
+      background: #090d16;
+      color: var(--accent-light);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .bottom-nav {
+      background: #1e293b;
+      border-top: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover:not(:disabled) { background: #334155; }
+    .btn-nav:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-next { background: var(--accent); border-color: var(--accent); }
+    .btn-next:hover:not(:disabled) { background: #0369a1; }
+
+    .quote-box {
+      background: rgba(2, 132, 199, 0.1);
+      border-left: 4px solid var(--accent);
+      padding: 20px;
+      border-radius: 0 12px 12px 0;
+      font-size: 16px;
+      font-style: italic;
+      color: #f8fafc;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+    <div class="top-bar">
+      <div class="brand">
+        <i class="fa-solid fa-bolt"></i>
+        <span>MAXI LEZIONE: BIOMECCANICA & GNATOLOGIA</span>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">Slide 1 / 9</span>
+      </div>
+    </div>
+
+    <div class="slide-area" id="slideContent">
+      <!-- Slide Content Injected via JavaScript -->
+    </div>
+
+    <div class="bottom-nav">
+      <button class="btn-nav" id="btnPrev" onclick="navigateSlide(-1)" disabled>
+        <i class="fa-solid fa-arrow-left"></i> Precedente
+      </button>
+      <button class="btn-nav btn-next" id="btnNext" onclick="navigateSlide(1)">
+        Prossima Slide <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const slideData = [
+      {
+        id: 1,
+        eyebrow: "INTRODUZIONE - IL QUADRO GENERALE",
+        title: "Perché la Biomeccanica Governa la Gnatologia?",
+        content: `
+          <div class="grid-3">
+            <div class="card" style="border-top: 3px solid var(--accent-light);">
+              <div class="card-title"><i class="fa-solid fa-atom"></i> 1. Fisica / Biomeccanica</div>
+              <p class="card-body">Leve di III classe, fulcro condilare, bracci di potenza muscolare e vettori di carico assiali ed eccentrici.</p>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--success);">
+              <div class="card-title"><i class="fa-solid fa-stethoscope"></i> 2. Clinica / Poltrona</div>
+              <p class="card-body">Reset muscolare con Jig/Leaf Gauge, tracciamento grafico con Arco Gotico ed arco facciale di trasferimento.</p>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--warning);">
+              <div class="card-title"><i class="fa-solid fa-microscope"></i> 3. Laboratorio / Banco</div>
+              <p class="card-body">Articolatore semi-aggiustabile, registrazione della pendenza H e taratura di Bennett tramite la Formula di Hanau.</p>
+            </div>
+          </div>
+          <div class="ascii-box">
+[ BIOMECCANICA DELLE LEVE ] ──> [ RESET & REGISTRAZIONE CLINICA ] ──> [ TARATURA PROTESICA DI BANCO ]
+          </div>
+        `
+      },
+      {
+        id: 2,
+        eyebrow: "BIOMECCANICA APPLICATA",
+        title: "La Mandibola come Leva di III Classe",
+        content: `
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid var(--accent-light);">
+              <div class="card-title"><i class="fa-solid fa-diagram-project"></i> Elementi della Leva Mandibolare</div>
+              <p class="card-body">
+                <b>• Fulcro (F):</b> Articolazione Temporo-Mandibolare (ATM / Condilo).<br>
+                <b>• Potenza (P):</b> Muscoli elevatori (Massetere, Temporale, Pterigoideo interno).<br>
+                <b>• Resistenza (R):</b> Bolus alimentare o contatti occlusali dentali.
+              </p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--warning);">
+              <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Il Paradosso Biomeccanico</div>
+              <p class="card-body">La leva di III classe è svantaggiosa per la forza ma vantaggiosa per la velocità. Più il contatto dentale si avvicina al fulcro (settore molare), più aumenta il carico distruttivo scaricato sull'articolazione e sulla protesi.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 3,
+        eyebrow: "MODULO 1 - NEUROMUSCOLARE & LEVE",
+        title: "Reset Neuromuscolare e Controllo della Potenza Muscolare",
+        content: `
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid #ef4444;">
+              <div class="card-title"><i class="fa-solid fa-circle-xmark"></i> MIC Viziata (Sbilanciamento di Leva)</div>
+              <p class="card-body">I precontatti abituali stimolano i recettori parodontali. La memoria neuromuscolare costringe la potenza muscolare (P) ad agire asimmetricamente, generando forze di torsione sul fulcro condilare (F).</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--success);">
+              <div class="card-title"><i class="fa-solid fa-circle-check"></i> Deprogrammazione Anteriore (Jig / Leaf)</div>
+              <p class="card-body">Eliminando la resistenza posteriore (R) per 15-20 min, i recettori tacciono. I muscoli si detensionano e la mandibola ricentra il fulcro condilare in Relazione Centrica (RC) pura.</p>
+            </div>
+          </div>
+          <div class="ascii-box">
+[ CONTATTO MIC ] ──> Riflesso Parodontale ──> Vettori Muscolari Asimmetrici ──> Torsione su ATM
+[ JIG ANTERIORE ] ──> Disinclusione Totale ──> Spegnimento Recettori ──> Reset in RC
+          </div>
+        `
+      },
+      {
+        id: 4,
+        eyebrow: "MODULO 2 - ARCO GOTICO E DIAGNOSTICA",
+        title: "Arco Gotico di Gysi: Leggere l'Equilibrio Vettoriale",
+        content: `
+          <div class="ascii-box">
+--- A. FISIOLOGICO (RC Pura) ---           --- B. PATOLOGICO (Vertice Smussato) ---
+        [ Protrusione ]                           [ Deprogrammazione Incompleta ]
+               ▲                                                ---
+               │                                              /     \
+       [ VERTICE APICALE ]                                   /       \
+             /   \                                          /         \
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-bullseye"></i> Vertice Apicale Puro</div>
+              <p class="card-body">Identifica l'unico punto muscolo-scheletrico oggettivo dove le forze muscolari destra e sinistra lavorano in perfetto equilibrio trasversale e sagittale.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Diagnostica dei Tracciati</div>
+              <p class="card-body"><b>• Vertice Smussato:</b> Leve muscolari ancora contratte (estendere la deprogrammazione).<br><b>• Bracci Asimmetrici:</b> Deficit di traslazione condilare o blocco meccanico articolare.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 5,
+        eyebrow: "MODULO 3 - SCHEMI OCCLUSALI & VETTORI",
+        title: "Protezione Biomeccanica dalle Forze di Taglio",
+        content: `
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Mutualmente Protetta</div>
+              <p class="card-body">La guida canina stacca i posteriore durante le lateralità: allontana la resistenza (R) dal fulcro (F), annullando i dannosi bracci di leva orizzontali sui molari.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-users"></i> Funzione di Gruppo</div>
+              <p class="card-body">Distribuisce le forze trasversali su più elementi (canino e premolari); indicata nei casi di parodonto compromesso per frazionare i carichi.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> Bilanciata Bilaterale</div>
+              <p class="card-body">Contatti simultanei sui due lati durante i movimenti della Protesi Totale: evita che la base protesica si ribalti come un'altalena sotto i carichi masticatori.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 6,
+        eyebrow: "MODULO 3 - CINEMATICA & ARCO FACCIALE",
+        title: "Trasferimento dell'Asse Cerniera ed Inclinazione H",
+        content: `
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid var(--accent-light);">
+              <div class="card-title"><i class="fa-solid fa-compass"></i> Arco Facciale di Trasferimento</div>
+              <p class="card-body">Trasferisce la posizione tridimensionale del mascellare superiore rispetto all'asse di rotazione condilare reale (F). Senza di esso, il raggio di chiusura in articolatore risulterebbe sfasato.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--success);">
+              <div class="card-title"><i class="fa-solid fa-person-walking-arrow-right"></i> Cera di Protrusione (Traiettoria H)</div>
+              <p class="card-body">Registra la pendenza dell'eminenza articolare lungo cui scivola il condilo (avanzamento 3-5 mm). Determina l'inclinazione H della scatola condilare dell'articolatore.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 7,
+        eyebrow: "MODULO 4 - FORMULA DI HANAU & LABORATORIO",
+        title: "La Matematica di Svincolo Cuspidale",
+        content: `
+          <div class="formula-box">
+            $$L = \\frac{H}{8} + 12$$
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-calculator"></i> Calcolo Analitico dell'Angolo L</div>
+              <p class="card-body">L'inclinazione condilare H letta in protrusione determina analiticamente l'Angolo di Bennett (L). Esempio: Se H = 32°, L = (32 / 8) + 12 = 4 + 12 = <b>16°</b>.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-tooth"></i> Risvolto in Laboratorio</div>
+              <p class="card-body">Permette all'odontotecnico di modellare e orientare correttamente i <b>solchi di svincolo</b> sui molari, evitando contatti prematuri che scheggerebbero la ceramica o riassorbirebbero l'osso implantare.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 8,
+        eyebrow: "SINOTTICO DI RIPASSO GENERALE",
+        title: "Quadro Generale di Sintesi per il Banco di Lavoro",
+        content: `
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Modulo / Cartella</th>
+                <th>Concetto Biomeccanico</th>
+                <th>Strumento Clinico</th>
+                <th>Risultato sul Banco</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>01. Fisiologia & Reset</b></td>
+                <td>Disattivazione braccio di potenza</td>
+                <td>Jig / Leaf Gauge</td>
+                <td>Eliminazione memoria muscolare e reset RC</td>
+              </tr>
+              <tr>
+                <td><b>02. Arco Gotico</b></td>
+                <td>Equilibrio vettoriale dei movimenti limite</td>
+                <td>Piastra di Gysi</td>
+                <td>Vertice puro di Relazione Centrica</td>
+              </tr>
+              <tr>
+                <td><b>03. Schemi & Cinematica</b></td>
+                <td>Riduzione braccio di leva e orientamento asse</td>
+                <td>Arco Facciale e Cera Protrusione</td>
+                <td>Taratura Inclinazione Condilare H</td>
+              </tr>
+              <tr>
+                <td><b>04. Hanau & Laboratorio</b></td>
+                <td>Matematica di svincolo cuspidale</td>
+                <td>Formula L = (H/8) + 12</td>
+                <td>Orientamento solchi e protezione ceramica</td>
+              </tr>
+            </tbody>
+          </table>
+        `
+      },
+      {
+        id: 9,
+        eyebrow: "CONCLUSIONI & MESSAGGIO PER LA CLASSE",
+        title: "Dalla Fisica alla Protesi di Precisione",
+        content: `
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid var(--accent-light);">
+              <div class="card-title"><i class="fa-solid fa-key"></i> Concetto Chiave</div>
+              <p class="card-body">La gnatologia non è un insieme di regole astratte o formule mandate a memoria, ma l'applicazione rigorosa della biomeccanica e della biologia umana.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--success);">
+              <div class="card-title"><i class="fa-solid fa-award"></i> Obiettivo Professionale</div>
+              <p class="card-body">Saper deprogrammare, leggere i tracciati cinematica e impostare l'articolatore garantisce la costruzione di manufatti protesici stabili, funzionali e duraturi.</p>
+            </div>
+          </div>
+          <div class="quote-box">
+            "Chi domina la biomeccanica delle leve e la cinematica condilare, non costruisce semplici denti in ceramica, ma progetta dispositivi di precisione in armonia con la vita."
+          </div>
+        `
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function renderSlide() {
+      const slide = slideData[currentSlide];
+      const slideContent = document.getElementById('slideContent');
+      
+      slideContent.innerHTML = `
+        <div class="eyebrow">${slide.eyebrow}</div>
+        <h1 class="slide-title">${slide.title}</h1>
+        ${slide.content}
+      `;
+
+      // Update progress
+      const progressPercent = ((currentSlide + 1) / slideData.length) * 100;
+      document.getElementById('progressFill').style.width = `${progressPercent}%`;
+      document.getElementById('progressText').innerText = `Slide ${currentSlide + 1} / ${slideData.length}`;
+
+      // Navigation Buttons State
+      document.getElementById('btnPrev').disabled = currentSlide === 0;
+      
+      const btnNext = document.getElementById('btnNext');
+      if (currentSlide === slideData.length - 1) {
+        btnNext.innerHTML = 'Fine Lezione <i class="fa-solid fa-flag-checkered"></i>';
+        btnNext.disabled = true;
+      } else {
+        btnNext.innerHTML = 'Prossima Slide <i class="fa-solid fa-arrow-right"></i>';
+        btnNext.disabled = false;
+      }
+    }
+
+    function navigateSlide(direction) {
+      currentSlide += direction;
+      if (currentSlide < 0) currentSlide = 0;
+      if (currentSlide >= slideData.length) currentSlide = slideData.length - 1;
+      renderSlide();
+    }
+
+    // Initial render
+    renderSlide();
+  </script>
+</body>
+</html>

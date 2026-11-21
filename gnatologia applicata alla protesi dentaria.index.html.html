@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gnatologia Applicata alla Protesi Dentaria - Interactive Learning Platform</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-light: #f8fafc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #0284c7;
+      --accent-light: #38bdf8;
+      --success: #10b981;
+      --error: #ef4444;
+      --border-color: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 1200px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 780px;
+    }
+
+    /* Top Bar Header */
+    .top-bar {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--accent-light);
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-grow: 1;
+      max-width: 400px;
+      margin: 0 32px;
+    }
+
+    .progress-bar-bg {
+      flex-grow: 1;
+      height: 8px;
+      background: #334155;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      width: 8.33%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 80px;
+    }
+
+    /* Slide Content Area */
+    .slide-area {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-header {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    /* Content Cards and Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title i {
+      color: var(--accent-light);
+    }
+
+    .card-body {
+      font-size: 15px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* Tables */
+    .custom-table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 32px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    th {
+      background: #0f172a;
+      color: var(--accent-light);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+    }
+    td { color: #cbd5e1; }
+    tr:last-child td { border-bottom: none; }
+
+    /* QUIZ GATE SECTION */
+    .quiz-gate-card {
+      margin-top: auto;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+    }
+
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .quiz-tag {
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .quiz-question {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .quiz-options {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent-light);
+      background: #1e293b;
+    }
+
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(2, 132, 199, 0.15);
+    }
+
+    .option-btn.correct {
+      border-color: var(--success) !important;
+      background: rgba(16, 185, 129, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--error) !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    .quiz-feedback {
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .quiz-feedback.success-msg {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: #6ee7b7;
+    }
+
+    .quiz-feedback.error-msg {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--error);
+      color: #fca5a5;
+    }
+
+    /* Bottom Navigation Controls */
+    .bottom-nav {
+      background: #1e293b;
+      border-top: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: #334155;
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-next {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: #0369a1;
+    }
+
+    /* Summary / Congratulations Screen */
+    .summary-screen {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+    }
+
+    .trophy-icon {
+      font-size: 72px;
+      color: #f59e0b;
+      margin-bottom: 24px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .summary-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .summary-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .score-badge {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-light);
+      padding: 20px 40px;
+      border-radius: 16px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 32px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="brand">
+        <i class="fa-solid fa-teeth-open"></i>
+        <span>GNATO-PROTESI CLINICA</span>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">Slide 1 / 12</span>
+      </div>
+    </div>
+
+    <!-- Slide Main Container -->
+    <div class="slide-area" id="slideContent">
+      <!-- Dynamic Slide Injection -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+      <button class="btn-nav" id="btnPrev" onclick="navigateSlide(-1)" disabled>
+        <i class="fa-solid fa-arrow-left"></i> Precedente
+      </button>
+      <button class="btn-nav btn-next" id="btnNext" onclick="navigateSlide(1)" disabled>
+        Prossima Slide <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Data Structure containing the 12 detailed slides and their specific quiz gates
+    const slideData = [
+      {
+        id: 1,
+        eyebrow: "Modulo 1 - Fondamenti Fisiologici",
+        title: "Introduzione alla Gnatologia Protesica",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> Equilibrio Stomatognatico</div>
+              <p class="card-body">La gnatologia studia la fisiologia, la patologia e la cinematica del sistema masticatorio (ATM, muscoli, denti). Nella riabilitazione protesica, l'obiettivo non è solo estetico ma la conservazione della salute articolare e parodontale.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-bullseye"></i> Obiettivo Primario</div>
+              <p class="card-body">Creare una riabilitazione occlusale che distribuisca in modo fisiologico i carichi masticatori, prevenendo disfunzioni temporo-mandibolari (DTM), usure anomale e fallimenti meccanici.</p>
+            </div>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent-light);">
+            <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Il Rischio delle Interferenze Occlusali</div>
+            <p class="card-body">Un contatto prematuro in protesi fissa crea micro-traumi ripetuti sul parodonto e induce una risposta neuromuscolare adattativa che può scatenare parafunzioni (bruxismo, serramento) e sofferenza capsulo-legamentosa all'ATM.</p>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è l'obiettivo fondamentale della gnatologia applicata alla protesi dentaria?",
+          options: [
+            "Aumentare esclusivamente la dimensione estetica dei denti anteriori",
+            "Garantire la disinclusione totale in massima intercuspidazione",
+            "Ripristinare la funzione masticatoria preservando la salute dell'ATM e del parodonto",
+            "Eliminare completamente tutti i contatti occlusali sui molari"
+          ],
+          correct: 2,
+          explanation: "Corretto! La gnatologia si occupa dell'armonia globale del sistema stomatognatico: protesi stabili, integrità dell'ATM e protezione del supporto parodontale."
+        }
+      },
+      {
+        id: 2,
+        eyebrow: "Modulo 2 - Anatomia Articolare",
+        title: "L'Articolazione Temporo-Mandibolare (ATM)",
+        content: `
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-bone"></i> Condilo Mandibolare</div>
+              <p class="card-body">Struttura ellissoidale dell'arcata inferiore che si articola all'interno della cavità glenoide dell'osso temporale.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-layer-group"></i> Disco Articolare</div>
+              <p class="card-body">Cuscinetto fibrocartilagineo biconcavo interposto tra condilo e fossa glenoide per garantire la congruenza superficiale e ammortizzare i carichi.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-cubes"></i> I Due Compartimenti</div>
+              <p class="card-body">L'ATM è una doppia articolazione (ginglimoartrodiale): il compartimento inferiore è deputato alla rotazione, quello superiore alla traslazione.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Quale compartimento dell'ATM è responsabile primariamente del movimento di rotazione pura?",
+          options: [
+            "Il compartimento articolare superiore (disco-temporale)",
+            "Il compartimento articolare inferiore (condilo-discale)",
+            "Il legamento stilo-mandibolare esterno",
+            "L'eminenza articolare anteriore"
+          ],
+          correct: 1,
+          explanation: "Esatto! Il compartimento inferiore (condilo-discale) agisce come cerniera consentendo la rotazione condilare."
+        }
+      },
+      {
+        id: 3,
+        eyebrow: "Modulo 3 - Cinematica Mandibolare",
+        title: "Movimenti Condilari nell'Apertura della Bocca",
+        content: `
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid #10b981;">
+              <div class="card-title"><i class="fa-solid fa-rotate-left"></i> Fase 1: Rotazione Pura</div>
+              <p class="card-body">Avviene nei primi <b>20-25 mm</b> di apertura incisale attorno all'Asse Cerniera Terminale (ACT). I condili ruotano nel compartimento inferiore senza abbandonare la fossa glenoide.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid #38bdf8;">
+              <div class="card-title"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Fase 2: Traslazione</div>
+              <p class="card-body">Oltre i 25 mm di apertura, il complesso condilo-disco trasla in avanti e verso il basso lungo l'eminenza articolare nel compartimento superiore.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Fino a quale ampiezza di apertura incisale si manifesta solitamente il movimento di rotazione pura?",
+          options: [
+            "Fino a 5-10 mm",
+            "Nei primi 20-25 mm",
+            "Oltre i 40 mm",
+            "Solamente durante i movimenti di lateralità bilanciata"
+          ],
+          correct: 1,
+          explanation: "Esatto! Nei primi 20-25 mm di apertura il condilo compie una rotazione pura attorno all'asse cerniera prima di traslare sull'eminenza."
+        }
+      },
+      {
+        id: 4,
+        eyebrow: "Modulo 4 - Posizioni Cliniche di Riferimento",
+        title: "La Relazione Centrica (RC)",
+        content: `
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-title"><i class="fa-solid fa-crosshairs"></i> Definizione Clinica di Relazione Centrica</div>
+            <p class="card-body">È la posizione condilare più antero-superiore all'interno della fossa glenoide, centrata rispetto al disco interposto. È una posizione **muscolo-scheletricamente stabile, riproducibile e del tutto INDIPENDENTE DAI CONTATTI DENTALI**.</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-rotate-right"></i> Ripetibilità</div>
+              <p class="card-body">Trattandosi di una posizione guidata dalle strutture muscolari ed articolari, può essere registrata clinicamente in modo affidabile anche in assenza di denti.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-compass"></i> Punto Zero Protesico</div>
+              <p class="card-body">Nelle riabilitazioni protesiche estese, la RC è l'unica posizione di partenza sicura quando la dentatura originale è gravemente compromessa o usurata.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è la caratteristica fondamentale della Relazione Centrica (RC)?",
+          options: [
+            "Dipende strettamente dall'ingranaggio delle cuspidi dei molari",
+            "È una posizione muscolo-scheletrica condilare indipendente dai contatti dentali",
+            "Coincide sempre con la massima apertura della bocca",
+            "Si verifica solo durante il serramento dentale in lateralità"
+          ],
+          correct: 1,
+          explanation: "Corretto! La RC è determinata dall'anatomia ossea, legamentosa e muscolare dell'ATM ed è svincolata dalla presenza o forma dei denti."
+        }
+      },
+      {
+        id: 5,
+        eyebrow: "Modulo 5 - Dinamica Occlusale",
+        title: "Massima Intercuspidazione (MIC) e Freedom in Centric",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-tooth"></i> Massima Intercuspidazione (MIC)</div>
+              <p class="card-body">Posizione di massimo ingranaggio cuspidale. È una posizione guidata esclusivamente dai denti. Solo in una percentuale ridotta di individui la MIC coincide perfettamente con la RC.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-left-right-to-line"></i> Long Centric / Freedom in Centric</div>
+              <p class="card-body">La possibilità di un piccolo scivolamento orizzontale privo di interferenze (circa 0.5 - 1 mm) tra RC e MIC, consentendo alla mandibola di chiudere senza impatti rigidi temporanei.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Cosa si intende per 'Freedom in Centric' (o Long Centric)?",
+          options: [
+            "La completa assenza di contatti occlusali in tutta l'arcata",
+            "Uno scivolamento fisiologico senza interferenze tra RC e MIC (circa 0.5-1 mm)",
+            "La lussazione fisiologica del condilo oltre l'eminenza articolare",
+            "L'impossibilità di raggiungere la massima intercuspidazione"
+          ],
+          correct: 1,
+          explanation: "Esatto! Il concetto di Freedom in Centric garantisce un'area di tolleranza piana tra RC e MIC senza che i versanti cuspidali generino precontatti."
+        }
+      },
+      {
+        id: 6,
+        eyebrow: "Modulo 6 - Biomeccanica Anteriore",
+        title: "La Guida Anteriore e la Disinclusione Posteriore",
+        content: `
+          <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-light);">
+            <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Il Meccanismo di Protezione Reciproca</div>
+            <p class="card-body">I denti anteriori (incisivi e canini), grazie al loro lungo braccio di leva e alla favorevole propriocezione parodontale, sono strutturati per disincludere (separare) i denti posteriori durante i movimenti eccentrico-protrusivi e laterali.</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> Annullamento delle Forze di Taglio</div>
+              <p class="card-body">I molari tollerano ottimamente i carichi assiali (verticali) ma soffrono le forze trasversali. La disinclusione anteriore azzera le forze trasversali nocive sui posteriori.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-brain"></i> Inibizione Muscolare Neuromuscolare</div>
+              <p class="card-body">Il contatto dei soli denti anteriori attiva un riflesso neuromuscolare che riduce drasticamente la contrazione del muscolo massetere e temporale.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è il ruolo principale della guida anteriore nei movimenti eccentrici?",
+          options: [
+            "Aumentare il carico trasversale sui molari posteriori",
+            "Provocare la disinclusione immediata dei denti posteriori proteggendoli da forze di taglio",
+            "Guidare la traslazione del condilo verso l'alto",
+            "Garantire contatti stabili sul lato bilanciante in lateralità"
+          ],
+          correct: 1,
+          explanation: "Corretto! La guida anteriore sblocca i denti posteriori nei movimenti eccentrici evitando usure anomale e carichi tangenziali sui restauri."
+        }
+      },
+      {
+        id: 7,
+        eyebrow: "Modulo 7 - Geometria Protesica",
+        title: "Geometria della Guida Anteriore: Overjet ed Overbite",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-up-down"></i> Overbite (Sovrapposizione Verticale)</div>
+              <p class="card-body">Determina l'ampiezza e la tempestività della disinclusione. Un overbite maggiore produce uno sblocco posteriore più rapido e cuspidi posteriori più alte.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-left-right"></i> Overjet (Rapporto Orizzontale)</div>
+              <p class="card-body">Rappresenta lo spazio orizzontale. Se l'overjet è eccessivo senza contatto guidato, la disinclusione viene ritardata, esponendo i posteriori ad interferenze.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è l'effetto di un maggiore Overbite (sovrapposizione verticale) sul disegno delle cuspidi posteriori?",
+          options: [
+            "Impone cuspidi posteriori estremamente basse o piatte",
+            "Consente di modellare cuspidi posteriori più alte grazie all'ampia disinclusione immediata",
+            "Elimina la necessità della guida canina",
+            "Aumenta l'angolo di Bennett nella cerniera condilare"
+          ],
+          correct: 1,
+          explanation: "Esatto! Una netta disinclusione verticale (ampio overbite) crea maggior spazio di svincolo durante la protrusione, consentendo cuspidi più alte sui molari."
+        }
+      },
+      {
+        id: 8,
+        eyebrow: "Modulo 8 - Schemi Occlusali (Parte I)",
+        title: "Occlusione Mutualmente Protetta (Modello D'Amico)",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-dog"></i> Ruolo del Canino</div>
+              <p class="card-body">Nel modello di D'Amico (Guida Canina), durante il movimento di lateralità, il solo **canino del lato lavorante** entra in contatto e disinclude tutti gli altri denti dell'arcata.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-gem"></i> Gold Standard Protesico</div>
+              <p class="card-body">È lo schema occlusale ideale in protesi fissa su denti naturali o impianti quando il canino ha un supporto parodontale sano e radici robuste.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Nel modello di Occlusione Mutualmente Protetta (D'Amico), chi guida il movimento di lateralità?",
+          options: [
+            "I due primi molari del lato bilanciante",
+            "Esclusivamente il canino del lato lavorante",
+            "Il gruppo incisivo centrale in contatto simultaneo",
+            "Premolari e molari simultaneamente"
+          ],
+          correct: 1,
+          explanation: "Corretto! Nel modello D'Amico il canino lavorante prende in carico l'intera traiettoria di scivolamento laterale sbloccando tutti i posteriori."
+        }
+      },
+      {
+        id: 9,
+        eyebrow: "Modulo 9 - Schemi Occlusali (Parte II)",
+        title: "Occlusione a Funzione di Gruppo (Group Function)",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-people-group"></i> Distribuzione del Carico</div>
+              <p class="card-body">In lateralità lavorante, il carico di scivolamento viene condiviso contemporaneamente tra canino, premolari e la cuspide mesio-vestibolare del primo molare.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-kit-medical"></i> Indicazioni Cliniche</div>
+              <p class="card-body">Indicata quando il canino presenta un parodonto ridotto, in presenza di estese riabilitazioni implantari o anatomie di Terza Classe di Angle.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Quando è particolarmente indicata l'Occlusione a Funzione di Gruppo?",
+          options: [
+            "Sempre in protesi totale rimovibile",
+            "Quando il canino presenta un supporto parodontale compromesso o in protesi implantari estese",
+            "Quando si vuole evitare ogni contatto sui premolari in lateralità",
+            "Solo nei pazienti affetti da lussazione abituale del disco"
+          ],
+          correct: 1,
+          explanation: "Esatto! La funzione di gruppo distribuisce le forze su più denti quando un singolo canino non è in grado di sostenere l'intero carico da solo."
+        }
+      },
+      {
+        id: 10,
+        eyebrow: "Modulo 10 - Schemi Occlusali (Parte III)",
+        title: "Occlusione Bilanciata Bilaterale",
+        content: `
+          <div class="card" style="margin-bottom: 24px; border-left: 4px solid #ef4444;">
+            <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Dominio della Protesi Totale Rimovibile</div>
+            <p class="card-body">Prevede contatti simultanei tra il lato lavorante e il lato bilanciante (non lavorante) in TUTTI i movimenti eccentrici. **Controindicata in protesi fissa** poiché causerebbe usure rapide e sovraccarichi dannosi.</p>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-anchor"></i> Scopo Meccanico</div>
+            <p class="card-body">In protesi totale, il contatto simultaneo evita il ribaltamento delle basi in resina durante i tragitti masticatori eccentrici.</p>
+          </div>
+        `,
+        quiz: {
+          question: "Perché l'Occlusione Bilanciata Bilaterale è applicata primariamente nella Protesi Totale Rimovibile?",
+          options: [
+            "Per stimolare la rigenerazione dell'osso alveolare",
+            "Per impedire lo scalzamento o il ribaltamento delle basi protesiche durante la masticazione",
+            "Perché riduce la larghezza delle fosse dei molari",
+            "Per consentire la rotazione condilare senza l'uso dell'articolatore"
+          ],
+          correct: 1,
+          explanation: "Esatto! Il contatto sia sul lato lavorante che bilanciante stabilizza fisicamente la placca della protesi rimovibile impedendone la disinserzione."
+        }
+      },
+      {
+        id: 11,
+        eyebrow: "Modulo 11 - Tecniche di Laboratorio",
+        title: "Il Montaggio in Articolatore: Arco Facciale e RC",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-compass-drafting"></i> Arco Facciale di Trasferimento</div>
+              <p class="card-body">Registra la posizione spaziale del mascellare superiore rispetto alla base del cranio e all'asse di rotazione condilare, trasferendola accuratamente sull'articolatore.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-code-merge"></i> Accoppiamento in RC</div>
+              <p class="card-body">Il modello inferiore viene montato rispetto a quello superiore mediante una cera o un registro di plastica rigida rilevato in Relazione Centrica.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è la funzione fondamentale dell'Arco Facciale in protesi?",
+          options: [
+            "Misurare la forza di serramento dei muscoli masseteri",
+            "Trasferire in articolatore la posizione del mascellare superiore rispetto al piano craniometrico e all'asse cerniera",
+            "Determinare automaticamente il colore delle corone in ceramica",
+            "Registrare la massima apertura della bocca"
+          ],
+          correct: 1,
+          explanation: "Corretto! L'arco facciale orienta nello spazio il modello superiore replicando la distanza dall'asse cerniera reale del paziente."
+        }
+      },
+      {
+        id: 12,
+        eyebrow: "Modulo 12 - Individualizzazione Articolare",
+        title: "Traiettoria Condilare ed Angolo di Bennett",
+        content: `
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-chart-line"></i> Traiettoria Condilare (TC)</div>
+              <p class="card-body">L'inclinazione del percorso del condilo sull'eminenza. Una TC molto inclinata ($\ge 40^\circ$) consente di disegnare cuspidi protesiche più alte e fosse profonde.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-left-right"></i> Angolo di Bennett</div>
+              <p class="card-body">Misura lo spostamento laterale della mandibola. Un angolo ampio richiede solchi di deflusso occlusali protesici più ampi per evitare collisioni.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Come influisce una Traiettoria Condilare (TC) molto inclinata sul disegno anatomico delle cuspidi protesiche?",
+          options: [
+            "Costringe a modellare cuspidi completamente piatte",
+            "Consente la realizzazione di cuspidi più alte e fosse occlusali più profonde",
+            "Impone l'eliminazione della guida canina",
+            "Riduce la dimensione dell'overjet anteriore"
+          ],
+          correct: 1,
+          explanation: "Esatto! Una traiettoria condilare ripida allontana rapidamente l'arcata inferiore durante la traslazione, permettendo cuspidi più alte senza interferenze."
+        }
+      }
+    ];
+
+    // State Variables
+    let currentSlideIndex = 0;
+    let unlockedSlideIndex = 0;
+    let userAnswers = new Array(slideData.length).fill(null);
+    let quizPassed = new Array(slideData.length).fill(false);
+    let firstAttemptCorrect = 0;
+
+    // DOM Elements
+    const slideContent = document.getElementById('slideContent');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    // Initialize platform
+    function init() {
+      renderSlide(currentSlideIndex);
+    }
+
+    // Render Current Slide and Quiz Gate
+    function renderSlide(index) {
+      if (index >= slideData.length) {
+        renderSummaryScreen();
+        return;
+      }
+
+      const data = slideData[index];
+      
+      // Update Progress UI
+      const percent = ((index + 1) / slideData.length) * 100;
+      progressFill.style.width = percent + '%';
+      progressText.innerText = `Slide ${index + 1} / ${slideData.length}`;
+
+      // Build HTML Content
+      let html = `
+        <div class="slide-header">
+          <p class="eyebrow">${data.eyebrow}</p>
+          <h1 class="slide-title">${data.title}</h1>
+        </div>
+        ${data.content}
+        
+        <!-- QUIZ GATE SECTION -->
+        <div class="quiz-gate-card">
+          <div class="quiz-header">
+            <span class="quiz-tag"><i class="fa-solid fa-lock"></i> Quiz Gate Obbligatorio</span>
+          </div>
+          <div class="quiz-question">${data.quiz.question}</div>
+          <div class="quiz-options">
+      `;
+
+      data.quiz.options.forEach((opt, optIdx) => {
+        let btnClass = 'option-btn';
+        if (userAnswers[index] === optIdx) {
+          if (quizPassed[index]) {
+            btnClass += optIdx === data.quiz.correct ? ' correct' : '';
+          } else {
+            btnClass += ' wrong';
+          }
+        } else if (quizPassed[index] && optIdx === data.quiz.correct) {
+          btnClass += ' correct';
+        }
+
+        html += `
+          <button class="${btnClass}" 
+                  onclick="selectOption(${index}, ${optIdx})" 
+                  ${quizPassed[index] ? 'disabled' : ''}>
+            <i class="fa-regular ${userAnswers[index] === optIdx ? (quizPassed[index] ? 'fa-circle-check' : 'fa-circle-xmark') : 'fa-circle'}"></i>
+            ${opt}
+          </button>
+        `;
+      });
+
+      html += `</div>`;
+
+      // Feedback message container
+      if (userAnswers[index] !== null) {
+        if (quizPassed[index]) {
+          html += `
+            <div class="quiz-feedback success-msg">
+              <i class="fa-solid fa-circle-check"></i> <b>Risposta Corretta!</b> ${data.quiz.explanation}
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="quiz-feedback error-msg">
+              <i class="fa-solid fa-triangle-exclamation"></i> <b>Risposta Errata.</b> Rileggi attentamente i concetti della slide e riprova selezionando un'altra opzione!
+            </div>
+          `;
+        }
+      }
+
+      html += `</div>`; // Close quiz-gate-card
+
+      slideContent.innerHTML = html;
+
+      // Update Navigation Buttons State
+      btnPrev.disabled = index === 0;
+      btnNext.disabled = !quizPassed[index];
+    }
+
+    // Handle Option Click
+    function selectOption(slideIdx, optionIdx) {
+      if (quizPassed[slideIdx]) return; // Already passed
+
+      const data = slideData[slideIdx];
+      userAnswers[slideIdx] = optionIdx;
+
+      if (optionIdx === data.quiz.correct) {
+        quizPassed[slideIdx] = true;
+        if (slideIdx > unlockedSlideIndex) {
+          unlockedSlideIndex = slideIdx;
+        }
+        firstAttemptCorrect++;
+      } else {
+        quizPassed[slideIdx] = false;
+      }
+
+      renderSlide(slideIdx);
+    }
+
+    // Navigation Handler
+    function navigateSlide(direction) {
+      currentSlideIndex += direction;
+      if (currentSlideIndex < 0) currentSlideIndex = 0;
+      renderSlide(currentSlideIndex);
+    }
+
+    // Summary Screen at the end
+    function renderSummaryScreen() {
+      progressFill.style.width = '100%';
+      progressText.innerText = 'Completato';
+      btnPrev.disabled = false;
+      btnNext.disabled = true;
+
+      slideContent.innerHTML = `
+        <div class="summary-screen">
+          <i class="fa-solid fa-trophy trophy-icon"></i>
+          <h1 class="summary-title">Corso Completato con Successo!</h1>
+          <p class="summary-sub">Hai superato tutti e 12 i Quiz Gate di Gnatologia Applicata alla Protesi Dentaria, sbloccando l'intero programma didattico.</p>
+          <div class="score-badge">
+            Modulo Gnatologico Superato
+          </div>
+          <button class="btn-nav btn-next" onclick="restartCourse()" style="font-size:16px; padding:16px 32px;">
+            <i class="fa-solid fa-rotate-right"></i> Riavvia Lezione Interattiva
+          </button>
+        </div>
+      `;
+    }
+
+    function restartCourse() {
+      currentSlideIndex = 0;
+      unlockedSlideIndex = 0;
+      userAnswers.fill(null);
+      quizPassed.fill(false);
+      firstAttemptCorrect = 0;
+      renderSlide(0);
+    }
+
+    // Run on load
+    window.onload = init;
+  </script>
+</body>
+</html>

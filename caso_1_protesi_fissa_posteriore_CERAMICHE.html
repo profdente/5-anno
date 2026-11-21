@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - Problem Solving: Precontatto in Protesi Fissa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    .font-tech {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+    }
+    .option-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: #06b6d4;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-900">
+
+  <!-- TOP BAR -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-amber-500 flex items-center justify-center text-slate-950 font-bold font-tech text-xl shadow-lg shadow-cyan-500/30">
+          PS1
+        </div>
+        <div>
+          <h1 class="font-tech text-sm sm:text-base font-bold bg-gradient-to-r from-cyan-400 to-amber-400 bg-clip-text text-transparent">
+            LAB 4.0 // CLINICAL SOLVER #1
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Corso Serale IDA • Precontatto Occlusale in Protesi Fissa (IT / EN)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <button onclick="toggleQRModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 rounded-lg text-xs font-mono flex items-center gap-2">
+          <i class="fa-solid fa-qrcode text-base"></i> <span class="hidden sm:inline">QR Mobile</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+    
+    <!-- MATRICE DI SINTESI FISIOPATOLOGICA BILINGUE -->
+    <div class="p-4 glass-card rounded-xl border border-slate-800 space-y-2 glow-cyan">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
+        <div class="flex items-center gap-2 text-xs font-tech font-bold text-cyan-400 uppercase">
+          <i class="fa-solid fa-layer-group"></i> Triade Fisiopatologica del Precontatto / Pathophysiology Matrix
+        </div>
+        <span class="text-[10px] text-slate-400 font-mono">EBM Occlusion</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+          <span class="font-bold text-cyan-300 block">1. Neuromuscolare / Neuromuscular</span>
+          <p class="text-slate-400 text-[11px]">Nocicezione trigeminale, alterazione engramma motorio e affaticamento di Massetere e Temporale.</p>
+        </div>
+        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+          <span class="font-bold text-amber-300 block">2. Parodontale / Periodontal</span>
+          <p class="text-slate-400 text-[11px]">Trauma d'occlusione, forze tangenziali di taglio, sofferenza legamentosa e riassorbimento verticale.</p>
+        </div>
+        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+          <span class="font-bold text-emerald-300 block">3. Articolare / Temporomandibular</span>
+          <p class="text-slate-400 text-[11px]">Deviazione RC-MIC condilare, micro-traumi capsulari e rischio dislocazione discale ATM.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEZIONE EZIOLOGIA & PROTOCOLLO PASSO-PASSO -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="glass-card p-5 rounded-xl border border-slate-800 space-y-2">
+        <div class="text-xs font-tech font-bold text-amber-400 uppercase flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation"></i> Cause a Monte / Etiology
+        </div>
+        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+          <li><strong>Poltrona:</strong> Mancata deprogrammazione neuromuscolare (assenza di Jig / Leaf Gauge) durante la registrazione.</li>
+          <li><strong>Laboratorio:</strong> Distorsione del registro, espansione incontrollata del gesso, imperfetta taratura dell'articolatore.</li>
+        </ul>
+      </div>
+
+      <div class="glass-card p-5 rounded-xl border border-slate-800 space-y-2">
+        <div class="text-xs font-tech font-bold text-cyan-400 uppercase flex items-center gap-2">
+          <i class="fa-solid fa-list-check"></i> Protocollo Operativo / Protocol
+        </div>
+        <ol class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside">
+          <li><strong>Diagnosi Carte:</strong> 100 µm per macro-interferenze, poi 8-12 µm per isolare il contatto primario.</li>
+          <li><strong>Eccentrici:</strong> Verifica della disinclusione in lateralità (canina/gruppo) e protrusiva (incisiva).</li>
+          <li><strong>Rilucidatura:</strong> Gommini diamantati e pasta al diamante per prevenire l'usura dell'antagonista.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SCHEDA CASO CLINICO #1 -->
+    <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 glow-cyan">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+        <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold rounded-full uppercase tracking-wider">
+          Caso Clinico #1 // Protesi Fissa & Occlusione
+        </span>
+        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-microscope text-cyan-400"></i> Protocollo Molaggio Selettivo</span>
+      </div>
+
+      <div class="bg-slate-950/90 p-4 rounded-xl border border-cyan-500/30 space-y-2">
+        <div class="text-xs font-mono text-cyan-400 font-bold uppercase"><i class="fa-solid fa-clipboard-user"></i> Scenario Clinico in Poltrona / Clinical Scenario:</div>
+        <p class="text-sm text-slate-200">
+          <strong>[IT] Prescrizione e Segnalazione:</strong> Durante la prova di consegna di un ponte fisso in ceramica nel settore molare inferiore, il paziente riferisce immediatamente una sensazione di "dente alto" in chiusura con dolenza al serramento. L'analisi con carta articolata sottile (12 µm) evidenzia un punto cromatico scuro sulla cuspide di supporto vestibolare che si presenta sia in Relazione Centrica (RC) che in Massima Intercuspidazione (MIC).<br>
+          <span class="text-xs text-slate-400 font-normal"><strong>[EN] Presentation:</strong> During seat-in of a posterior lower ceramic bridge, the patient reports a high spot and soreness on clenching. Articulating paper (12 µm) shows a dark central mark on the supporting buccal cusp present both in CR and MIP.</span>
+        </p>
+      </div>
+
+      <div id="quiz-box-occlusion" class="quiz-container bg-slate-950/80 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase font-tech tracking-wider">
+          <i class="fa-solid fa-brain"></i> Decisione Operativa / Selective Grinding Protocol
+        </div>
+        <p class="text-sm font-semibold text-slate-200">
+          <strong>[IT]</strong> Qual è la regola d'oro del molaggio selettivo per correggere il precontatto senza compromettere la Dimensione Verticale di Occlusione (DVO)?<br>
+          <span class="text-xs text-slate-400 font-normal"><strong>[EN]</strong> What is the golden rule for selective grinding to correct premature contact without collapsing VDO?</span>
+        </p>
+
+        <div class="options-grid grid grid-cols-1 gap-2.5">
+          <button onclick="checkCaseAnswer('quiz-box-occlusion', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            A) Molare sempre e soltanto la punta della cuspide di supporto fino alla scomparsa del punto cromatico. / Always reduce the tip of the supporting cusp until the mark disappears.
+          </button>
+          <button onclick="checkCaseAnswer('quiz-box-occlusion', this, true)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            B) Se il precontatto è sia in RC che in MIC, approfondire la fossa ricevente antagonista; se è solo in RC, ritoccare il versante cuspidale salvaguardando la sommità della cuspide di supporto. / If present in both CR and MIP, deepen the opposing fossa; if only in CR, adjust the cusp incline preserving the supporting cusp tip.
+          </button>
+          <button onclick="checkCaseAnswer('quiz-box-occlusion', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            C) Eliminare la guida canina riducendo l'altezza del dente adiacente per scaricare il carico occlusale. / Eliminate canine guidance by reducing adjacent tooth height to release occlusal load.
+          </button>
+        </div>
+        
+        <div class="solution-box hidden p-4 rounded-xl bg-slate-900 border border-emerald-500/50 space-y-2 text-xs sm:text-sm">
+          <div class="flex items-center gap-2 font-bold text-emerald-400 font-tech">
+            <i class="fa-solid fa-circle-check"></i> ANALISI EBM DEL CASO & SOLUZIONE CORRETTA:
+          </div>
+          <p class="text-slate-300">
+            <strong>Scelta Corretta / Correct Choice: B</strong>
+          </p>
+          <p class="text-slate-400 leading-relaxed">
+            <strong>[IT] Note Didattiche:</strong> La riduzione diretta della sommità della cuspide di supporto (vestibolare inferiore o palatina superiore) causa la perdita del contatto di stop centrico con il crollo progressivo della Dimensione Verticale di Occlusione (DVO). Dopo l'aggiustamento con fresa diamantata a grana fine, è tassativo eseguire la rilucidatura della ceramica con gommini diamantati per prevenire l'usura dell'antagonista.<br>
+            <strong>[EN] Clinical Note:</strong> Flattening the supporting cusp tip destroys the centric stop leading to loss of VDO. Always deepen the receiving fossa when pre-contact is uniform in CR and MIP, followed by fine diamond polishing to avoid antagonist wear.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALE POPUP PER QR CODE LIM -->
+  <div id="qrModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 rounded-2xl text-center space-y-4 border border-cyan-500/40">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <span class="font-tech text-xs text-cyan-400 font-bold uppercase">QR Accesso Mobile LIM</span>
+        <button onclick="toggleQRModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-slate-300">Scansiona con lo smartphone per aprire questo modulo sul tuo dispositivo:</p>
+      
+      <div id="qrcode" class="flex justify-center p-3 bg-white rounded-xl mx-auto w-fit"></div>
+      
+      <p class="text-[10px] font-mono text-slate-500">LAB 4.0 • Corso Serale IDA</p>
+    </div>
+  </div>
+
+  <script>
+    var qrGenerated = false;
+
+    function toggleQRModal() {
+      var modal = document.getElementById('qrModal');
+      modal.classList.toggle('hidden');
+      if (!qrGenerated && typeof QRCode !== 'undefined') {
+        new QRCode(document.getElementById("qrcode"), {
+          text: window.location.href,
+          width: 160,
+          height: 160,
+          colorDark : "#0f172a",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+        qrGenerated = true;
+      }
+    }
+
+    function checkCaseAnswer(containerId, btn, isCorrect) {
+      var container = document.getElementById(containerId);
+      var buttons = container.querySelectorAll('.option-btn');
+      var solutionBox = container.querySelector('.solution-box');
+
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+      }
+
+      if (isCorrect) {
+        btn.style.backgroundColor = '#064e3b';
+        btn.style.borderColor = '#10b981';
+        btn.style.color = '#a7f3d0';
+
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 50, spread: 70, origin: { y: 0.8 } });
+        }
+      } else {
+        btn.style.backgroundColor = '#4c0519';
+        btn.style.borderColor = '#f43f5e';
+        btn.style.color = '#fecdd3';
+      }
+
+      if (solutionBox) {
+        solutionBox.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

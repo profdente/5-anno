@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - Synthetic Resins, PMMA & 3D Polymers Masterclass</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.2);
+      --border: #334155;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 60px; }
+    
+    header { background: #090d16; border-bottom: 1px solid var(--border); padding: 18px 20px; position: sticky; top: 0; z-index: 50; }
+    .header-content { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .badge-pm { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; font-weight: 900; font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+    .header-titles h1 { font-size: 18px; color: var(--accent); letter-spacing: 1px; }
+    .header-titles p { font-size: 12px; color: var(--text-muted); }
+
+    main { max-width: 900px; margin: 30px auto; padding: 0 20px; display: block !important; }
+
+    /* STRUTTURA FORZATA PER EVITARE IL BLOCCO DI RENDERING SU LIM */
+    .slide-card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px var(--accent-glow); display: block !important; margin-bottom: 30px !important; width: 100%; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 20px; }
+    .slide-num { font-size: 12px; font-weight: bold; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; background: rgba(168, 85, 247, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .ebm-ref { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+    
+    h2 { font-size: 22px; color: #fff; margin-bottom: 14px; }
+    p { font-size: 15px; color: #cbd5e1; margin-bottom: 16px; }
+
+    .info-box { background: #090d16; border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; margin: 16px 0; font-size: 14px; }
+    .info-box-title { color: var(--accent); font-weight: bold; margin-bottom: 6px; }
+
+    .grid-2 { display: grid; grid-template-cols: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .grid-3 { display: grid; grid-template-cols: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media(max-width: 768px) { .grid-2, .grid-3 { grid-template-cols: 1fr; } }
+    
+    .card-item { background: #090d16; border: 1px solid var(--border); padding: 16px; border-radius: 10px; font-size: 13px; }
+    .card-item-title { color: #fff; font-weight: bold; margin-bottom: 6px; }
+
+    .quiz-box { background: #090d16; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 24px; }
+    .quiz-title { color: #f59e0b; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+    .quiz-q { font-size: 14px; font-weight: 600; color: #f1f5f9; margin-bottom: 12px; }
+    .quiz-q-en { font-size: 13px; color: var(--text-muted); font-weight: normal; }
+    
+    .option-btn { width: 100%; text-align: left; padding: 12px 16px; margin-bottom: 8px; background: #1e293b; border: 1px solid var(--border); border-radius: 8px; color: #e2e8f0; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .option-btn:hover { border-color: var(--accent); background: #334155; }
+    
+    .answer-box { display: none; padding: 14px; border-radius: 8px; margin-top: 10px; font-size: 13px; }
+    .answer-box.correct { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #34d399; }
+    .answer-box.wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #f87171; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="badge-pm">PM</div>
+        <div class="header-titles">
+          <h1>LAB 4.0 // SYNTHETIC RESINS, PMMA & 3D POLYMERS MASTERCLASS</h1>
+          <p>Corso Serale IDA • Acrylic Polymers, CAD/CAM Milled PMMA & 3D Printing Resins</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SLIDE 1 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 1 DI 5 // Chimica dei Polimeri & Cinematica</span>
+        <span class="ebm-ref">EBM Ref: Anusavice et al. (2012); Ferracane (2011)</span>
+      </div>
+      <h2>1. Chimica del PMMA e Reazione di Polimerizzazione Radicolare</h2>
+      <p>Le resine acriliche protesiche si basano sul Polimetilmetacrilato (PMMA). La reazione di polimerizzazione per addizione si sviluppa attraverso tre fasi cinetiche principali: attivazione dei radicali liberi, propagazione della catena del monomero Metilmetacrilato (MMA) e terminazione.</p>
+      
+      <div class="info-box">
+        <div class="info-box-title">RITIRO VOLUMETRICO E RAPPORTO STECHIOMETRICO P/L:</div>
+        <ul>
+          <li><strong>Monomero Puro (MMA Liquido):</strong> La polimerizzazione del solo monomero liquido comporta una contrazione di massa teorica elevatissima pari al <strong>21% in volume</strong> a causa del ravvicinamento covalente delle molecole.</li>
+          <li><strong>Miscela Polvere/Liquido (3:1 Vol - 2:1 Peso):</strong> L'utilizzo di polvere formata da micro-sfere di PMMA pre-polimerizzato agisce da riempitivo chimico organico. Ciò riduce la quota di monomero da far reagire, portando il ritiro volumetrico finale del manufatto a circa il <strong>6% in volume</strong>.</li>
+          <li><strong>Grado di Conversione (DC):</strong> Rappresenta la percentuale di doppi legami alchenici C=C convertiti in legami singoli C-C. Elevati valori di DC garantiscono massima durezza Shore D, stabilità dimensionale e minima porosità micromeccanica.</li>
+        </ul>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è il rapporto stechiometrico corretto Polvere/Liquido per contenere il ritiro volumetrico della resina acrilica entro il 6%?<br>
+          <span class="quiz-q-en">[EN] What is the correct Powder/Liquid ratio to keep acrylic resin volumetric shrinkage around 6%?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans1', true)">A) 3 parti di polvere ed 1 parte di liquido (3:1 in volume / 2:1 in peso). / 3 parts powder to 1 part liquid (3:1 by volume).</button>
+        <button class="option-btn" onclick="showFeedback('ans1', false)">B) 1 parte di polvere e 3 parti di liquido (1:3 in volume). / 1 part powder to 3 parts liquid.</button>
+        <button class="option-btn" onclick="showFeedback('ans1', false)">C) Rapporto di parti uguali 1:1. / Equal parts 1:1 ratio.</button>
+        <div id="ans1" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 2 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 2 DI 5 // Termo vs Autopolimerizzabili</span>
+        <span class="ebm-ref">EBM Ref: McCabe & Walls (2008); Urban et al. (2014)</span>
+      </div>
+      <h2>2. Resine Termopolimerizzabili (Heat-Cured) vs Autopolimerizzabili (Self-Cured)</h2>
+      <p>La differenziazione clinica e tecnologica tra resine a caldo e resine a freddo risiede nella modalità di attivazione del Perossido di Benzoile per la scissione dei radicali liberi innescanti.</p>
+
+      <div class="grid-2">
+        <div class="card-item">
+          <div class="card-item-title" style="color: var(--accent);">Resine Termopolimerizzabili (Heat-Cured)</div>
+          Innescate dal calore in bagno d'acqua (ciclo di cottura controllato a 74°C per 9 ore o 74°C per 2 ore + 100°C per 1 ora). Raggiungono un grado di conversione elevatissimo con <strong>monomero residuo trascurabile (&lt; 1%)</strong>, massima tenacità alla frattura e stabilità cromatica nel lungo periodo.
+        </div>
+        <div class="card-item">
+          <div class="card-item-title" style="color: #60a5fa;">Resine Autopolimerizzabili (Self-Cured)</div>
+          Innescate chimicamente dall'aggiunta di un'ammina terziaria (DMPT) a temperatura ambiente. La reazione rapida lascia una quota consistente di <strong>monomero residuo libero (2-5%)</strong>, con elevato potenziale citotossico ed ingiallimento dovuto all'ossidazione delle ammine.
+        </div>
+      </div>
+
+      <div class="info-box" style="border-left-color: #60a5fa;">
+        <div class="info-box-title" style="color: #60a5fa;">CITOTOSSICITÀ ED ELUIZIONE DEL MONOMERO RESIDUO:</div>
+        L'eluizione di monomero MMA chimicamente libero nel cavo orale causa alterazioni tissutali, stomatiti da protesi (Denture Stomatitis) e reazioni allergiche da contatto. La cottura termica prolungata garantisce la quasi completa saturazione dei monomeri, rendendo il manufatto clinicamente inerte.
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è la causa principale della minore biocompatibilità e della tendenza all'ingiallimento delle resine autopolimerizzabili a freddo?<br>
+          <span class="quiz-q-en">[EN] What causes lower biocompatibility and discoloration tendencies in self-cured acrylic resins?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans2', false)">A) L'assenza di pigmenti rosa nella polvere. / The absence of pink pigments in powder.</button>
+        <button class="option-btn" onclick="showFeedback('ans2', true)">B) L'elevato contenuto di monomero MMA residuo libero (2-5%) e l'ossidazione delle ammine terziarie non reagite. / High residual free MMA monomer (2-5%) and oxidation of unreacted tertiary amines.</button>
+        <div id="ans2" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 3 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 3 DI 5 // Polimeri CAD/CAM & Stampa 3D</span>
+        <span class="ebm-ref">EBM Ref: Stawarczyk et al. (2015); Revilla-León et al. (2020)</span>
+      </div>
+      <h2>3. PMMA Fresato CAD/CAM ad Alta Densità vs Fotopolimeri 3D (SLA/DLP)</h2>
+      <p>L'evoluzione della protesi digitale ha introdotto dischi industriali pre-polimerizzati ad altissima pressione/temperatura e resine liquide fotopolimerizzabili per manifattura additiva 3D.</p>
+
+      <div class="grid-2">
+        <div class="card-item">
+          <div class="card-item-title

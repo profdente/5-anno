@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - Lithium Disilicate & ZLS Masterclass</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.2);
+      --border: #334155;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 60px; }
+    
+    header { background: #090d16; border-bottom: 1px solid var(--border); padding: 18px 20px; position: sticky; top: 0; z-index: 50; }
+    .header-content { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .badge-ce { background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff; font-weight: 900; font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+    .header-titles h1 { font-size: 18px; color: var(--accent); letter-spacing: 1px; }
+    .header-titles p { font-size: 12px; color: var(--text-muted); }
+
+    main { max-width: 900px; margin: 30px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 30px; }
+
+    .slide-card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px var(--accent-glow); }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 20px; }
+    .slide-num { font-size: 12px; font-weight: bold; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; background: rgba(239, 68, 68, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .ebm-ref { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+    
+    h2 { font-size: 22px; color: #fff; margin-bottom: 14px; }
+    p { font-size: 15px; color: #cbd5e1; margin-bottom: 16px; }
+
+    .info-box { background: #090d16; border-left: 4px solid var(--accent); padding: 16px; border-radius: 8px; margin: 16px 0; font-size: 14px; }
+    .info-box-title { color: var(--accent); font-weight: bold; margin-bottom: 6px; }
+
+    .grid-2 { display: grid; grid-template-cols: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .grid-3 { display: grid; grid-template-cols: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media(max-width: 768px) { .grid-2, .grid-3 { grid-template-cols: 1fr; } }
+    
+    .card-item { background: #090d16; border: 1px solid var(--border); padding: 16px; border-radius: 10px; font-size: 13px; }
+    .card-item-title { color: #fff; font-weight: bold; margin-bottom: 6px; }
+
+    .quiz-box { background: #090d16; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 24px; }
+    .quiz-title { color: #f59e0b; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+    .quiz-q { font-size: 14px; font-weight: 600; color: #f1f5f9; margin-bottom: 12px; }
+    .quiz-q-en { font-size: 13px; color: var(--text-muted); font-weight: normal; }
+    
+    .option-btn { width: 100%; text-align: left; padding: 12px 16px; margin-bottom: 8px; background: #1e293b; border: 1px solid var(--border); border-radius: 8px; color: #e2e8f0; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .option-btn:hover { border-color: var(--accent); background: #334155; }
+    
+    .answer-box { display: none; padding: 14px; border-radius: 8px; margin-top: 10px; font-size: 13px; }
+    .answer-box.correct { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #34d399; }
+    .answer-box.wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #f87171; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="badge-ce">Ld</div>
+        <div class="header-titles">
+          <h1>LAB 4.0 // LITHIUM DISILICATE & ZLS MASTERCLASS</h1>
+          <p>Corso Serale IDA • Glass-Ceramics & Advanced Adhesive Dentistry</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SLIDE 1 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 1 DI 5 // Microstruttura e Cristallogenesi</span>
+        <span class="ebm-ref">EBM Ref: Höland et al. (2006); Zarone et al. (2019)</span>
+      </div>
+      <h2>1. Matrice Vetrosa e Cristallizzazione del Disilicato</h2>
+      <p>Il disilicato di litio (Li₂Si₂O₅) è una ceramica vetrosa ad alte prestazioni caratterizzata da una duplice natura microstrutturale: una matrice vetrosa amorfa a base di silice (SiO₂-Li₂O) associata ad un elevato volume di micro-cristalli aciculari intrecciati.</p>
+      
+      <div class="info-box">
+        <div class="info-box-title">MICROSTRUTTURA E FENOMENOLOGIA DEL CRACK DEFLECTION:</div>
+        <ul>
+          <li><strong>Matrice Vetrosa Amorfa (30% vol.):</strong> Garantisce la trasmissione della luce e la mordenzabilità chimica superficiale tramite acido fluoridrico (HF).</li>
+          <li><strong>Fase Cristallina Aciculare (70% vol.):</strong> Cristalli allungati di Li₂Si₂O₅ (2-6 µm) disposti in modo casuale ad incastro. Questa trama agisce deviando la propagazione delle cricche (<em>Crack Deflection</em>).</li>
+          <li><strong>Stato Blu metastabile (Li₂SiO₃):</strong> Nei blocchi fresabili CAD/CAM il materiale si presenta inizialmente sotto forma di metasilicato di litio (~130 MPa), ideale per una lavorazione sottrattiva rapida ad usura ridotta delle frese.</li>
+          <li><strong>Cottura di Cristallizzazione Finale (840-860°C):</strong> Il trattamento termico trasforma il metasilicato in disilicato di litio definitivo, portando la resistenza a flessione a <strong>360-530 MPa</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale fase cristallina caratterizza i blocchi CAD/CAM prima del ciclo di cristallizzazione in forno?<br>
+          <span class="quiz-q-en">[EN] Which crystalline phase characterizes CAD/CAM blocks prior to furnace crystallization?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans1', false)">A) Disilicato di litio definitivo (Li₂Si₂O₅) con il 70% di cristalli aciculari. / Final lithium disilicate (Li₂Si₂O₅) with 70% needle-like crystals.</button>
+        <button class="option-btn" onclick="showFeedback('ans1', true)">B) Metasilicato di litio metastabile (Li₂SiO₃) in "Stato Blu" facilmente fresabile (~130 MPa). / Metastable lithium metasilicate (Li₂SiO₃) in easily millable "Blue State" (~130 MPa).</button>
+        <button class="option-btn" onclick="showFeedback('ans1', false)">C) Fase cubica pura di zirconio senza matrice vetrosa. / Pure cubic phase zirconia without glass matrix.</button>
+        <div id="ans1" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 2 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 2 DI 5 // Press vs CAD & ZLS</span>
+        <span class="ebm-ref">EBM Ref: Ritzberger et al. (2010); Sieper et al. (2021)</span>
+      </div>
+      <h2>2. Tecnologie Produttive (Press vs CAD) e Ceramiche ZLS</h2>
+      <p>Il disilicato di litio può essere processato sia mediante iniezione ad alta temperatura a cera persa (Pressing) sia tramite fresatura sottrattiva computerizzata (CAD/CAM). Le recenti ceramiche al Silicato di Litio Rinforzato con Zirconia (ZLS) introducono un'ulteriore evoluzione nanostrutturale.</p>
+
+      <div class="grid-3">
+        <div class="card-item">
+          <div class="card-item-title" style="color: var(--accent);">Disilicato Pressato (e.max Press)</div>
+          Resistenza a flessione di 400-470 MPa. Lavorato mediante termopressatura a 910-920°C. Adattamento marginale clinico d'eccellenza (&lt; 50 µm).
+        </div>
+        <div class="card-item">
+          <div class="card-item-title" style="color: #60a5fa;">Disilicato CAD/CAM (e.max CAD)</div>
+          Resistenza a flessione di 360-530 MPa. Fresato allo stato di metasilicato (blu) e sottoposto a cristallizzazione termica a 840-850°C senza contrazione di volume.
+        </div>
+        <div class="card-item">
+          <div class="card-item-title" style="color: #34d399;">ZLS - Silicato + Zirconia (Suprinity/Celtra)</div>
+          Resistenza a flessione di 420-550 MPa. Addizionato con il 10% in peso di ZrO₂ nella matrice vetrosa per ottenere una nanostruttura ultra-fine (0.5 µm).
+        </div>
+      </div>
+
+      <div class="info-box" style="border-left-color: #60a5fa;">
+        <div class="info-box-title" style="color: #60a5fa;">SPESSORI E PARAMETRI PROTESICI EBM:</div>
+        <ul>
+          <li><strong>Spessori minimi occlusali:</strong> Table-tops/Faccette: 1.0 mm; Corone anteriori: 1.2 mm; Corone posteriori: 1.5 mm.</li>
+          <li><strong>Connettori per ponti (max 3 elementi fino al 1° premolare):</strong> Sezione anteriore &ge; 9 mm²; Sezione premolare &ge; 16 mm². (Controindicato nei settori molari estesi).</li>
+        </ul>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è la peculiarità chimico-strutturale delle ceramiche in Silicato di Litio Rinforzato con Zirconia (ZLS)?<br>
+          <span class="quiz-q-en">[EN] What is the chemical-structural feature of Zirconia-Reinforced Lithium Silicate (ZLS) ceramics?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans2', false)">A) L'eliminazione totale della silice chimica. / Complete elimination of chemical silica.</button>
+        <button class="option-btn" onclick="showFeedback('ans2', true)">B) L'integrazione di circa il 10% in peso di ZrO₂ disciolto nella matrice vetrosa per affinare la grana cristallina a circa 0.5 µm. / The integration of ~10 wt% ZrO₂ dissolved in the glass matrix to refine crystal size to ~0.5 µm.</button>
+        <button class="option-btn" onclick="showFeedback('ans2', false)">C) L'impiego esclusivo di tecniche di sinterizzazione ad alto vuoto per metalli. / The exclusive use of high-vacuum metal sintering techniques.</button>
+        <div id="ans2" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 3 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 3 DI 5 // Processi di Banco & Finitura</span>
+        <span class="ebm-ref">EBM Ref: McLean (1979); Höland et al. (2006)</span>
+      </div>
+      <h2>3. Cicli Termici, Decapaggio e Lucidatura Superficiale</h2>
+      <p>La lavorazione odontotecnica del disilicato di litio richiede una gestione rigorosa del forno ceramico e l'eliminazione controllata dello strato reattivo chimico superficiale post-pressatura.</p>
+
+      <div class="info-box" style="border-left-color: #f59e0b; background: #090d16;">
+        <div class="info-box-title" style="color: #f59e0b;">⚙️ PROTOCOLLI DI TRATTAMENTO DI BANCO:</div>
+        <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 8px;"><strong>1. Rimozione Reaction Layer (Pressing):</strong> Dopo la sformatura, il manufatto pressato presenta uno strato di reaction layer. Va rimosso mediante immersione in liquido speciale (Invex Liquid) e sabbiatura delicata con <strong>sfere di vetro (SiO₂) a 1.5-2.0 bar</strong>. Mai usare Al₂O₃ ad alta pressione!</p>
+        <p style="font-size: 13px; color: #cbd5e1; margin: 0;"><strong>2. Cristallizzazione CAD/CAM:</strong> Il restauro in stato blu viene posizionato su piumino con pasta di supporto (Object Fix). La rampa termica sale fino a 840-850°C sotto vuoto per la trasformazione cristallina completa.</p>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 3 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Come deve essere eliminato lo strato di reazione superficiale (Reaction Layer) dal disilicato di litio pressato?<br>
+          <span class="quiz-q-en">[EN] How should the reaction layer be removed from pressed lithium disilicate?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans3', false)">A) Mediante sabbiatura aggressiva con Corindone (Al₂O₃) a 110 µm e 4 bar di pressione. / Aggressive sandblasting with 110 µm Corundum at 4 bar.</button>
+        <button class="option-btn" onclick="showFeedback('ans3', true)">B) Tramite immersione in liquido idoneo e sabbiatura delicata con micro-sfere di vetro (SiO₂) da 50 µm a 1.5-2.0 bar. / Via immersion in suitable liquid and gentle sandblasting with 50 µm glass beads at 1.5-2.0 bar.</button>
+        <div id="ans3" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 4 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 4 DI 5 // Cementazione Adesiva EBM</span>
+        <span class="ebm-ref">EBM Ref: Blatz et al. (2018); Peumans et al. (2023)</span>
+      </div>
+      <h2>4. Protocollo Adesivo: HF 4.9% per 20 sec & Silanizzazione</h2>
+      <p>Essendo una ceramica vetrosa a base di silice, il disilicato di litio ottiene il massimo rinforzo biomeccanico in cavo orale esclusivamente attraverso il pretrattamento chimico dell'intradosso e la cementazione resinosa adesiva.</p>
+
+      <div class="grid-3">
+        <div class="card-item">
+          <div class="card-item-title" style="color: var(--accent);">1. HF 4.9% per 20 SECONDI</div>
+          Applicazione di Acido Fluoridrico al 4.9-5% per <strong>esattamente 20 secondi</strong>. Dissolve la matrice vetrosa creando ritenzioni micro-mecaniche senza indebolire i cristalli.
+        </div>
+        <div class="card-item">
+          <div class="card-item-title" style="color: #34d399;">2. Lavaggio ed Ultrasuoni</div>
+          Risciacquo abbondante con acqua per 60 sec seguito da bagno ultrasonico in alcool isopropilico/distillata per rimuovere i sali insolubili di fluorosilicato (polvere bianca).
+        </div>
+        <div class="card-item">
+          <div class="card-item-title" style="color: #60a5fa;">3. Silano (Warm-Air Dry)</div>
+          Applicazione di Silano (3-MPS) per 60 sec e successiva asciugatura con aria calda (40-50°C) per formare legami covalenti silossanici (Si-O-Si) con la ceramica.
+        </div>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 4 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è il tempo di mordenzatura con Acido Fluoridrico (HF al 5%) raccomandato dalla letteratura EBM per il disilicato di litio?<br>
+          <span class="quiz-q-en">[EN] What is the EBM-recommended etching time with Hydrofluoric Acid (5% HF) for lithium disilicate?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans4', true)">A) Esattamente 20 secondi (tempi superiori degradano la fase cristallina). / Exactly 20 seconds (longer times degrade the crystalline phase).</button>
+        <button class="option-btn" onclick="showFeedback('ans4', false)">B) 60 - 90 secondi tassativi come per la ceramica feldspatica. / 60 to 90 seconds mandatory as for feldspathic porcelain.</button>
+        <div id="ans4" class="answer-box"></div>
+      </div>
+    </article>
+
+    <!-- SLIDE 5 DI 5 -->
+    <article class="slide-card">
+      <div class="slide-header">
+        <span class="slide-num">SLIDE 5 DI 5 // Troubleshooting & Bibliografia EBM</span>
+        <span class="ebm-ref">EBM Defect Matrix & Scientific Literature</span>
+      </div>
+      <h2>5. Troubleshooting di Banco e Bibliografia Scientifico-Clinica</h2>
+
+      <div class="grid-2">
+        <div class="card-item" style="border-top: 3px solid var(--danger);">
+          <div class="card-item-title" style="color: #f87171;">DIFETTO 1: Frattura del Restauro Protesico</div>
+          <p style="font-size: 12px; color: #94a3b8;"><strong>Causa:</strong> Spessori occlusali insufficienti (&lt; 1.0 mm) oppure impiego di cementi tradizionali non adesivi (ossido di zinco o fosfato).</p>
+          <div style="background: rgba(16, 185, 129, 0.1); padding: 8px; border-radius: 6px; color: #34d399; font-size: 12px; margin-top: 6px;">
+            <strong>Soluzione EBM:</strong> Rispettare i limiti di spessore minimi ed effettuare sempre la cementazione adesiva previa mordenzatura HF e silanizzazione.
+          </div>
+        </div>
+
+        <div class="card-item" style="border-top: 3px solid var(--danger);">
+          <div class="card-item-title" style="color: #f87171;">DIFETTO 2: Decementazione / Distacco Inatteso</div>
+          <p style="font-size: 12px; color: #94a3b8;"><strong>Causa:</strong> Mancata eliminazione dei sali di fluorosilicato dall'intradosso o mancata riattivazione termica del silano.</p>
+          <div style="background: rgba(16, 185, 129, 0.1); padding: 8px; border-radius: 6px; color: #34d399; font-size: 12px; margin-top: 6px;">
+            <strong>Soluzione EBM:</strong> Detergere l'intradosso in bagno ultrasonico dopo l'acido HF ed asciugare il silano con getto d'aria calda (40-50°C).
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box" style="border-left-color: #f59e0b; background: #090d16;">
+        <div class="info-box-title" style="color: #f59e0b;">📚 BIBLIOGRAFIA SCIENTIFICA AGGIORNATA (EBM / EBD):</div>
+        <ul style="font-size: 11px; color: #94a3b8; list-style: none; padding-left: 0; line-height: 1.6;">
+          <li>• <strong>[Blatz et al., 2018]</strong> <em>Resin bond to silicate ceramics: Current clinical protocol.</em> Compend Contin Educ Dent, 39(4), 264–273.</li>
+          <li>• <strong>[Höland et al., 2006]</strong> <em>Principles and microstructural development of lithium disilicate glass-ceramics for CAD/CAM and pressing techniques.</em> Biomaterials, 27(8), 1326–1335.</li>
+          <li>• <strong>[Peumans et al., 2023]</strong> <em>Five-year clinical performance of monolithic lithium disilicate restorations bonded with different adhesive strategies.</em> Dent Mater, 39(3), 245–256.</li>
+          <li>• <strong>[Ritzberger et al., 2010]</strong> <em>Properties and microstructure of novel lithium silicate glass-ceramics.</em> Dent Mater, 26(11), 1045–1052.</li>
+          <li>• <strong>[Sieper et al., 2021]</strong> <em>Zirconia-reinforced lithium silicate (ZLS) vs. lithium disilicate: A 3-year comparative clinical trial.</em> J Dent, 109, 103650.</li>
+          <li>• <strong>[Zarone et al., 2019]</strong> <em>From porcelain-fused-to-metal to monolithic all-ceramic restorations: A systematic review on lithium disilicate.</em> J Esthet Restor Dent, 31(3), 215–222.</li>
+        </ul>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-title">🧪 Quesito di Autovalutazione 5 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale chimica d'accoppiamento consente il legame chimico tra la ceramica al disilicato mordenzata ed il cemento resinoso?<br>
+          <span class="quiz-q-en">[EN] Which coupling chemistry enables the chemical bond between etched disilicate ceramic and resin cement?</span>
+        </div>
+        <button class="option-btn" onclick="showFeedback('ans5', false)">A) Il monomero 10-MDP per ceramiche ad ossidi. / 10-MDP monomer for oxide ceramics.</button>
+        <button class="option-btn" onclick="showFeedback('ans5', true)">B) L'agente di accoppiamento Silano (3-MPS) che si lega ai gruppi silanolici (Si-OH) esposti. / Silane coupling agent (3-MPS) bonding to exposed silanol groups (Si-OH).</button>
+        <div id="ans5" class="answer-box"></div>
+      </div>
+    </article>
+
+  </main>
+
+  <script>
+    function showFeedback(id, isCorrect) {
+      const box = document.getElementById(id);
+      if (!box) return;
+      box.style.display = 'block';
+      if (isCorrect) {
+        box.className = 'answer-box correct';
+        box.innerHTML = '✔ <strong>ESATTO / CORRECT!</strong> Risposta corretta secondo i protocolli EBM.';
+      } else {
+        box.className = 'answer-box wrong';
+        box.innerHTML = '✖ <strong>ERRATO / INCORRECT!</strong> Rileggi il testo sopra e riprova.';
+      }
+    }
+  </script>
+</body>
+</html>

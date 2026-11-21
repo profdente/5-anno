@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gnatologia Applicata & Articolatori - Moduli Didattici e Laboratorio</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --accent: #0284c7;
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-light); display: flex; flex-direction: column; min-height: 100vh; justify-content: center; align-items: center; padding: 20px; }
+    .container { width: 100%; max-width: 950px; background: var(--card-bg); border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; }
+    
+    .header { background: linear-gradient(135deg, var(--primary), var(--accent)); padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .header h1 { font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+    .progress-bar-container { background: rgba(0,0,0,0.3); height: 8px; width: 100%; }
+    .progress-bar { height: 100%; background: var(--success); width: 10%; transition: width 0.4s ease; }
+    
+    .slide-body { padding: 36px 32px; flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
+    .slide-tag { display: inline-block; padding: 4px 12px; background: rgba(59, 130, 246, 0.2); color: var(--primary-light); border-radius: 20px; font-size: 0.85rem; font-weight: 600; width: fit-content; text-transform: uppercase; }
+    .slide-title { font-size: 1.6rem; color: #fff; line-height: 1.3; }
+    .slide-content { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; }
+    .slide-content p { margin-bottom: 12px; }
+    .slide-content ul { margin-left: 20px; margin-bottom: 16px; }
+    .slide-content li { margin-bottom: 8px; }
+
+    pre { background: #090d16; padding: 16px; border-radius: 8px; border-left: 4px solid var(--primary-light); font-family: 'Courier New', Courier, monospace; color: #38bdf8; font-size: 0.9rem; overflow-x: auto; white-space: pre-wrap; margin: 16px 0; }
+    
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95rem; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th { background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; }
+
+    .quiz-gate { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-top: 10px; }
+    .quiz-title { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .quiz-title::before { content: "🔒"; font-size: 1.2rem; }
+    .quiz-options { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+    
+    .option-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 14px 18px; border-radius: 8px; color: var(--text-light); font-size: 0.95rem; text-align: left; cursor: pointer; transition: all 0.2s ease; }
+    .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); border-color: var(--primary-light); }
+    .option-btn.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 600; }
+    .option-btn.wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--error) !important; color: #fecaca !important; }
+    .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+    .option-btn.correct:disabled { opacity: 1; }
+
+    .feedback { font-size: 0.95rem; padding: 12px 16px; border-radius: 8px; display: none; }
+    .feedback.correct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .feedback.wrong { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .footer { padding: 20px 32px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+    .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: all 0.2s; }
+    .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.05); color: #fff; }
+    .btn-primary { background: var(--primary-light); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: #2563eb; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .counter { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Gnatologia & Articolatori Didattici</h1>
+      <span class="counter" id="slide-counter">Slide 1 di 10</span>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="slide-body" id="slide-container">
+      <!-- Contenuto dinamico della slide -->
+    </div>
+
+    <div class="footer">
+      <button class="btn btn-secondary" id="prev-btn" onclick="prevSlide()" disabled>← Indietro</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextSlide()" disabled>Prossima Slide (Sblocca Quiz) →</button>
+    </div>
+  </div>
+
+  <script>
+    const slidesData = [
+      {
+        modulo: "Modulo 1: Guida Anteriore e Disinclusione",
+        titolo: "Biomeccanica della Disinclusione Posteriore",
+        contenuto: `
+          <p>La guida anteriore rappresenta il complesso dei contatti tra incisivi e canini durante i movimenti escursivi della mandibola.</p>
+          <p><strong>Funzione Protettiva:</strong> Separa istantaneamente i settori posteriori (disinclusione di 1.5 - 2.0 mm) per annullare le forze di taglio nocive sui molari e preservare l'ATM.</p>
+          <pre>
+[ MOVIMENTO ECCENTRICO MANDIBOLARE ]
+ │
+ ├──> 1. DENTI ANTERIORI ──> Guida Attiva (Tolleranza forze oblique)
+ └──> 2. DENTI POSTERIORI ──> DISINCLUSIONE IMMEDIATA
+          </pre>
+        `,
+        quiz: {
+          domanda: "Qual è il ruolo primario della guida anteriore durante un movimento di protrusione?",
+          opzioni: [
+            "Mantenere il contatto continuo sui molari per distribuire i carichi",
+            "Disincludere immediatamente i denti posteriori per proteggerli da forze trasversali",
+            "Aumentare l'attività muscolare dei masseteri elevatori",
+            "Stabilizzare la protesi totale rimovibile in occlusione bilanciata"
+          ],
+          corretta: 1,
+          spiegazione: "Corretto! La disinclusione posteriore immediata annulla i vettori di forza inclinati sui molari, proteggendo parodonto, impianti e articolazioni."
+        }
+      },
+      {
+        modulo: "Modulo 1: Arco Gotico di Gysi",
+        titolo: "Tracciamento Grafico della Relazione Centrica (RC)",
+        contenuto: `
+          <p>L'Arco Gotico rappresenta la registrazione grafica dei movimenti limite della mandibola sul piano orizzontale. È lo standard aureo per la protesi totale ed implantare.</p>
+          <pre>
+               [ PROTRUSIONE PURA ]
+                         ▲
+                         │
+             [ VERTICE APICALE = RC ]
+                     /       \\
+   [ LAT. SINISTRA ] /         \\ [ LAT. DESTRA ]
+          </pre>
+          <p><strong>Il Vertice:</strong> Rappresenta la posizione muscolo-scheletrica di Relazione Centrica (RC), punto di partenza non comprimibile per le registrazioni.</p>
+        `,
+        quiz: {
+          domanda: "Cosa rappresenta esattamente il vertice della freccia nel tracciato dell'Arco Gotico fisiologico?",
+          opzioni: [
+            "La Posizione di Massima Intercuspidazione (MIC) dentale",
+            "Il punto di massima apertura della cavità orale",
+            "La posizione di Relazione Centrica (RC) condilare",
+            "Il punto di massima lateralità sinistra"
+          ],
+          corretta: 2,
+          spiegazione: "Esatto! Il vertice apicale affilato dell'arco gotico indica la posizione condilare più antero-superiore e centrata (Relazione Centrica)."
+        }
+      },
+      {
+        modulo: "Modulo 1: Diagnosi Clinica",
+        titolo: "Interpretazione dei Tracciati Patologici dell'Arco Gotico",
+        contenuto: `
+          <p>L'analisi morfologica della traccia dell'Arco Gotico permette di diagnosticare anomalie funzionali o disturbi dell'ATM:</p>
+          <ul>
+            <li><strong>Vertice Smussato / Arrotondato:</strong> Mancanza di deprogrammazione neuromuscolare; ipertono dello pterigoideo esterno.</li>
+            <li><strong>Bracci Asimmetrici:</strong> Ostacolo meccanico o deficit di traslazione condilare mono-laterale (blocco o sublussazione discale).</li>
+            <li><strong>Tracciato a Scatti / Doppio Vertice:</strong> Instabilità delle basi protesiche o interferenze sui piatti traccianti.</li>
+          </ul>
+        `,
+        quiz: {
+          domanda: "Cosa indica un tracciato dell'Arco Gotico con un vertice arrotondato o smussato invece che appuntito?",
+          opzioni: [
+            "Fisiologia perfetta dell'articolazione",
+            "Incompleta deprogrammazione muscolare ed ipertono muscolare",
+            "Presenza di un contatto forte sui canini",
+            "Un corretto calcolo dell'angolo di Bennett"
+          ],
+          corretta: 1,
+          spiegazione: "Esatto! Un vertice piatto/smussato dimostra che i muscoli non si sono deprogrammati e la mandibola sta vagando senza raggiungere la posizione di centrica limite."
+        }
+      },
+      {
+        modulo: "Modulo 2: Schemi Occlusali",
+        titolo: "Confronto e Indicazioni Cliniche degli Schemi Occlusali",
+        contenuto: `
+          <table>
+            <thead>
+              <tr>
+                <th>Schema Occlusale</th>
+                <th>Lato Lavorante</th>
+                <th>Lato Bilanciante</th>
+                <th>Indicazione Protesica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Mutualmente Protetta (D'Amico)</strong></td>
+                <td>Guida Canina esclusiva</td>
+                <td>Disinclusione Totale</td>
+                <td>Protesi Fissa su Dentatura Sana / Impianti</td>
+              </tr>
+              <tr>
+                <td><strong>Funzione di Gruppo</strong></td>
+                <td>Canino + Premolari (+ Molare)</td>
+                <td>Disinclusione Totale</td>
+                <td>Parodonto ridotto / Arcate complesse</td>
+              </tr>
+              <tr>
+                <td><strong>Bilanciata Bilaterale</strong></td>
+                <td>Contatto Continuo</td>
+                <td>Contatto di Spinta</td>
+                <td>Protesi Totale Rimovibile (Dentiera)</td>
+              </tr>
+            </tbody>
+          </table>
+        `,
+        quiz: {
+          domanda: "Quale schema occlusale è elettivamente indicato nella Protesi Totale Rimovibile per evitare il ribaltamento delle basi?",
+          opzioni: [
+            "Occlusione Mutualmente Protetta (D'Amico)",
+            "Occlusione Bilanciata Bilaterale",
+            "Occlusione a Funzione di Gruppo pura",
+            "Guida Incisiva Diretta"
+          ],
+          corretta: 1,
+          spiegazione: "Corretto! L'occlusione bilanciata bilaterale mantiene contatti simultanei sui lati lavorante e bilanciante, stabilizzando la dentiera durante la masticazione."
+        }
+      },
+      {
+        modulo: "Modulo 3: Articolatori",
+        titolo: "Relazione Centrica (RC) e Arco Facciale di Trasferimento",
+        contenuto: `
+          <p>L'articolatore richiede la corretta programmazione spaziale per riprodurre la bocca del paziente:</p>
+          <ul>
+            <li><strong>Arco Facciale:</strong> Trasferisce la posizione trdimensionale della mascella rispetto all'asse di rotazione condilare ed ai piani del cranio.</li>
+            <li><strong>Relazione Centrica (RC):</strong> Posizione muscolo-scheletrica indipendente dai denti usata come "punto zero" per registrare e montare il modello inferiore.</li>
+          </ul>
+        `,
+        quiz: {
+          domanda: "Qual è la funzione fondamentale dell'Arco Facciale in gnatologia protesica?",
+          opzioni: [
+            "Misurare la forza masticatoria dei muscoli temporali",
+            "Posizionare il modello mascellare nell'articolatore rispetto all'asse cerniera del cranio",
+            "Calcolare direttamente l'Angolo di Bennett",
+            "Rilevare la presenza di carie interprossimali"
+          ],
+          corretta: 1,
+          spiegazione: "Esatto! L'arco facciale orienta nello spazio il modello mascellare tridimensionalmente rispetto all'asse di rotazione dei condili prima di montare la mandibola."
+        }
+      },
+      {
+        modulo: "Modulo 3: Articolatori",
+        titolo: "Registrazione dell'Inclinazione Condilare (H)",
+        contenuto: `
+          <p>L'inclinazione della Traiettoria Condilare ($H$) rappresenta l'angolo di scivolamento del condilo lungo l'eminenza articolare durante la protrusione.</p>
+          <pre>
+[ CLINICA: Cera di Protrusione ] ──> Avanzamento mandibolare rigido (3 - 5 mm).
+                                             │
+[ LABORATORIO: Taratura H ]     ──> Sblocco delle scatole condilari dell'articolatore.
+                                             │
+[ RISULTATO ]                   ──> La parete della scatola "bacia" la sfera condilare.
+                                    Si legge H sulla ghiera (es. H = 40°).
+          </pre>
+        `,
+        quiz: {
+          domanda: "Come viene registrata clinico-laboratoristicamente l'inclinazione della traiettoria condilare (H)?",
+          opzioni: [
+            "Con un grafico su carta millimetrata in MIC",
+            "Mediante un registro in cera di protrusione rigido (avanzamento 3-5 mm)",
+            "Misurando l'overjet con un calibro da laboratorio",
+            "Usando la formula di Hanau all'inverso"
+          ],
+          corretta: 1,
+          spiegazione: "Corretto! La cera di protrusione cattura l'avanzamento rigido e permette di far collimare le scatole condilari dell'articolatore leggendo l'angolo H."
+        }
+      },
+      {
+        modulo: "Modulo 3: Formula di Hanau",
+        titolo: "Calcolo dell'Angolo di Bennett (L) con Hanau",
+        contenuto: `
+          <p>Quando non si dispone di registri individuali di lateralità, l'Angolo di Bennett ($L$) viene calcolato in modo analitico con la <strong>Formula di Hanau</strong>:</p>
+          <pre style="text-align: center; font-size: 1.1rem; color: #f59e0b;">
+L = ( H / 8 ) + 12
+          </pre>
+          <p><strong>Esempio pratico:</strong> Se l'inclinazione condilare letta sulla cera di protrusione è <strong>H = 32°</strong>:</p>
+          <p>$$L = (32 / 8) + 12 = 4 + 12 = \mathbf{16^\circ}$$</p>
+          <p>L'articolatore verrà impostato con un Angolo di Bennett di <strong>16°</strong> per sagomare i solchi di svincolo sui molari.</p>
+        `,
+        quiz: {
+          domanda: "Se la traiettoria condilare registrata H è pari a 40°, quale sarà il valore dell'Angolo di Bennett (L) calcolato con Hanau?",
+          opzioni: [
+            "12°",
+            "17°",
+            "20°",
+            "25°"
+          ],
+          corretta: 1,
+          spiegazione: "Esatto! Applicando la formula: L = (40 / 8) + 12 = 5 + 12 = 17°."
+        }
+      },
+      {
+        modulo: "Scheda Laboratorio: Fase 1 & 2",
+        titolo: "Protocollo Operativo: Montaggio e Lettura di H",
+        contenuto: `
+          <p><strong>Passi pratici per lo studente in laboratorio:</strong></p>
+          <ol style="margin-left:20px; line-height:1.8;">
+            <li>Posizionare il modello superiore tramite Arco Facciale.</li>
+            <li>Montare il modello inferiore con il registro di Relazione Centrica (RC).</li>
+            <li>Allentare le scatole condilari dell'articolatore ($H = 0^\circ$).</li>
+            <li>Inserire la cera di protrusione: le sfere condilari si disaccoppiano.</li>
+            <li>Ruotare la scatola finché non aderisce nuovamente alla sfera. Serrate le viti e leggete il valore in gradi di $H$.</li>
+          </ol>
+        `,
+        quiz: {
+          domanda: "Perché durante la registrazione di H la cera di protrusione non deve assolutamente presentare perforazioni o contatti dente-dente?",
+          opzioni: [
+            "Per evitare di consumare eccessivamente la cera",
+            "Perché il contatto dentale guiderebbe la mandibola deviarne la traiettoria condilare pura",
+            "Perché l'articolatore non riuscirebbe a chiudersi",
+            "Per facilitare il lavoro del gesso rapido"
+          ],
+          corretta: 1,
+          spiegazione: "Bravissimo! Se i denti toccano durante la protrusione, la guida anatomica dentale devia il scivolamento del condilo falsando la misurazione di H."
+        }
+      },
+      {
+        modulo: "Scheda Laboratorio: Quesiti Clinici",
+        titolo: "Impatto della Traiettoria Condilare sulla Protesi",
+        contenuto: `
+          <p>La forma delle cuspidi e la profondità delle fosse dei denti protesici dipendono dall'inclinazione condilare $H$ del paziente:</p>
+          <ul>
+            <li><strong>Traiettoria Condilare Ripida ($H \ge 40^\circ$):</strong> Consente di modellare cuspidi protesiche ALTE e fosse PROFONDE senza rischiare contatti prematuri.</li>
+            <li><strong>Traiettoria Condilare Piatta ($H \le 20^\circ$):</strong> Impone di modellare cuspidi BASSE e creste piatte per garantire la disinclusione.</li>
+          </ul>
+        `,
+        quiz: {
+          domanda: "Se un paziente presenta una traiettoria condilare H molto ripida (es. 45°), come dovranno essere modellate le cuspidi dei molari protesici?",
+          opzioni: [
+            "Cuspidi completamente piatte ed azzerate",
+            "Cuspidi protesiche più alte e fosse più profonde",
+            "Cuspidi con inclinazione invertita",
+            "La traiettoria condilare non influenza la forma delle cuspidi"
+          ],
+          corretta: 1,
+          spiegazione: "Corretto! Una traiettoria condilare ripida fa scendere rapidamente la mandibola verso il basso, offrendo spazio per cuspidi più alte e snelle."
+        }
+      },
+      {
+        modulo: "Scheda Laboratorio: Conclusione",
+        titolo: "Verifica Finale dei Solchi e Taratura Completata",
+        contenuto: `
+          <div style="text-align: center; padding: 20px;">
+            <h2 style="color: var(--success); font-size: 1.8rem; margin-bottom: 12px;">🎉 Modulo Didattico Completato!</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6;">
+              Hai superato con successo tutti i Quiz Gate e completato la trattazione della <strong>Gnatologia Applicata, dell'Arco Gotico e della Taratura dell'Articolatore</strong> con la Formula di Hanau.
+            </p>
+            <p style="margin-top: 20px; color: var(--primary-light); font-weight: 600;">
+              Puoi ora stampare la scheda o riutilizzare questa lezione per l'insegnamento in classe.
+            </p>
+          </div>
+        `,
+        quiz: {
+          domanda: "Cosa accadrebbe ai denti posteriori se l'angolo di Bennett L venisse erroneamente impostato a 0° sull'articolatore?",
+          opzioni: [
+            "I denti non si toccheranno mai in MIC",
+            "Si rischiano interferenze occlusali gravemente nocive durante i movimenti di lateralità",
+            "La cera di protrusione si romperà",
+            "Non cambia nulla nella modellazione dei solchi"
+          ],
+          corretta: 1,
+          spiegazione: "Esatto! Impostare Bennett a 0° azzera la componente di scivolamento laterale del condilo orbitante, creando solchi errati che genereranno interferenze in bocca!"
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+    const completedSlides = new Set();
+
+    function renderSlide() {
+      const slide = slidesData[currentSlide];
+      const isCompleted = completedSlides.has(currentSlide);
+      
+      const slideContainer = document.getElementById('slide-container');
+      slideContainer.innerHTML = `
+        <span class="slide-tag">${slide.modulo}</span>
+        <h2 class="slide-title">${slide.titolo}</h2>
+        <div class="slide-content">${slide.contenuto}</div>
+        
+        <div class="quiz-gate">
+          <div class="quiz-title">${slide.quiz.domanda}</div>
+          <div class="quiz-options">
+            ${slide.quiz.opzioni.map((opz, idx) => `
+              <button class="option-btn ${isCompleted && idx === slide.quiz.corretta ? 'correct' : ''}" 
+                      onclick="checkAnswer(${idx})" 
+                      ${isCompleted ? 'disabled' : ''}>
+                ${String.fromCharCode(65 + idx)}) ${opz}
+              </button>
+            `).join('')}
+          </div>
+          <div class="feedback ${isCompleted ? 'correct' : ''}" id="quiz-feedback" style="${isCompleted ? 'display:block;' : ''}">
+            ${isCompleted ? slide.quiz.spiegazione : ''}
+          </div>
+        </div>
+      `;
+
+      // Update Header & Progress
+      document.getElementById('slide-counter').innerText = `Slide ${currentSlide + 1} di ${slidesData.length}`;
+      const progressPercent = ((currentSlide + 1) / slidesData.length) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+      // Update Nav Buttons
+      document.getElementById('prev-btn').disabled = currentSlide === 0;
+      document.getElementById('next-btn').disabled = !isCompleted;
+      
+      if (currentSlide === slidesData.length - 1) {
+        document.getElementById('next-btn').innerText = "Corso Completato ✓";
+      } else {
+        document.getElementById('next-btn').innerText = isCompleted ? "Prossima Slide →" : "Prossima Slide (Sblocca Quiz) →";
+      }
+    }
+
+    function checkAnswer(selectedIdx) {
+      const slide = slidesData[currentSlide];
+      const feedbackEl = document.getElementById('quiz-feedback');
+      const optionBtns = document.querySelectorAll('.option-btn');
+
+      if (selectedIdx === slide.quiz.corretta) {
+        optionBtns[selectedIdx].classList.add('correct');
+        optionBtns.forEach(btn => btn.disabled = true);
+        
+        feedbackEl.className = "feedback correct";
+        feedbackEl.innerText = slide.quiz.spiegazione;
+        feedbackEl.style.display = "block";
+        
+        completedSlides.add(currentSlide);
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('next-btn').innerText = currentSlide === slidesData.length - 1 ? "Corso Completato ✓" : "Prossima Slide →";
+      } else {
+        optionBtns[selectedIdx].classList.add('wrong');
+        feedbackEl.className = "feedback wrong";
+        feedbackEl.innerText = "❌ Risposta non corretta. Rileggi il testo della slide e riprova!";
+        feedbackEl.style.display = "block";
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1 && completedSlides.has(currentSlide)) {
+        currentSlide++;
+        renderSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide();
+      }
+    }
+
+    // Inizializza la prima slide
+    renderSlide();
+  </script>
+</body>
+</html>

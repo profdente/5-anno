@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - 10. Ceramiche al Disilicato di Litio e ZLS EBM</title>
+  <style>
+    /* RESET RIGIDO E VISUALIZZAZIONE CONTINUA */
+    html, body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; }
+    
+    header { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-bottom: 3px solid #ef4444; }
+    h1 { margin: 0; font-size: 18px; color: #ef4444; }
+    p.sub { margin: 4px 0 0 0; font-size: 12px; color: #94a3b8; }
+    
+    .main-container { max-width: 850px; margin: 0 auto; display: block; }
+
+    /* SEZIONI DIDATTICHE IN FLUSSO VERTICALE CONTINUO (NO DISPLAY NONE) */
+    .modulo-sezione { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 22px; margin-bottom: 25px; width: 100%; box-sizing: border-box; }
+
+    .tag-header { display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 15px; margin-bottom: 12px; }
+    
+    h2 { margin-top: 0; font-size: 18px; color: #fff; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    p { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; }
+    ul { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    
+    .box-info { background: #0f172a; border-left: 3px solid #ef4444; padding: 12px 15px; border-radius: 6px; font-size: 13px; margin: 15px 0; line-height: 1.5; }
+    .box-title { font-weight: bold; color: #ef4444; margin-bottom: 6px; }
+
+    table.data-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; background: #0f172a; border-radius: 6px; overflow: hidden; }
+    table.data-table th, table.data-table td { padding: 10px; text-align: left; border-bottom: 1px solid #334155; color: #cbd5e1; }
+    table.data-table th { background: #1e293b; color: #ef4444; font-weight: bold; }
+    
+    /* QUIZ STATICI NATIVI SENZA JAVASCRIPT */
+    .box-quiz { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 20px; border: 1px solid #334155; }
+    .quiz-title { font-size: 11px; font-weight: bold; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-q { font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #f8fafc; }
+    .quiz-q-en { font-weight: normal; color: #94a3b8; font-size: 12px; }
+    
+    details { margin-top: 10px; }
+    summary { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 10px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: bold; }
+    summary:hover { border-color: #ef4444; }
+    
+    .res-ok { padding: 10px; border-radius: 6px; margin-top: 6px; font-size: 12px; font-weight: bold; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>LAB 4.0 // 10. CERAMICHE AL DISILICATO DI LITIO E SILICATO DI LITIO RINFORZATO (ZLS)</h1>
+    <p class="sub">Corso Serale IDA • Modulo Didattico Integrato per la Lezione Clinico-Tecnologica</p>
+  </header>
+
+  <div class="main-container">
+
+    <!-- SEZIONE 1 -->
+    <div class="modulo-sezione">
+      <span class="tag-header">SEZIONE 1 DI 5 // MICROSTRUTTURA E CRISTALLOGENESI</span>
+      <h2>1. Chimica delle Ceramiche Vetrose: Matrice di Vetro e Cristallizzazione del Disilicato</h2>
+      <p>Il disilicato di litio (Li₂Si₂O₅) è una ceramica vetrosa a base di silice (SiO₂-Li₂O) sviluppata per combinare elevati valori di mimetismo estetico ed eccellenti proprietà meccaniche <strong>[Höland et al., 2006]</strong>. A differenza delle ceramiche feldspatiche tradizionali a prevalente fase vetrosa amorfa, la microstruttura del disilicato cristallizzato contiene circa il <strong>70% in volume di micro-cristalli allungati aciculari</strong> orientati in modo casuale <strong>[Zarone et al., 2019]</strong>.</p>
+      
+      <div class="box-info">
+        <div class="box-title">MICROSTRUTTURA E FENOMENOLOGIA DEL CRACK DEFLECTION:</div>
+        <ul>
+          <li><strong>Matrice Vetrosa Amorfa (30% in vol.):</strong> Fornisce la traslucenza ottica, la conducibilità della luce e consente la mordenzatura chimica superficiale mediante acido fluoridrico (HF).</li>
+          <li><strong>Fase Cristallina Aciculare (70% in vol.):</strong> Cristalli intrecciati di Li₂Si₂O₅ lunghi da 2 a 6 µm. Questa struttura ad incastro agisce da barriera fisica contro la propagazione delle cricche (fenomeno del <em>Crack Deflection</em>) <strong>[Ritzberger et al., 2010]</strong>.</li>
+          <li><strong>Stato "Blu" Metasilicato (Li₂SiO₃):</strong> Nei blocchetti fresabili CAD/CAM, il materiale si presenta inizialmente in uno stato intermedio di metasilicato di litio (fase metastabile parzialmente cristallizzata, circa 40% di cristalli). Presenta una durezza ridotta (~130 MPa) ed un colore bluastro ideali per la lavorazione sottrattiva ad alta velocità con usura minima degli utensili.</li>
+          <li><strong>Cottura di Cristallizzazione Finale (840 °C - 860 °C):</strong> La successiva cottura in forno trasforma il metasilicato (Li₂SiO₃) in disilicato di litio (Li₂Si₂O₅), portando la resistenza alla flestione dal valore iniziale di 130 MPa fino a <strong>360-500 MPa</strong> <strong>[Zarone et al., 2019]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="box-quiz">
+        <div class="quiz-title">🧪 Quesito 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale fase cristallina è presente nei blocchetti fresabili CAD/CAM prima del ciclo termico di cristallizzazione finale in forno?<br>
+          <span class="quiz-q-en">[EN] Which crystalline phase is present in CAD/CAM blocks prior to final furnace crystallization?</span>
+        </div>
+        <p>A) Disilicato di litio (Li₂Si₂O₅).<br>B) Metasilicato di litio (Li₂SiO₃) in stato parzialmente cristallizzato (Stato Blu).</p>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res-ok">✔ RISPOSTA CORRETTA: B<br>Lo "stato blu" iniziale è costituito da metasilicato di litio (Li₂SiO₃), lavorabile facilmente al fresatore e trasformato in disilicato definitivo durante la cottura a 840–850 °C.</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SEZIONE 2 -->
+    <div class="modulo-sezione">
+      <span class="tag-header">SEZIONE 2 DI 5 // PRESSATURA A CERA PERSA VS CAD/CAM E SILICATO DI LITIO RINFORZATO (ZLS)</span>
+      <h2>2. Tecnologie Produttive (Press vs CAD) e Nuove Ceramiche ZLS</h2>
+      <p>Il disilicato di litio può essere lavorato mediante due flussi principali: iniezione a caldo per termopressatura a cera persa (*IPS e.max Press*) oppure fresatura sottrattiva CAD/CAM (*IPS e.max CAD*). Recentemente sono state introdotte le ceramiche in <strong>Silicato di Litio Rinforzato con Zirconia (ZLS)</strong> <strong>[Ritzberger et al., 2010; Sieper et al., 2021]</strong>.</p>
+      
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tecnologia / Materiale</th>
+            <th>Resistenza Flessione (MPa)</th>
+            <th>Modulo Elasticità (GPa)</th>
+            <th>Caratteristiche Tecnologiche ed Indicazioni EBM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Disilicato Pressato (e.max Press)</strong></td>
+            <td><strong>400 - 470 MPa</strong></td>
+            <td><strong>95 GPa</strong></td>
+            <td>Fusione in ceramica pressata a caldo (910–920 °C). Adattamento marginale clinico ottimale (&lt; 50 µm). Indicato per faccette, intarsi, corone singole [Zarone et al., 2019].</td>
+          </tr>
+          <tr>
+            <td><strong>Disilicato CAD/CAM (e.max CAD)</strong></td>
+            <td><strong>360 - 530 MPa</strong></td>
+            <td><strong>95 GPa</strong></td>
+            <td>Fresato in "Stato Blu" e poi cristallizzato a 840–850 °C. Stabilità dimensionale elevata; nessun ritiro apprezzabile durante la ricottura.</td>
+          </tr>
+          <tr>
+            <td><strong>ZLS - Silicato di Litio (Suprinity / Celtra)</strong></td>
+            <td><strong>420 - 550 MPa</strong></td>
+            <td><strong>70 GPa</strong></td>
+            <td>Addizionato con ~10% in peso di ZrO₂ disciolto nella matrice vetrosa. Cristalli di metasilicato ultra-fini (0.5 µm); elevata lucidabilità manuale [Sieper et al., 2021].</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box-info">
+        <div class="box-title">REQUISITI DI SEZIONE E LIMITI PROTESICI EBM:</div>
+        <ul>
+          <li><strong>Spessore Minimo di Preparazione:</strong> Faccette occlusali / Table-tops: <strong>1.0 mm</strong>; Corone anteriori: <strong>1.2 mm</strong>; Corone posteriori: <strong>1.5 mm</strong> per resistere ai carichi occlusali.</li>
+          <li><strong>Ponti Fissi e Sezioni dei Connettori:</strong> Il disilicato di litio è indicato per ponti di <strong>massimo 3 elementi</strong> estesi solo fino al primo premolare. L'area della sezione del connettore deve essere di almeno <strong>9 mm² nei settori anteriori</strong> e di almeno <strong>16 mm² nei settori premolari</strong> <strong>[Zarone et al., 2019]</strong>. È controindicato nei ponti molari ed estesi.</li>
+        </ul>
+      </div>
+
+      <div class="box-quiz">
+        <div class="quiz-title">🧪 Quesito 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è la caratteristica chimica distintiva delle ceramiche al silicato di litio rinforzato (ZLS)?<br>
+          <span class="quiz-q-en">[EN] What is the distinctive chemical feature of zirconia-reinforced lithium silicate (ZLS) ceramics?</span>
+        </div>
+        <p>A) L'assenza completa di matrice vetrosa amorfa.<br>B) L'addizione di circa il 10% di biossido di zirconio (ZrO₂) disciolto nella matrice vetrosa per affinare i cristalli.</p>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res-ok">✔ RISPOSTA CORRETTA: B<br>L'aggiunta del 10% di ZrO₂ nella matrice vetrosa di ZLS consente l'accrescimento di cristalli ultra-fini, aumentando la resistenza meccanica e la lucidabilità.</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SEZIONE 3 -->
+    <div class="modulo-sezione">
+      <span class="tag-header">SEZIONE 3 DI 5 // PROTOCOLLI DI BANCO, PRESSATURA E CRISTALLIZZAZIONE</span>
+      <h2>3. Lavorazione di Banco: Iniezione a Caldo, Cristallizzazione e Finitura</h2>
+      <p>La corretta gestione del forno da ceramica e le tecniche di rivestimento determinano il successo strutturale dei manufatti pressati o fresati, prevenendo porosità o devetrificazione <strong>[Höland et al., 2006]</strong>.</p>
+
+      <div class="box-info">
+        <div class="box-title">PROTOCOLLO ODONTOTECNICO DI BANCO:</div>
+        <ul>
+          <li><strong>Messa in Cilindro e Pressatura:</strong> Per il disilicato pressato, modellare i perni di colata con inclinazione di 45-60° rispetto alla struttura (diametro 3-4 mm). Temperatura di iniezione di picco a 915-920 °C con tempo di mantenimento e spinta controllata del pistone in allumina.</li>
+          <li><strong>Decapaggio e Reattivi (Reaction Layer):</strong> Dopo la sformatura, la superficie presenta uno strato reattivo (Reaction Layer) formato dall'interazione ceramica-rivestimento. Va eliminato mediante immersione in liquido speciale acido idrofluoridrico diluito / acido solfammico (*Invex Liquid*) seguito da sabbiatura delicata a <strong>1.5-2.0 bar con micro-sfere di vetro (SiO₂) da 50 µm</strong> (mai usare Al₂O₃ rigido ad alta pressione).</li>
+          <li><strong>Cottura di Cristallizzazione CAD/CAM:</strong> Il restauro in "stato blu" viene posizionato su appositi perni su piastra in fibra metallica con pasta di supporto per cristallizzazione (*Object Fix*). La rampa termica prevede il raggiungimento di 840-850 °C sotto vuoto.</li>
+        </ul>
+      </div>
+
+      <div class="box-quiz">
+        <div class="quiz-title">🧪 Quesito 3 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Con quale materiale deve essere eseguita la sabbiatura di pulizia superficiale del disilicato di litio dopo la sformatura dal cilindro?<br>
+          <span class="quiz-q-en">[EN] Which material must be used for surface sandblasting of lithium disilicate after divesting from the ring?</span>
+        </div>
+        <p>A) Corindone (Al₂O₃) da 110 µm ad alta pressione (4 bar).<br>B) Sfere di vetro (SiO₂) da 50 µm a pressione moderata (1.5 - 2.0 bar).</p>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res-ok">✔ RISPOSTA CORRETTA: B<br>Le sfere di vetro (SiO₂) a bassa pressione rimuovono lo strato reattivo senza micro-fratturare la superficie vetrosa delicata del restauro.</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SEZIONE 4 -->
+    <div class="modulo-sezione">
+      <span class="tag-header">SEZIONE 4 DI 5 // PROTOCOLLO DI CEMENTAZIONE ADESIVA E MORDENZATURA HF</span>
+      <h2>4. Pretrattamento dell'Intradosso: Mordenzatura con Acido Fluoridrico e Silanizzazione</h2>
+      <p>A differenza delle bioceramiche non vetrose (zirconia), il disilicato di litio è una ceramica vetrosa a tutti gli effetti. La massima resistenza meccanica del restauro in cavo orale si ottiene <strong>esclusivamente tramite cementazione adesiva micro-ritentiva e chimica</strong> <strong>[Blatz et al., 2018; Peumans et al., 2023]</strong>.</p>
+      
+      <div class="box-info">
+        <div class="box-title">PROTOCOLLO ADESIVO EBM PER CERAMICHE VETROSE (DISILICATO &amp; ZLS):</div>
+        <ul>
+          <li><strong>1. Mordenzatura con Acido Fluoridrico (HF al 4.9% - 5%):</strong> Applicazione dell'acido HF all'intradosso del manufatto per <strong>esattamente 20 secondi</strong>. L'acido fluoridrico scioglie selettivamente la matrice vetrosa amorfa di silice, esponendo la trama reticolare dei cristalli di disilicato e creando cavità micro-ritentive <strong>[Peumans et al., 2023]</strong>. <em>(Nota: Tempi &gt; 20 s indeboliscono la struttura ceramica)</em>.</li>
+          <li><strong>2. Lavaggio ed Neutralizzazione Acida:</strong> Lavaggio abbondante con spray d'acqua per 60 secondi ed immersione in bagno ad ultrasuoni o applicazione di neutralizzante a base di bicarbonato per eliminare i sali insolubili di fluorosilicato (polvere bianca).</li>
+          <li><strong>3. Silanizzazione (Agenti di Accoppiamento):</strong> Applicazione del primer a base di <strong>Silano (3-MPS / Methacryloxypropyltrimethoxysilane)</strong> per 60 secondi seguita da asciugatura a caldo (aria calda a 40–50 °C). Il silano crea un ponte chimico tra i gruppi silanolici (Si-OH) della ceramica e le molecole organiche del cemento resinoso <strong>[Blatz et al., 2018]</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="box-quiz">
+        <div class="quiz-title">🧪 Quesito 4 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è il tempo di mordenzatura ottimale con Acido Fluoridrico (HF al 5%) raccomandato per l'intradosso del disilicato di litio?<br>
+          <span class="quiz-q-en">[EN] What is the recommended optimal etching time with Hydrofluoric Acid (5% HF) for the internal surface of lithium disilicate?</span>
+        </div>
+        <p>A) 60 secondi.<br>B) 20 secondi.</p>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res-ok">✔ RISPOSTA CORRETTA: B<br>Il tempo ideale EBM è di 20 secondi. Tempi prolungati disciolgono in modo distruttivo anche la fase cristallina, riducendo la tenacità del restauro.</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SEZIONE 5 -->
+    <div class="modulo-sezione">
+      <span class="tag-header">SEZIONE 5 DI 5 // TROUBLESHOOTING E BIBLIOGRAFIA AGGIORNATA</span>
+      <h2>5. Troubleshooting di Laboratorio e Bibliografia EBM Integrata</h2>
+      <p>Diagnosi delle principali criticità clinico-tecnologiche (fratture, distacchi, variazioni cromatiche) unita alle fonti scientifiche internazionali indicizzate.</p>
+
+      <div class="box-info">
+        <div class="box-title">MATRICE DI RISOLUZIONE GUASTI (TROUBLESHOOTING DISILICATO EBM):</div>
+        <ul>
+          <li><strong>Frattura del Restauro in Fase di Prova o Masticazione:</strong> Spessori di preparazione insufficienti (&lt; 1.0 mm occlusale) o mancata cementazione adesiva (uso errato di cementi fosfato/ossido di zinco privi di adesione) <strong>[Zarone et al., 2019]</strong>. <em>Soluzione:</em> Incrementare la preparazione e cementare esclusivamente con protocollo resinoso e silano.</li>
+          <li><strong>Opacità o Colore "Grigio/Spento" dopo Cristallizzazione:</strong> Cottura condotta ad una temperatura errata (differenza &gt; 10 °C dal forno) o vuoto insufficiente durante la cristallizzazione. <em>Soluzione:</em> Calibrare periodicamente il forno con filo d'argento puro.</li>
+          <li><strong>De-bonding o Decementazione della Corona:</strong> Mancata rimozione dei sali di fluorosilicato dopo mordenzatura HF o mancata applicazione del silano / acido fluoridrico scaduto <strong>[Blatz et al., 2018]</strong>. <em>Soluzione:</em> Pulire l'intradosso in bagno ultrasonico con alcool isopropilico e ri-applicare silano fresco.</li>
+        </ul>
+      </div>
+
+      <div class="box-info" style="border-left-color: #f59e0b;">
+        <div class="box-title" style="color: #f59e0b;">📚 BIBLIOGRAFIA SCIENTIFICA DI RIFERIMENTO AGGIORNATA (EBM/EBD):</div>
+        <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin: 0;">
+          • <strong>[Blatz et al., 2018]</strong> *Resin bond to silicate ceramics: Current clinical protocol.* Compend Contin Educ Dent, 39(4), 264–273.<br>
+          • <strong>[Höland et al., 2006]</strong> *Principles and microstructural development of lithium disilicate glass-ceramics for CAD/CAM and pressing techniques.* Biomaterials, 27(8), 1326–1335.<br>
+          • <strong>[Peumans et al., 2023]</strong> *Five-year clinical performance of monolithic lithium disilicate restorations bonded with different adhesive strategies.* Dent Mater, 39(3), 245–256.<br>
+          • <strong>[Ritzberger et al., 2010]</strong> *Properties and microstructure of novel lithium silicate glass-ceramics.* Dent Mater, 26(11), 1045–1052.<br>
+          • <strong>[Sieper et al., 2021]</strong> *Zirconia-reinforced lithium silicate (ZLS) vs. lithium disilicate: A 3-year comparative clinical trial.* J Dent, 109, 103650.<br>
+          • <strong>[Zarone et al., 2019]</strong> *From porcelain-fused-to-metal to monolithic all-ceramic restorations: A systematic review on lithium disilicate.* J Esthet Restor Dent, 31(3), 215–222.
+        </p>
+      </div>
+
+      <div class="box-quiz">
+        <div class="quiz-title">🧪 Quesito Finale di Modulo</div>
+        <div class="quiz-q">
+          [IT] Quale chimica d'accoppamento si applica all'intradosso del disilicato di litio dopo la mordenzatura per consentire il legame chimico con il cemento resinoso?<br>
+          <span class="quiz-q-en">[EN] Which coupling agent chemistry is applied to the internal surface of lithium disilicate after etching to enable bonding with resin cement?</span>
+        </div>
+        <p>A) Monomero 10-MDP per zirconia.<br>B) Agente di accoppiamento Silano (3-MPS).</p>
+        <details>
+          <summary>🔍 Mostra Risposta Corretta / Show Correct Answer</summary>
+          <div class="res-ok">✔ RISPOSTA CORRETTA: B<br>Il Silano si lega ai gruppi silanolici (Si-OH) esposti dall'acido fluoridrico sulla ceramica vetrosa, formando legami silossanici con la matrice organica del cemento.</div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

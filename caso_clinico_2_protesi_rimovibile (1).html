@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso Clinico 2: Protesi Rimovibile - Instabilità e Questionario</title>
+    <style>
+        :root {
+            --primary: #065f46;
+            --secondary: #059669;
+            --accent: #10b981;
+            --bg: #f0fdf4;
+            --card-bg: #ffffff;
+            --text: #064e3b;
+            --border: #a7f3d0;
+            --quiz-bg: #ecfdf5;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 30px 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+        }
+        .header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .tag {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #047857;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        .section {
+            margin-bottom: 35px;
+        }
+        h2 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary);
+            padding-left: 12px;
+        }
+        .card {
+            background: #f0fdf4;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        .card-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .question-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .options-list {
+            list-style-type: none;
+            margin: 0 0 20px 0;
+            padding: 0;
+        }
+        .options-list li {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #334155;
+        }
+        details {
+            background: var(--quiz-bg);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 15px;
+        }
+        summary {
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+        }
+        .explanation-box {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--accent);
+        }
+        .correct-answer-text {
+            font-weight: bold;
+            color: #047857;
+            margin-bottom: 6px;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            details { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="tag">Problem Solving Clinico #2</span>
+            <h1>Instabilità della Protesi Totale Rimovibile</h1>
+            <p class="subtitle">Caso clinico di ribaltamento in lateralità e Questionario Didattico per gli Studenti</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Scenario Clinico & Analisi Biomeccanica</h2>
+            <div class="card">
+                <div class="card-title">Il Caso in Studio</div>
+                <p>Una paziente edentula di 68 anni lamenta la perdita di stabilità della protesi totale inferiore durante i movimenti di masticazione. Specificamente, quando sposta la mandibola verso il lato destro (lato lavorante), la flangia protesica del lato sinistro (lato bilanciante) si solleva staccandosi dalla mucosa e scalzando la protesi.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. Questionario Didattico per la Classe</h2>
+
+            <!-- Domanda 1 -->
+            <div class="question-card">
+                <div class="question-title">Domanda 1: Qual è la causa biomeccanica primaria dello scalzamento sul lato opposto al movimento masticatorio?</div>
+                <ul class="options-list">
+                    <li>A) Errata determinazione dell'inclinazione del piano occlusale superiore</li>
+                    <li>B) Mancanza di contatti simultanei sul lato bilanciante (Assenza di Occlusione Bilanciata Bilaterale)</li>
+                    <li>C) Eccessivo affondamento dei bordi protesici nei fornici linguali</li>
+                    <li>D) Scelta errata della cera di registrazione della Dimensione Verticale di Occlusione (DVO)</li>
+                </ul>
+
+                <details>
+                    <summary>🔍 Mostra Soluzione & Spiegazione Didattica</summary>
+                    <div class="explanation-box">
+                        <div class="correct-answer-text">Risposta Corretta: B</div>
+                        <p>Nella protesi totale rimovibile è obbligatorio adottare lo schema di <strong>Occlusione Bilanciata Bilaterale</strong>. Se in lateralità i denti toccano solo sul lato lavorante, la protesi agisce come una leva di I genere: il carico sul lato lavorante fa perno sulla cresta edentula e solleva la base protesica dal lato bilanciante. Il contatto simultaneo sui versanti cuspidali del lato bilanciante crea un punto di appoggio che stabilizza la placca ed evita il ribaltamento.</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Domanda 2 -->
+            <div class="question-card">
+                <div class="question-title">Domanda 2: Se durante il molaggio selettivo o il montaggio dei denti la protesi continua a ribaltarsi sotto carico assiale, quale errore di posizionamento dei denti posteriori è stato commesso?</div>
+                <ul class="options-list">
+                    <li>A) I denti posteriori sono stati montati troppo all'esterno rispetto alla cresta edentula</li>
+                    <li>B) I denti anteriori presentano una sovrapposizione verticale (overbite) troppo marcata</li>
+                    <li>C) È stato azzerato il valore dell'angolo di Bennett sull'articolatore</li>
+                    <li>D) I premolari sono stati montati in posizione troppo mesiale</li>
+                </ul>
+
+                <details>
+                    <summary>🔍 Mostra Soluzione & Spiegazione Didattica</summary>
+                    <div class="explanation-box">
+                        <div class="correct-answer-text">Risposta Corretta: A</div>
+                        <p>Il montaggio dei denti posteriori deve rispettare rigorosamente la <strong>linea guida del vertice della cresta alveolare edentula</strong> (Regola di Pound). Se le cuspidi vengono posizionate troppo vestibolarmente (all'esterno della cresta), la forza di masticazione verticale genera un braccio di leva favorevole al ribaltamento della protesi. Posizionare i denti esattamente sulla cresta garantisce che i carichi vengano trasmessi perpendicolarmente alla zona di supporto osseo.</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Domanda 3 -->
+            <div class="question-card">
+                <div class="question-title">Domanda 3: Quale strumento di registrazione clinica consente di verificare la corretta Relazione Centrica (RC) ed evitare interferenze muscolari in protesi totale?</div>
+                <ul class="options-list">
+                    <li>A) Il calibro di Willis per la Dimensione Verticale</li>
+                    <li>B) La foglia di registro di Leaf Gauge</li>
+                    <li>C) Il tracciatore dell'Arco Gotico di Gysi</li>
+                    <li>D) L'arco facciale di trasferimento statico</li>
+                </ul>
+
+                <details>
+                    <summary>🔍 Mostra Soluzione & Spiegazione Didattica</summary>
+                    <div class="explanation-box">
+                        <div class="correct-answer-text">Risposta Corretta: C</div>
+                        <p>L'<strong>Arco Gotico di Gysi</strong> consente di registrare in modo grafico e intraorale la cinetica mandibolare del paziente edentulo. Il vertice della "freccia" tracciata dalla spina d'incisione rappresenta la posizione pura di Relazione Centrica (RC). Questa tecnica elimina le deviazioni neuromuscolari viziate da anni di edentulia o da protesi vecchie e incongruenti.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

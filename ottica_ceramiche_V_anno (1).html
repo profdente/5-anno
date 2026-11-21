@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ottica Dentale & Biomateriali Ceramici - V Anno LIM Gate (IT/EN)</title>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-panel: #131c2e;
+      --bg-card: #1b263b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-gold: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --accent-violet: #8b5cf6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --border-color: #2e3c56;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* HEADER LIM */
+    header {
+      background-color: #03060c;
+      border-bottom: 3px solid var(--accent-cyan);
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .brand-icon {
+      font-size: 2.2rem;
+      background: rgba(6, 182, 212, 0.15);
+      padding: 0.4rem 0.75rem;
+      border-radius: 12px;
+      border: 1px solid var(--accent-cyan);
+    }
+
+    .brand h1 {
+      font-size: 1.35rem;
+      color: var(--text-main);
+      letter-spacing: 0.4px;
+    }
+
+    .brand p {
+      font-size: 0.9rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 2px solid var(--border-color);
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--accent-cyan);
+    }
+
+    .ctrl-btn.active {
+      background-color: var(--accent-cyan);
+      color: #020617;
+      border-color: var(--accent-cyan);
+    }
+
+    /* PROGRESS BAR */
+    .progress-container {
+      background-color: #0d1424;
+      padding: 0.8rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .progress-steps {
+      display: flex;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .step-dot {
+      height: 12px;
+      flex: 1;
+      border-radius: 6px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s;
+    }
+
+    .step-dot.completed {
+      background-color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .step-dot.current {
+      background-color: var(--accent-gold);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--accent-gold);
+      white-space: nowrap;
+    }
+
+    /* BILINGUAL TOGGLE LOGIC */
+    body.mode-en .it { display: none !important; }
+    body.mode-it .en { display: none !important; }
+
+    .en-tag {
+      display: inline-block;
+      background: rgba(6, 182, 212, 0.18);
+      color: var(--accent-cyan);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      border-radius: 5px;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .it-tag {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--accent-gold);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      border-radius: 5px;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+
+    /* MAIN STAGE */
+    main {
+      flex: 1;
+      max-width: 1340px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.8rem 2rem 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    /* SLIDE CARD */
+    .slide-card {
+      background-color: var(--bg-panel);
+      border: 2px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.2rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.35s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .slide-badge {
+      background-color: var(--accent-cyan);
+      color: #020617;
+      font-weight: 900;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+    }
+
+    .slide-title-it {
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .slide-title-en {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-top: 0.35rem;
+    }
+
+    .slide-hero-icon {
+      font-size: 3.8rem;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 18px;
+      padding: 0.8rem 1.2rem;
+      line-height: 1;
+    }
+
+    /* SLIDE CONTENT GRID */
+    .slide-body {
+      display: grid;
+      grid-template-columns: 1.28fr 0.92fr;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 950px) {
+      .slide-body { grid-template-columns: 1fr; }
+    }
+
+    .points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .point-item {
+      background-color: var(--bg-card);
+      border-left: 5px solid var(--accent-cyan);
+      padding: 1.1rem 1.3rem;
+      border-radius: 12px;
+      font-size: 1.13rem;
+      line-height: 1.5;
+    }
+
+    .point-item .en {
+      color: #bae6fd;
+      margin-top: 0.45rem;
+      font-size: 1.06rem;
+    }
+
+    .tech-box {
+      background: linear-gradient(145deg, #1b263b, #0d1424);
+      border: 2px solid var(--accent-gold);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .tech-box h3 {
+      color: var(--accent-gold);
+      font-size: 1.22rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.6rem;
+    }
+
+    .tech-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .tech-list li {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .glossary-strip {
+      background: rgba(139, 92, 246, 0.14);
+      border: 1px solid rgba(139, 92, 246, 0.45);
+      border-radius: 10px;
+      padding: 0.95rem 1rem;
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+
+    .glossary-strip strong {
+      color: #c4b5fd;
+    }
+
+    /* GATE QUIZ SECTION */
+    .gate-container {
+      background-color: #0e1525;
+      border: 3px solid var(--accent-gold);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .gate-container.unlocked {
+      border-color: var(--accent-green);
+    }
+
+    .gate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .gate-status-badge {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+      padding: 0.45rem 1rem;
+      border-radius: 25px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .gate-container.unlocked .gate-status-badge {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .gate-question-it {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+
+    .gate-question-en {
+      font-size: 1.13rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-bottom: 1.3rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+
+    .opt-btn {
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      color: var(--text-main);
+      padding: 1.15rem 1.4rem;
+      border-radius: 14px;
+      text-align: left;
+      font-size: 1.12rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .opt-btn:hover:not(:disabled) {
+      border-color: var(--accent-cyan);
+      background-color: #24334d;
+      transform: translateX(4px);
+    }
+
+    .opt-letter {
+      background: var(--bg-dark);
+      color: var(--accent-cyan);
+      font-weight: 900;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .opt-btn.wrong {
+      background-color: rgba(239, 68, 68, 0.2);
+      border-color: var(--accent-red);
+      color: #fecaca;
+    }
+
+    .opt-btn.wrong .opt-letter {
+      background-color: var(--accent-red);
+      color: white;
+    }
+
+    .opt-btn.correct {
+      background-color: rgba(16, 185, 129, 0.22);
+      border-color: var(--accent-green);
+      color: #a7f3d0;
+    }
+
+    .opt-btn.correct .opt-letter {
+      background-color: var(--accent-green);
+      color: #020617;
+    }
+
+    .feedback-banner {
+      margin-top: 1.3rem;
+      padding: 1.1rem 1.4rem;
+      border-radius: 12px;
+      font-size: 1.08rem;
+      display: none;
+    }
+
+    .feedback-banner.error {
+      display: block;
+      background-color: rgba(239, 68, 68, 0.15);
+      border-left: 5px solid var(--accent-red);
+      color: #fecaca;
+    }
+
+    .feedback-banner.success {
+      display: block;
+      background-color: rgba(16, 185, 129, 0.15);
+      border-left: 5px solid var(--accent-green);
+      color: #a7f3d0;
+    }
+
+    /* FOOTER NAVIGATION */
+    .nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .nav-btn {
+      padding: 1rem 2rem;
+      border-radius: 14px;
+      font-size: 1.18rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .btn-prev {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      border-color: var(--accent-cyan);
+    }
+
+    .btn-prev:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .btn-next {
+      background-color: var(--accent-green);
+      color: #020617;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-next:disabled {
+      background-color: #334155;
+      color: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* FINAL CERTIFICATE SCREEN */
+    .final-screen {
+      display: none;
+      background-color: var(--bg-panel);
+      border: 3px solid var(--accent-green);
+      border-radius: 22px;
+      padding: 3rem;
+      text-align: center;
+      animation: slideIn 0.4s ease;
+    }
+
+    .final-screen h2 {
+      font-size: 2.3rem;
+      color: var(--accent-green);
+      margin-bottom: 0.8rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-card .num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--accent-gold);
+    }
+  </style>
+</head>
+<body class="mode-both">
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">💎</div>
+      <div>
+        <h1>OTTICA DENTALE & BIOMATERIALI CERAMICI (V ANNO)</h1>
+        <p>Opalescenza • Translucenza • Fluorescenza • Feldspatiche, Disilicati & Zirconia 3Y/4Y/5Y/6Y</p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="ctrl-btn active" onclick="setLangMode('both', this)">🇮🇹 + 🇬🇧 Bilingue</button>
+      <button class="ctrl-btn" onclick="setLangMode('it', this)">🇮🇹 Solo IT</button>
+      <button class="ctrl-btn" onclick="setLangMode('en', this)">🇬🇧 Only EN</button>
+      <button class="ctrl-btn" onclick="toggleFullScreen()">⛶ Schermo Intero</button>
+    </div>
+  </header>
+
+  <div class="progress-container">
+    <div class="progress-steps" id="progressSteps"></div>
+    <div class="step-label" id="stepLabel">SLIDE 1 / 11</div>
+  </div>
+
+  <main id="lessonStage">
+    <section class="slide-card" id="slideCard">
+      <div class="slide-top">
+        <div>
+          <span class="slide-badge" id="slideCategory">MODULO 1</span>
+          <h2 class="slide-title-it it" id="slideTitleIt"></h2>
+          <h3 class="slide-title-en en" id="slideTitleEn"></h3>
+        </div>
+        <div class="slide-hero-icon" id="slideIcon">💎</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="points-list" id="slidePoints"></div>
+
+        <div class="tech-box">
+          <div>
+            <h3>🔬 Parametri Ottici & Strutturali / Optical & Structural Data</h3>
+            <ul class="tech-list" id="slideTechList"></ul>
+          </div>
+          <div class="glossary-strip" id="slideGlossary"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gate-container" id="gateContainer">
+      <div class="gate-header">
+        <div class="gate-status-badge" id="gateBadge">🔒 GATE BLOCCATO • Rispondi correttamente per proseguire</div>
+        <div style="color: var(--text-muted); font-weight: 700; font-size: 0.95rem;" id="gateAttempts">Tentativi: 0</div>
+      </div>
+
+      <p class="gate-question-it it" id="gateQIt"></p>
+      <p class="gate-question-en en" id="gateQEn"></p>
+
+      <div class="options-grid" id="gateOptions"></div>
+
+      <div class="feedback-banner" id="gateFeedback"></div>
+
+      <div class="nav-footer">
+        <button class="nav-btn btn-prev" id="prevBtn" onclick="prevSlide()">⬅️ Slide Precedente</button>
+        <button class="nav-btn btn-next" id="nextBtn" onclick="nextSlide()" disabled>🔒 Completa il Gate per Avanzare</button>
+      </div>
+    </section>
+  </main>
+
+  <main id="finalStage" style="display:none;">
+    <div class="final-screen" style="display:block;">
+      <div style="font-size: 4.5rem; margin-bottom: 1rem;">🎓💎</div>
+      <h2>LEZIONE COMPLETATA! / LESSON COMPLETED!</h2>
+      <p style="font-size: 1.25rem; color: #cbd5e1; max-width: 780px; margin: 0 auto;">
+        La classe V ha completato tutti gli 11 Gate su Ottica Dentale, Ceramiche Feldspatiche, Disilicati di Litio e Zirconia 3Y/4Y/5Y/6Y.
+      </p>
+      <div class="summary-grid">
+        <div class="stat-card">
+          <div class="num">11 / 11</div>
+          <div>Slide e Gate Superati</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="firstTryScore">0 / 11</div>
+          <div>Risposte Esatte al 1° Tentativo</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">V ANNO</div>
+          <div>Biomeccanica & Estetica Ceramica</div>
+        </div>
+      </div>
+      <button class="nav-btn btn-next" style="margin: 0 auto;" onclick="restartLesson()">🔄 Ricomincia la Lezione</button>
+    </div>
+  </main>
+
+  <script>
+    const slidesData = [
+      {
+        category: "01 • SISTEMA MUNSELL & SPAZIO CIELAB",
+        icon: "🎨",
+        titleIt: "Le Tre Dimensioni del Colore Dentale: Tinta, Croma e Valore",
+        titleEn: "The Three Dimensions of Tooth Color: Hue, Chroma & Value",
+        points: [
+          {
+            it: "Tinta (Hue): è la famiglia cromatica pura determinata dalla lunghezza d'onda dominante riflessa (es. A = rosso-brunastro, B = rosso-giallastro, C = grigiastro, D = rosso-grigiastro nella scala VITA Classical).",
+            en: "Hue: the pure color family determined by the dominant reflected wavelength (e.g., A = reddish-brownish, B = reddish-yellowish, C = greyish, D = reddish-grey in the VITA Classical guide)."
+          },
+          {
+            it: "Croma (Chroma): è il grado di saturazione o intensità di una determinata Tinta (es. da A1 a A4). Nel dente naturale aumenta dal margine incisale al terzo cervicale, dove lo smalto si assottiglia lasciando trasparire la dentina.",
+            en: "Chroma: the degree of saturation or intensity of a given Hue (e.g., from A1 to A4). In natural teeth, chroma increases from the incisal edge toward the cervical third, where thinner enamel reveals more dentin."
+          },
+          {
+            it: "Valore (Value / Luminosità L*): è la quantità di luce riflessa su una scala acromatica dal nero (0) al bianco puro (100). È il parametro più critico: l'occhio umano (bastoncelli retinici) percepisce prima un errore di Valore rispetto a uno di Tinta o Croma.",
+            en: "Value (Lightness L*): the amount of reflected light on an achromatic scale from black (0) to pure white (100). It is the most critical parameter: the human eye (retinal rods) detects Value mismatches far more readily than Hue or Chroma errors."
+          }
+        ],
+        tech: [
+          "👁️ Gerarchia percettiva: 1° Valore (L*) → 2° Croma (C*) → 3° Tinta (h°)",
+          "📊 Scala VITA 3D-Master: ordina prima per Valore (gruppi 1–5), poi Croma e Tinta",
+          "🦷 Gradiente cervicale-incisale: massimo Croma al colletto, massimo Valore al terzo medio"
+        ],
+        glossary: "<strong>Key Terms:</strong> Hue = Tinta • Chroma = Croma/Saturazione • Value (Lightness L*) = Valore/Luminosità • VITA 3D-Master",
+        gate: {
+          qIt: "Nella rilevazione e riproduzione del colore protesico, perché il Valore (luminosità) è considerato il parametro più critico rispetto a Tinta e Croma?",
+          qEn: "In prosthetic shade matching and reproduction, why is Value (lightness) considered the most critical parameter compared to Hue and Chroma?",
+          options: [
+            { it: "Perché i bastoncelli della retina umana sono estremamente sensibili alle variazioni di luminosità (scala di grigi): un restauro con Valore errato appare immediatamente 'finto' (troppo grigio o troppo gessoso).", en: "Because human retinal rods are highly sensitive to brightness variations (greyscale): a restoration with the wrong Value immediately looks artificial (too grey or too chalky)." },
+            { it: "Perché il Valore determina la resistenza flessionale in MPa della zirconia.", en: "Because Value determines the flexural strength in MPa of zirconia." },
+            { it: "Perché Tinta e Croma non esistono nelle ceramiche feldspatiche e nei disilicati.", en: "Because Hue and Chroma do not exist in feldspathic ceramics or lithium disilicates." }
+          ],
+          correct: 0,
+          expIt: "Esatto! La scala VITA 3D-Master è stata progettata proprio per selezionare prima il Valore (gruppi 1–5), poiché un errore di luminosità compromette il restauro molto più di una lieve differenza di tinta.",
+          expEn: "Correct! The VITA 3D-Master system was engineered to select Value first (groups 1–5), as a brightness mismatch compromises esthetics far more than a slight hue shift."
+        }
+      },
+      {
+        category: "02 • FISICA DELLA LUCE NEI TESSUTI DENTALI",
+        icon: "🌈",
+        titleIt: "Interazione Luce-Dente: Tinta, Croma, Valore e Fenomeni Secondari",
+        titleEn: "Light-Tooth Interaction: Hue, Chroma, Value & Secondary Optical Effects",
+        points: [
+          {
+            it: "Oltre alle tre dimensioni classiche del colore (Tinta, Croma e Valore/Luminosità), il mimetismo protesico dipende da tre fenomeni ottici dinamici: Translucenza, Opalescenza e Fluorescenza.",
+            en: "Beyond the three classic dimensions of color (Hue, Chroma, and Value/Brightness), prosthetic biomimicry relies on three dynamic optical phenomena: Translucency, Opalescence, and Fluorescence."
+          },
+          {
+            it: "Lo smalto naturale (96% idrossiapatite cristallina) agisce come filtro selettivo semitrasparente; la dentina (70% inorganica + tubuli e collagene) determina croma, fluorescenza e diffusione interna.",
+            en: "Natural enamel (96% crystalline hydroxyapatite) acts as a selective semi-transparent filter; dentin (70% inorganic + tubules & collagen) drives chroma, fluorescence, and internal scattering."
+          },
+          {
+            it: "Un restauro ceramico fallisce esteticamente quando il Valore (luminosità) è errato o quando l'indice di rifrazione (RI) del materiale non replica il gradiente smalto-dentina.",
+            en: "A ceramic restoration fails esthetically when Value (brightness) is off or when the material's Refractive Index (RI) fails to replicate the enamel-dentin gradient."
+          }
+        ],
+        tech: [
+          "👁️ Valore (Value): luminosità grigia (priorità #1 nella scelta colore)",
+          "🔬 Indice di Rifrazione (RI): Smalto ≈ 1.62 • Dentina ≈ 1.54",
+          "💎 Obiettivo biomimetico: bilanciare resistenza meccanica e passaggio luce"
+        ],
+        glossary: "<strong>Key Terms:</strong> Hue = Tinta • Chroma = Croma • Value = Valore/Luminosità • Refractive Index (RI) = Indice di rifrazione",
+        gate: {
+          qIt: "Nella ricostruzione biomimetica, quale ruolo ottico svolgono rispettivamente lo smalto e la dentina naturali?",
+          qEn: "In biomimetic restorations, what optical roles do natural enamel and dentin play respectively?",
+          options: [
+            { it: "Lo smalto determina il croma saturo, mentre la dentina è completamente trasparente.", en: "Enamel determines saturated chroma, while dentin is completely transparent." },
+            { it: "Lo smalto modula la trasmissione selettiva e l'opalescenza; la dentina fornisce croma, opacità di fondo e fluorescenza.", en: "Enamel modulates selective light transmission and opalescence; dentin provides chroma, background opacity, and fluorescence." },
+            { it: "Entrambi hanno lo stesso identico indice di rifrazione (1.62) e assorbono il 100% della luce.", en: "Both share the exact same refractive index (1.62) and absorb 100% of light." }
+          ],
+          correct: 1,
+          expIt: "Esatto! Lo smalto ha RI ~1.62 ed è ricco di cristalli d'idrossiapatite; la dentina ha RI ~1.54, matrice organica fluorescente e maggiore croma.",
+          expEn: "Correct! Enamel has RI ~1.62 with dense hydroxyapatite crystals; dentin has RI ~1.54, fluorescent organic matrix, and higher chroma."
+        }
+      },
+      {
+        category: "03 • TRANSLUCENZA & PARAMETRO TP",
+        icon: "🔆",
+        titleIt: "Translucenza (TP) e Rapporto di Contrasto (CR) nelle Ceramiche",
+        titleEn: "Translucency Parameter (TP) & Contrast Ratio (CR) in Dental Ceramics",
+        points: [
+          {
+            it: "La Translucenza è la proprietà fisica intermedia tra la trasparenza completa (vetro puro) e l'opacità totale (metallo): permette alla luce di attraversare il materiale venendo parzialmente diffusa (scattering).",
+            en: "Translucency is the physical state between complete transparency (clear glass) and total opacity (metal): light passes through while undergoing partial internal scattering."
+          },
+          {
+            it: "Si misura tramite il Translucency Parameter (TP = differenza cromatica ΔE del provino su sfondo bianco vs nero) o il Contrast Ratio (CR = Y_nero / Y_bianco, da 0 a 1).",
+            en: "It is quantified via the Translucency Parameter (TP = color difference ΔE of a specimen over white vs. black backing) or Contrast Ratio (CR = Y_black / Y_white, 0 to 1)."
+          },
+          {
+            it: "Attenzione clinica: la translucenza diminuisce esponenzialmente all'aumentare dello spessore (legge di Beer-Lambert) e dipende dal moncone sottostante (discromie, perni metallici).",
+            en: "Clinical warning: translucency drops exponentially as thickness increases (Beer-Lambert law) and interacts directly with the underlying stump shade (discolorations, metal posts)."
+          }
+        ],
+        tech: [
+          "📏 Spessore critico: passare da 0.5 mm a 1.5 mm dimezza la trasmissione",
+          "⚖️ CR = 0 (trasparente) ↔ CR = 1 (opaco totale)",
+          "🦷 Moncone scuro (ND7–ND9): richiede materiali a basso TP (opachi) per mascherare"
+        ],
+        glossary: "<strong>Key Terms:</strong> Translucency Parameter (TP) = Parametro di translucenza • Contrast Ratio (CR) = Rapporto di contrasto • Scattering = Diffusione",
+        gate: {
+          qIt: "In presenza di un moncone fortemente discromico (es. dente devitalizzato scuro o moncone metallico), quale scelta di translucenza è corretta?",
+          qEn: "When restoring a severely discolored stump (e.g., dark endodontic tooth or metal post), which translucency choice is clinically sound?",
+          options: [
+            { it: "Usare una ceramica ad altissima translucenza (HT / 6Y) in spessore sottile per far passare più luce.", en: "Use an ultra-high translucency ceramic (HT / 6Y) in a thin layer to let more light pass." },
+            { it: "Usare una sottostruttura opaca o a bassa translucenza (es. Zirconia 3Y-TZP o Disilicato HO/MO) per bloccare il grigio di fondo, stratificando poi lo smalto.", en: "Use an opaque or low-translucency substructure (e.g., 3Y-TZP Zirconia or HO/MO Lithium Disilicate) to mask the dark background, then layer enamel." },
+            { it: "Aumentare solo la lucidatura meccanica finale, perché il glaze rende opaca qualsiasi ceramica.", en: "Only increase final mechanical polishing, because glazing turns any ceramic opaque." }
+          ],
+          correct: 1,
+          expIt: "Perfetto! Una ceramica troppo translucida su moncone scuro assorbe il grigio sottostante abbassando drasticamente il Valore del restauro.",
+          expEn: "Spot on! An overly translucent ceramic over a dark stump transmits the underlying grey, drastically lowering the restoration's Value."
+        }
+      },
+      {
+        category: "04 • OPALESCENZA & EFFETTO TYNDALL",
+        icon: "💠",
+        titleIt: "Opalescenza: Scattering Selettivo delle Lunghezze d'Onda Corte",
+        titleEn: "Opalescence: Selective Scattering of Short Wavelengths",
+        points: [
+          {
+            it: "L'Opalescenza è un fenomeno ottico dovuto allo scattering di Rayleigh/Tyndall: micro-particelle disperse (dimensioni 100–400 nm, inferiori alla lunghezza d'onda della luce visibile) diffondono le onde corte (blu-violetto) e lasciano passare le onde lunghe (arancio-ambra).",
+            en: "Opalescence is an optical effect caused by Rayleigh/Tyndall scattering: dispersed micro-particles (100–400 nm, smaller than visible light wavelengths) scatter short wavelengths (blue-violet) while transmitting long wavelengths (orange-amber)."
+          },
+          {
+            it: "Risultato visivo sul margine incisale (halo effect): in luce riflessa il margine appare azzurro-grigiastro; in luce trasmessa (controluce) appare caldo, arancio-ambrato.",
+            en: "Visual result at the incisal edge (halo effect): under reflected light the edge looks bluish-grey; under transmitted light (backlighting) it glows warm orange-amber."
+          },
+          {
+            it: "Nelle ceramiche dentali, l'opalescenza si ottiene disperdendo ossidi ad alto indice di rifrazione (es. ZrO2, TiO2, Al2O3 nanometrici) in una matrice vetrosa a basso RI (≈ 1.50).",
+            en: "In dental ceramics, opalescence is engineered by dispersing high-RI oxides (e.g., nano-ZrO2, TiO2, Al2O3) inside a low-RI glassy matrix (≈ 1.50)."
+          }
+        ],
+        tech: [
+          "🔵 Luce Riflessa (Reflected): diffusione onde corte (400–480 nm → Blu)",
+          "🟠 Luce Trasmessa (Transmitted): passaggio onde lunghe (600–700 nm → Ambra)",
+          "📐 Dimensione particelle opalescenti: 0.1 – 0.4 µm (100–400 nm)"
+        ],
+        glossary: "<strong>Key Terms:</strong> Opalescence = Opalescenza • Incisal Halo = Alone incisale • Reflected vs. Transmitted Light = Luce riflessa vs. trasmessa",
+        gate: {
+          qIt: "Come appare il margine incisale di uno smalto o di una ceramica altamente opalescente osservato rispettivamente in luce riflessa e in luce trasmessa?",
+          qEn: "How does the incisal edge of highly opalescent enamel or ceramic appear under reflected light vs. transmitted light?",
+          options: [
+            { it: "Verde in luce riflessa e viola intenso in luce trasmessa.", en: "Green under reflected light and deep violet under transmitted light." },
+            { it: "Azzurro-bluastro in luce riflessa (scattering delle onde corte) e arancio-ambrato in luce trasmessa (passaggio delle onde lunghe).", en: "Bluish in reflected light (short-wavelength scattering) and orange-amber in transmitted light (long-wavelength transmission)." },
+            { it: "Bianco gessoso opaco in entrambe le condizioni di illuminazione.", en: "Chalky opaque white under both lighting conditions." }
+          ],
+          correct: 1,
+          expIt: "Esatto! È lo stesso principio fisico del cielo azzurro di giorno (scattering del blu) e rosso al tramonto (trasmissione del rosso-arancio).",
+          expEn: "Correct! It is the exact same physics as the blue daytime sky (blue scattering) and red sunset (red-orange transmission)."
+        }
+      },
+      {
+        category: "05 • FLUORESCENZA & LUMINESCENZA UV",
+        icon: "🟣",
+        titleIt: "Fluorescenza: Assorbimento UV e Riemissione nel Visibile",
+        titleEn: "Fluorescence: UV Absorption & Visible Light Re-emission",
+        points: [
+          {
+            it: "La Fluorescenza è un fenomeno di fotoluminescenza: il materiale assorbe radiazioni ultraviolette invisibili (UV-A, 320–400 nm) e riemette istantaneamente luce visibile nello spettro blu-bianco (picco a 430–450 nm).",
+            en: "Fluorescence is a photoluminescence phenomenon: the material absorbs invisible ultraviolet radiation (UV-A, 320–400 nm) and instantaneously re-emits visible blue-white light (peak at 430–450 nm)."
+          },
+          {
+            it: "Nel dente naturale, la dentina è 3 volte più fluorescente dello smalto grazie ai legami crociati organici (piridinolina) e agli ioni metallici in traccia.",
+            en: "In natural teeth, dentin is 3 times more fluorescent than enamel due to organic collagen cross-links (pyridinoline) and trace metal ions."
+          },
+          {
+            it: "Effetto clinico: anche alla luce diurna (che contiene UV), la fluorescenza aumenta la vitalità e il Valore del dente riducendo il grigiore; sotto luci UV (discoteca/faretti) evita l'effetto 'dente nero/spento' tipico delle ceramiche prive di luminofori.",
+            en: "Clinical impact: in daylight (which contains UV), fluorescence boosts tooth vitality and Value; under blacklights, it prevents the 'dark/dead tooth' look of non-fluorescent ceramics."
+          }
+        ],
+        tech: [
+          "⚡ Eccitazione UV: 350–380 nm → Emissione Visibile: 430–450 nm (Blu-Bianco)",
+          "🧪 Dopanti luminofori ceramici: ossidi di terre rare (Europio, Cerio, Terbio)",
+          "🦷 Rapporto naturale: Fluorescenza Dentina ≈ 3× Fluorescenza Smalto"
+        ],
+        glossary: "<strong>Key Terms:</strong> Fluorescence = Fluorescenza • Rare-Earth Oxides = Ossidi di terre rare (Eu, Ce, Tb) • Blacklight = Luce di Wood / UV",
+        gate: {
+          qIt: "Quali elementi chimici vengono aggiunti alle masse ceramiche (e ai supercolori fluorescenti) per riprodurre la fluorescenza naturale della dentina?",
+          qEn: "Which chemical elements are added to dental ceramics (and fluorescent stains) to replicate natural dentin fluorescence?",
+          options: [
+            { it: "Ossidi di terre rare come Europio (Eu), Cerio (Ce) e Terbio (Tb).", en: "Rare-earth oxides such as Europium (Eu), Cerium (Ce), and Terbium (Tb)." },
+            { it: "Ossido di ferro (Fe2O3) e ossido di cromo (Cr2O3).", en: "Iron oxide (Fe2O3) and chromium oxide (Cr2O3)." },
+            { it: "Solfato di calcio biidrato e quarzo puro.", en: "Calcium sulfate dihydrate and pure quartz." }
+          ],
+          correct: 0,
+          expIt: "Perfetto! Le terre rare (Europio, Cerio, Terbio) agiscono da centri luminofori che convertono gli UV in luce azzurro-bianca vitale.",
+          expEn: "Spot on! Rare-earth elements (Europium, Cerium, Terbium) act as luminophores converting UV into vital blue-white light."
+        }
+      },
+      {
+        category: "06 • CERAMICHE FELDSPATICHE (VETRO + LEUCITE)",
+        icon: "🏺",
+        titleIt: "Ceramiche Feldspatiche: Il Riferimento Aureo dell'Ottica Dentale",
+        titleEn: "Feldspathic Ceramics: The Gold Standard of Dental Optics",
+        points: [
+          {
+            it: "Composizione: matrice vetrosa amorfa (silicato alluminoso di potassio/sodio, 70–85%) rinforzata da cristalli di Leucite (KAlSi2O6, 15–30%).",
+            en: "Composition: amorphous glass matrix (potassium/sodium aluminosilicate, 70–85%) reinforced with Leucite crystals (KAlSi2O6, 15–30%)."
+          },
+          {
+            it: "Perché sono otticamente insuperabili: l'indice di rifrazione della Leucite (RI = 1.51) è quasi identico a quello della matrice vetrosa (RI = 1.50). La luce attraversa il confine cristallo-vetro con minima rifrazione parassita!",
+            en: "Why their optics are unmatched: Leucite's refractive index (RI = 1.51) is nearly identical to the glass matrix (RI = 1.50). Light crosses the crystal-glass boundary with minimal parasitic scattering!"
+          },
+          {
+            it: "Limiti e indicazioni: resistenza flessionale moderata (60–110 MPa). Ideali per faccette ultrasottili (veneers) su refrattario/foglia di platino e come ceramica da stratificazione estetica su strutture in zirconia o disilicato.",
+            en: "Limitations & indications: moderate flexural strength (60–110 MPa). Ideal for ultra-thin veneers on refractory dies and as esthetic veneering ceramic over zirconia or lithium disilicate cores."
+          }
+        ],
+        tech: [
+          "💎 RI Matrice Vetrosa: 1.50 • RI Cristalli Leucite: 1.51 (ΔRI = 0.01!)",
+          "💪 Resistenza flessionale: 60 – 110 MPa (fragile se non supportata)",
+          "🎨 Massimo controllo di opalescenza, mameloni e trasparenze incisali"
+        ],
+        glossary: "<strong>Key Terms:</strong> Feldspathic Ceramic = Ceramica feldspatica • Glass Matrix = Matrice vetrosa • Leucite = Leucite • Veneering = Stratificazione",
+        gate: {
+          qIt: "Qual è la ragione fisica per cui le ceramiche feldspatiche offrono una translucenza e una naturalezza ottica superiori a qualsiasi ceramica policristallina?",
+          qEn: "What is the physical reason why feldspathic ceramics achieve superior translucency and optical naturalness compared to polycrystalline ceramics?",
+          options: [
+            { it: "Perché contengono il 99% di ossido di zirconio cubico.", en: "Because they contain 99% cubic zirconium oxide." },
+            { it: "Perché hanno un'elevata fase vetrosa amorfa il cui indice di rifrazione (1.50) coincide quasi perfettamente con quello dei cristalli di leucite (1.51).", en: "Because they feature a high amorphous glass phase whose refractive index (1.50) nearly matches that of leucite crystals (1.51)." },
+            { it: "Perché non subiscono mai cottura in forno sottovuoto.", en: "Because they never undergo vacuum furnace firing." }
+          ],
+          correct: 1,
+          expIt: "Eccellente! Quando ΔRI tra matrice e cristallo è vicino a zero (1.50 vs 1.51), la luce non viene bloccata ai bordi di grano.",
+          expEn: "Excellent! When ΔRI between matrix and crystal approaches zero (1.50 vs 1.51), light is not blocked at grain boundaries."
+        }
+      },
+      {
+        category: "07 • DISILICATO DI LITIO (Li2Si2O5)",
+        icon: "💠",
+        titleIt: "Disilicato di Litio: Equilibrio tra Resistenza e Ottica (HT, MT, LT, MO, HO)",
+        titleEn: "Lithium Disilicate: Balancing Strength & Optics (HT, MT, LT, MO, HO)",
+        points: [
+          {
+            it: "Vetroceramica ad alta cristallinità (~70% in volume di cristalli aghiformi intrecciati di Li2Si2O5 immersi in una matrice vetrosa di litio-alluminosilicato).",
+            en: "High-crystallinity glass-ceramic (~70 vol% interlocking needle-like Li2Si2O5 crystals embedded in a lithium-aluminosilicate glass matrix)."
+          },
+          {
+            it: "Comportamento ottico: i cristalli di disilicato hanno RI ≈ 1.55 (molto vicino al vetro ≈ 1.50), garantendo elevata translucenza e naturale opalescenza con una resistenza flessionale di 360–450 MPa.",
+            en: "Optical behavior: lithium disilicate crystals have RI ≈ 1.55 (close to glass ≈ 1.50), providing high translucency and natural opalescence alongside 360–450 MPa flexural strength."
+          },
+          {
+            it: "Modulazione industriale della translucenza (HT = High, MT = Medium, LT = Low, MO = Medium Opacity, HO = High Opacity): ottenuta variando dimensione, densità dei cristalli e pigmenti opacizzanti.",
+            en: "Industrial translucency grading (HT, MT, LT, MO, HO): achieved by controlling crystal size, crystal density, and opacifying pigments."
+          }
+        ],
+        tech: [
+          "💪 Resistenza flessionale: 360 – 450 MPa (pressato o fresato CAD)",
+          "🔬 RI Cristalli Li2Si2O5: ≈ 1.55 • Contenuto cristallino: ~70%",
+          "🎯 HT: intarsi/faccette • LT: corone monolitiche • MO/HO: coperture su monconi scuri"
+        ],
+        glossary: "<strong>Key Terms:</strong> Lithium Disilicate = Disilicato di litio • Glass-Ceramic = Vetroceramica • Ingot = Grezzo per pressatura • Monolithic = Monolitico",
+        gate: {
+          qIt: "In che modo i produttori ottengono i diversi gradi di translucenza del disilicato di litio (da HT a HO)?",
+          qEn: "How do manufacturers engineer the different translucency levels of lithium disilicate (from HT to HO)?",
+          options: [
+            { it: "Cambiando il metallo della lega sottostante.", en: "By changing the underlying metal alloy." },
+            { it: "Modulando la dimensione e densità dei cristalli di disilicato di litio (cristalli più piccoli e radi = maggiore translucenza) e l'aggiunta di ossidi opacizzanti.", en: "By controlling the size and density of lithium disilicate crystals (smaller, sparser crystals = higher translucency) plus opacifying oxides." },
+            { it: "Aumentando la percentuale di acido fluoridrico dentro il grezzo.", en: "By increasing the hydrofluoric acid content inside the ingot." }
+          ],
+          correct: 1,
+          expIt: "Esatto! Cristalli piccoli e ben distanziati riducono lo scattering (HT), mentre cristalli più grandi/densi e pigmenti aumentano l'opacità (LT/MO/HO).",
+          expEn: "Correct! Smaller, sparser crystals minimize scattering (HT), while larger/denser crystals and pigments increase opacity (LT/MO/HO)."
+        }
+      },
+      {
+        category: "08 • ZIRCONIA DENTALE: FASI CRISTALLINE & BIRIFRANGENZA",
+        icon: "⚛️",
+        titleIt: "Ossido di Zirconio (ZrO2): Perché la Zirconia Tradizionale è Opaca?",
+        titleEn: "Zirconium Oxide (ZrO2): Why Is Traditional Zirconia Opaque?",
+        points: [
+          {
+            it: "A differenza di feldspatiche e disilicati, la zirconia è una ceramica policristallina PRIVA di fase vetrosa (0% vetro): è composta al 100% da grani cristallini compatti.",
+            en: "Unlike feldspathic and lithium disilicate ceramics, zirconia is a polycrystalline ceramic with ZERO glass phase (0% glass): it consists 100% of densely packed crystal grains."
+          },
+          {
+            it: "Perché blocca la luce (opacità)? 1) Altissimo indice di rifrazione (RI ≈ 2.15–2.20 contro 1.0 dell'aria); 2) Birifrangenza ottica della fase Tetragonale (t-ZrO2): ogni grano devia la luce in modo diverso ai bordi di grano.",
+            en: "Why it blocks light (opacity): 1) Very high refractive index (RI ≈ 2.15–2.20 vs. 1.0 of air); 2) Optical birefringence of the Tetragonal phase (t-ZrO2): each grain scatters light at grain boundaries."
+          },
+          {
+            it: "Per controllare le fasi cristalline (Monoclina, Tetragonale, Cubica) a temperatura ambiente si aggiunge Ossido di Ittrio (Y2O3) in percentuali molari diverse: 3Y, 4Y, 5Y, 6Y!",
+            en: "To stabilize crystal phases (Monoclinic, Tetragonal, Cubic) at room temperature, Yttria (Y2O3) is added in specific molar percentages: 3Y, 4Y, 5Y, 6Y!"
+          }
+        ],
+        tech: [
+          "🚫 Fase vetrosa: 0% (ceramica policristallina pura, non mordenzabile con HF)",
+          "🔬 RI Zirconia: ≈ 2.18 (altissima riflessione superficiale e scattering)",
+          "🧪 Stabilizzante: Y2O3 (Ossido di Ittrio) → regola il rapporto Fase Tetragonale / Cubica"
+        ],
+        glossary: "<strong>Key Terms:</strong> Polycrystalline = Policristallino • Birefringence = Birifrangenza • Yttria (Y2O3) = Ossido di ittrio • Grain Boundary = Bordo di grano",
+        gate: {
+          qIt: "Quali sono le due cause fisiche principali dell'elevata opacità della zirconia tetragonale tradizionale (3Y-TZP)?",
+          qEn: "What are the two primary physical causes of the high opacity in traditional tetragonal zirconia (3Y-TZP)?",
+          options: [
+            { it: "La presenza del 70% di vetro al piombo e la totale assenza di ossigeno.", en: "The presence of 70% lead glass and complete absence of oxygen." },
+            { it: "L'assenza di fase vetrosa, l'altissimo indice di rifrazione (RI ≈ 2.18) e la birifrangenza ottica dei cristalli tetragonali ai bordi di grano.", en: "The lack of a glass phase, a very high refractive index (RI ≈ 2.18), and the optical birefringence of tetragonal crystals at grain boundaries." },
+            { it: "La presenza di cristalli di leucite di grandi dimensioni.", en: "The presence of large leucite crystals." }
+          ],
+          correct: 1,
+          expIt: "Perfetto! I cristalli tetragonali sono otticamente anisotropi (birifrangenti): passando da un grano all'altro con orientamento diverso, la luce subisce forte scattering.",
+          expEn: "Spot on! Tetragonal crystals are optically anisotropic (birefringent): crossing differently oriented grains causes intense light scattering."
+        }
+      },
+      {
+        category: "09 • ZIRCONIA 3Y-TZP vs 4Y-PSZ",
+        icon: "🛡️",
+        titleIt: "Zirconia 3Y (1ª e 2ª Gen.) vs Zirconia 4Y (3ª/4ª Gen.): Forza vs Luce",
+        titleEn: "3Y Zirconia (1st & 2nd Gen) vs. 4Y Zirconia (3rd/4th Gen): Strength vs. Light",
+        points: [
+          {
+            it: "3Y-TZP (3 mol% Y2O3): quasi 100% fase Tetragonale. Possiede il meccanismo di 'Transformation Toughening' (passaggio t → m con aumento di volume del 4% che blocca le cricche): resistenza 1000–1200 MPa, ma bassa translucenza.",
+            en: "3Y-TZP (3 mol% Y2O3): nearly 100% Tetragonal phase. Features 'Transformation Toughening' (t → m phase shift with 4% volume expansion arresting cracks): 1000–1200 MPa strength, but low translucency."
+          },
+          {
+            it: "Evoluzione 3Y (2ª Gen.): riduzione dell'allumina (Al2O3 da 0.25% a 0.05%) e sinterizzazione ottimizzata eliminano le porosità migliorando leggermente la luce, mantenendo > 1000 MPa (ideale per ponti estesi e strutture da stratificare).",
+            en: "3Y Evolution (2nd Gen): reducing alumina (Al2O3 from 0.25% to 0.05%) and optimizing sintering removes pores for slightly better light transmission while keeping > 1000 MPa (ideal for long-span bridges)."
+          },
+          {
+            it: "4Y-PSZ (4 mol% Y2O3 - Partially Stabilized): aumenta la frazione Cubica (~25–30%). La fase cubica è otticamente ISOTROPA (zero birifrangenza!): aumenta nettamente la translucenza mantenendo ~800–900 MPa (ponti fino a 3 elementi anche in anteriori).",
+            en: "4Y-PSZ (4 mol% Y2O3 - Partially Stabilized): increases the Cubic fraction (~25–30%). The cubic phase is optically ISOTROPIC (zero birefringence!): noticeably higher translucency with ~800–900 MPa (up to 3-unit bridges including anteriors)."
+          }
+        ],
+        tech: [
+          "🏆 3Y-TZP: ~100% Tetragonale • 1000–1200 MPa • Opaca/Media (Ponti lunghi / Sottostrutture)",
+          "⚖️ 4Y-PSZ: ~70% Tetragonale + ~30% Cubica • 800–900 MPa • Equilibrio Estetica/Forza",
+          "💡 Chiave ottica: la fase Cubica è ISOTROPA → riduce lo scattering ai bordi di grano"
+        ],
+        glossary: "<strong>Key Terms:</strong> Transformation Toughening = Tenacizzazione per trasformazione • Isotropic = Isotropo • 3Y-TZP / 4Y-PSZ = Zirconia stabilizzata al 3% / 4% molare di ittrio",
+        gate: {
+          qIt: "Perché aumentando il contenuto di Ossido di Ittrio dal 3% (3Y) al 4% (4Y) la zirconia diventa più translucida?",
+          qEn: "Why does increasing Yttria content from 3 mol% (3Y) to 4 mol% (4Y) make zirconia more translucent?",
+          options: [
+            { it: "Perché si forma una frazione di cristalli in fase Cubica (~25-30%), che sono otticamente isotropi (privi di birifrangenza) e hanno grani più grandi con meno bordi di grano.", en: "Because a fraction of Cubic phase crystals (~25-30%) forms, which are optically isotropic (no birefringence) and feature larger grains with fewer grain boundaries." },
+            { it: "Perché l'ittrio fonde trasformando la zirconia in vetro feldspatico.", en: "Because yttria melts and turns zirconia into feldspathic glass." },
+            { it: "Perché la zirconia 4Y ha una resistenza meccanica doppia rispetto alla 3Y.", en: "Because 4Y zirconia has double the mechanical strength of 3Y." }
+          ],
+          correct: 0,
+          expIt: "Bravissimo! La simmetria cubica ha lo stesso indice di rifrazione in tutte le direzioni (isotropia): la luce attraversa i grani senza deviare.",
+          expEn: "Spot on! Cubic crystal symmetry has the same refractive index in all directions (isotropy): light crosses grains without scattering."
+        }
+      },
+      {
+        category: "10 • ZIRCONIA 5Y-PSZ & 6Y-PSZ (ULTRA-TRANSLUCENT)",
+        icon: "💎",
+        titleIt: "Zirconia 5Y e 6Y: Massima Translucenza vs Limiti Meccanici",
+        titleEn: "5Y & 6Y Zirconia: Maximum Translucency vs. Mechanical Limits",
+        points: [
+          {
+            it: "5Y-PSZ (5 mol% Y2O3): ~50% fase Cubica e ~50% fase Tetragonale. Translucenza paragonabile al disilicato di litio LT/MT, ma perde il Transformation Toughening: resistenza scende a ~550–650 MPa.",
+            en: "5Y-PSZ (5 mol% Y2O3): ~50% Cubic phase and ~50% Tetragonal phase. Translucency rivals LT/MT lithium disilicate, but loses Transformation Toughening: strength drops to ~550–650 MPa."
+          },
+          {
+            it: "6Y-PSZ (6 mol% Y2O3): > 60–70% fase Cubica (quasi completamente cubica). Translucenza estrema (livello disilicato HT), ideale per corone singole anteriori monolitiche e faccette, ma resistenza ridotta a ~450–500 MPa (vietati ponti estesi!).",
+            en: "6Y-PSZ (6 mol% Y2O3): > 60–70% Cubic phase (predominantly cubic). Extreme translucency (HT disilicate level), ideal for monolithic anterior single crowns and veneers, but strength drops to ~450–500 MPa (no long-span bridges!)."
+          },
+          {
+            it: "Dischi Multistrato (Multilayer Gradated 3Y/4Y + 5Y): combinano 3Y/4Y opaco e tenace nella zona cervicale/dentinale con 5Y translucido nella zona incisale nello stesso disco CAD/CAM.",
+            en: "Multilayer Gradated Discs (3Y/4Y + 5Y): combine strong, opaque 3Y/4Y in the cervical/dentin zone with translucent 5Y in the incisal zone within a single CAD/CAM disc."
+          }
+        ],
+        tech: [
+          "✨ 5Y-PSZ: ~50% Cubica • 550–650 MPa • Corone singole / Ponti max 3 elementi anteriori",
+          "🔮 6Y-PSZ: >60% Cubica • 450–500 MPa • Solo corone singole / Faccette / Intarsi",
+          "🌈 Dischi Multilayer Gradated: gradiente reale di Ittrio (3Y cervicale → 5Y incisale)"
+        ],
+        glossary: "<strong>Key Terms:</strong> 5Y-PSZ / 6Y-PSZ = Zirconia cubica/parzialmente stabilizzata • Multilayer Gradated = Multistrato a gradiente • Flexural Strength = Resistenza flessionale",
+        gate: {
+          qIt: "Perché la zirconia 5Y e soprattutto la 6Y hanno una resistenza flessionale nettamente inferiore (450–600 MPa) rispetto alla 3Y (1200 MPa)?",
+          qEn: "Why do 5Y and especially 6Y zirconia exhibit significantly lower flexural strength (450–600 MPa) compared to 3Y zirconia (1200 MPa)?",
+          options: [
+            { it: "Perché i cristalli cubici NON possono subire la trasformazione di fase (Transformation Toughening) che arresta la propagazione delle cricche.", en: "Because cubic crystals CANNOT undergo the phase transformation (Transformation Toughening) that arrests crack propagation." },
+            { it: "Perché vengono sinterizzate a soli 400°C.", en: "Because they are sintered at only 400°C." },
+            { it: "Perché contengono bolle d'aria intenzionali.", en: "Because they contain intentional air bubbles." }
+          ],
+          correct: 0,
+          expIt: "Esatto! La fase cubica è stabile ma fragile (manca il meccanismo di espansione t→m): per questo i dischi Multilayer Gradated usano 3Y/4Y alla base e 5Y sul margine incisale.",
+          expEn: "Correct! The cubic phase is optically isotropic but brittle (lacks t→m crack arrest): that is why Multilayer Gradated discs place 3Y/4Y cervically and 5Y incisally."
+        }
+      },
+      {
+        category: "11 • SINTESI CLINICO-TECNICA & PROTOCOLI DI COTTURA",
+        icon: "🔥",
+        titleIt: "Scelta del Materiale & Controllo della Sinterizzazione/Cottura",
+        titleEn: "Material Selection & Sintering / Firing Cycle Control",
+        points: [
+          {
+            it: "La Zirconia pura NON ha fluorescenza naturale né opalescenza spiccata: per ottenere vitalità biomimetica su monolitico si applicano liquidi infiltranti fluorescenti pre-sinterizzazione o masse/glaze fluorescenti e opalescenti (micro-layering).",
+            en: "Pure zirconia lacks natural fluorescence and strong opalescence: biomimetic vitality on monolithic restorations requires pre-sintering fluorescent coloring liquids or fluorescent/opalescent micro-layering glazes."
+          },
+          {
+            it: "Attenzione alla temperatura di sinterizzazione della zirconia: superare la T max consigliata (es. > 1550°C) provoca crescita eccessiva dei grani, micro-fessurazioni e crollo della translucenza e resistenza.",
+            en: "Watch zirconia sintering temperature: exceeding the recommended max temperature (e.g., > 1550°C) causes excessive grain growth, microcracking, and loss of both translucency and strength."
+          },
+          {
+            it: "Regola decisionale finale: Faccette/Estetica estrema → Feldspatica o Disilicato HT • Corone singole anteriori → Disilicato LT/MT o Zirconia 5Y/6Y • Ponti estesi/Impianti → Zirconia 3Y/4Y (stratificata o micro-stratificata).",
+            en: "Final decision matrix: Veneers/Ultra-esthetics → Feldspathic or HT Disilicate • Single anterior crowns → LT/MT Disilicate or 5Y/6Y Zirconia • Long bridges/Implants → 3Y/4Y Zirconia (layered or micro-layered)."
+          }
+        ],
+        tech: [
+          "🎨 Micro-layering (0.3–0.5 mm): unisce struttura 3Y/4Y con smalti opalescenti/fluorescenti",
+          "🌡️ Sinterizzazione Zirconia: 1450–1530°C (cicli troppo rapidi o caldi alterano TP e colore)",
+          "🧪 Fluorescenza su Zirconia: va aggiunta con liquidi pre-sintering o supercolori/glaze dedicati"
+        ],
+        glossary: "<strong>Key Terms:</strong> Micro-layering = Micro-stratificazione • Sintering = Sinterizzazione • Grain Growth = Accrescimento dei grani",
+        gate: {
+          qIt: "Devi realizzare un ponte circolare su impianti da 6 elementi con altissimo carico masticatorio ed estetica anteriore: qual è la soluzione tecnicamente più sicura ed estetica?",
+          qEn: "You must fabricate a 6-unit implant-supported bridge requiring high masticatory load resistance and anterior esthetics: what is the safest, most esthetic choice?",
+          options: [
+            { it: "Zirconia 6Y-PSZ monolitica in spessore sottile.", en: "Monolithic 6Y-PSZ zirconia in thin cross-section." },
+            { it: "Ceramica feldspatica pura su refrattario.", en: "Pure feldspathic ceramic on a refractory die." },
+            { it: "Sottostruttura in Zirconia 3Y-TZP (o 4Y-PSZ certificata) con cut-back vestibolare micro-stratificato con ceramiche opalescenti e fluorescenti.", en: "3Y-TZP (or certified 4Y-PSZ) zirconia framework with buccal cut-back micro-layered using opalescent and fluorescent ceramics." }
+          ],
+          correct: 2,
+          expIt: "Eccellente! La 3Y-TZP garantisce 1200 MPa contro le fratture sui connettori del ponte, mentre il cut-back vestibolare micro-stratificato apporta opalescenza, fluorescenza e profondità naturale.",
+          expEn: "Excellent! 3Y-TZP delivers 1200 MPa against connector fracture, while buccal micro-layering supplies natural opalescence, fluorescence, and depth."
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+    let gateUnlocked = new Array(slidesData.length).fill(false);
+    let attemptsCount = new Array(slidesData.length).fill(0);
+    let firstTryCorrect = new Array(slidesData.length).fill(false);
+
+    function init() {
+      renderProgress();
+      renderSlide(0);
+    }
+
+    function renderProgress() {
+      const container = document.getElementById('progressSteps');
+      container.innerHTML = '';
+      slidesData.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'step-dot';
+        if (idx < currentSlide || gateUnlocked[idx]) dot.classList.add('completed');
+        if (idx === currentSlide) dot.classList.add('current');
+        container.appendChild(dot);
+      });
+      document.getElementById('stepLabel').innerText = `SLIDE ${currentSlide + 1} / ${slidesData.length}`;
+    }
+
+    function renderSlide(index) {
+      const s = slidesData[index];
+      document.getElementById('slideCategory').innerText = s.category;
+      document.getElementById('slideTitleIt').innerText = s.titleIt;
+      document.getElementById('slideTitleEn').innerText = s.titleEn;
+      document.getElementById('slideIcon').innerText = s.icon;
+
+      // Render Points
+      const pointsContainer = document.getElementById('slidePoints');
+      pointsContainer.innerHTML = '';
+      s.points.forEach(p => {
+        pointsContainer.innerHTML += `
+          <div class="point-item">
+            <div class="it"><span class="it-tag">IT</span>${p.it}</div>
+            <div class="en"><span class="en-tag">EN</span>${p.en}</div>
+          </div>
+        `;
+      });
+
+      // Render Tech Data
+      const techContainer = document.getElementById('slideTechList');
+      techContainer.innerHTML = '';
+      s.tech.forEach(item => {
+        techContainer.innerHTML += `<li>${item}</li>`;
+      });
+
+      // Render Glossary
+      document.getElementById('slideGlossary').innerHTML = s.glossary;
+
+      // Render Gate Quiz
+      const gateBox = document.getElementById('gateContainer');
+      const gateBadge = document.getElementById('gateBadge');
+      const fb = document.getElementById('gateFeedback');
+      const nextBtn = document.getElementById('nextBtn');
+      const prevBtn = document.getElementById('prevBtn');
+
+      document.getElementById('gateQIt').innerHTML = `<span class="it-tag">GATE IT</span> ${s.gate.qIt}`;
+      document.getElementById('gateQEn').innerHTML = `<span class="en-tag">GATE EN</span> ${s.gate.qEn}`;
+      document.getElementById('gateAttempts').innerText = `Tentativi: ${attemptsCount[index]}`;
+
+      const optsContainer = document.getElementById('gateOptions');
+      optsContainer.innerHTML = '';
+      const letters = ['A', 'B', 'C'];
+
+      s.gate.options.forEach((opt, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerHTML = `
+          <span class="opt-letter">${letters[optIdx]}</span>
+          <div>
+            <div class="it" style="font-weight:700;">${opt.it}</div>
+            <div class="en" style="color:#7dd3fc; font-size:1rem; margin-top:0.2rem;">${opt.en}</div>
+          </div>
+        `;
+        btn.onclick = () => checkGateAnswer(optIdx, btn);
+        if (gateUnlocked[index]) {
+          btn.disabled = true;
+          if (optIdx === s.gate.correct) btn.classList.add('correct');
+        }
+        optsContainer.appendChild(btn);
+      });
+
+      // Restore state if already unlocked
+      if (gateUnlocked[index]) {
+        gateBox.classList.add('unlocked');
+        gateBadge.innerText = "🔓 GATE SBLOCCATO • Puoi procedere alla slide successiva";
+        fb.className = "feedback-banner success";
+        fb.innerHTML = `<div class="it">✅ ${s.gate.expIt}</div><div class="en" style="margin-top:0.3rem;">${s.gate.expEn}</div>`;
+        nextBtn.disabled = false;
+        nextBtn.innerText = (index === slidesData.length - 1) ? "🏁 Completa Lezione" : "Slide Successiva ➡️";
+      } else {
+        gateBox.classList.remove('unlocked');
+        gateBadge.innerText = "🔒 GATE BLOCCATO • Rispondi correttamente per proseguire";
+        fb.className = "feedback-banner";
+        fb.style.display = "none";
+        nextBtn.disabled = true;
+        nextBtn.innerText = "🔒 Completa il Gate per Avanzare";
+      }
+
+      prevBtn.disabled = (index === 0);
+      renderProgress();
+    }
+
+    function checkGateAnswer(selectedIdx, btnElement) {
+      if (gateUnlocked[currentSlide]) return;
+
+      const s = slidesData[currentSlide];
+      attemptsCount[currentSlide]++;
+      document.getElementById('gateAttempts').innerText = `Tentativi: ${attemptsCount[currentSlide]}`;
+
+      const fb = document.getElementById('gateFeedback');
+
+      if (selectedIdx === s.gate.correct) {
+        if (attemptsCount[currentSlide] === 1) {
+          firstTryCorrect[currentSlide] = true;
+        }
+        gateUnlocked[currentSlide] = true;
+        btnElement.classList.add('correct');
+
+        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+        document.getElementById('gateContainer').classList.add('unlocked');
+        document.getElementById('gateBadge').innerText = "🔓 GATE SBLOCCATO • Puoi procedere alla slide successiva";
+
+        fb.className = "feedback-banner success";
+        fb.style.display = "block";
+        fb.innerHTML = `<div class="it">✅ ${s.gate.expIt}</div><div class="en" style="margin-top:0.3rem;">${s.gate.expEn}</div>`;
+
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.disabled = false;
+        nextBtn.innerText = (currentSlide === slidesData.length - 1) ? "🏁 Completa Lezione" : "Slide Successiva ➡️";
+        renderProgress();
+      } else {
+        btnElement.classList.add('wrong');
+        btnElement.disabled = true;
+        fb.className = "feedback-banner error";
+        fb.style.display = "block";
+        fb.innerHTML = `
+          <div class="it">❌ Risposta errata! Rileggi la slide sopra e riprova per sbloccare il Gate.</div>
+          <div class="en" style="margin-top:0.2rem;">Incorrect! Review the slide above and try again to unlock the Gate.</div>
+        `;
+      }
+    }
+
+    function nextSlide() {
+      if (!gateUnlocked[currentSlide]) return;
+
+      if (currentSlide < slidesData.length - 1) {
+        currentSlide++;
+        renderSlide(currentSlide);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('lessonStage').style.display = 'none';
+        document.getElementById('finalStage').style.display = 'block';
+        const firstTryTotal = firstTryCorrect.filter(Boolean).length;
+        document.getElementById('firstTryScore').innerText = `${firstTryTotal} / ${slidesData.length}`;
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide(currentSlide);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function restartLesson() {
+      currentSlide = 0;
+      gateUnlocked.fill(false);
+      attemptsCount.fill(0);
+      firstTryCorrect.fill(false);
+      document.getElementById('finalStage').style.display = 'none';
+      document.getElementById('lessonStage').style.display = 'flex';
+      renderSlide(0);
+    }
+
+    function setLangMode(mode, btn) {
+      document.body.className = 'mode-' + mode;
+      document.querySelectorAll('.header-controls .ctrl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

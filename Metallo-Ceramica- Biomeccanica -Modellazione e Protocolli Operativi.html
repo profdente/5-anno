@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="it"><head><script data-bard-client-injected="true">
+  document.addEventListener('input', (event) => {
+    if (event.target && (event.target.isContentEditable || event.target.hasAttribute('contenteditable'))) {
+      const clonedDoc = document.cloneNode(true);
+      const injectedScripts = clonedDoc.querySelectorAll('[data-bard-client-injected="true"]');
+      injectedScripts.forEach(el => el.remove());
+      window.parent.postMessage({
+        type: 'inlineEdit',
+        html: '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML
+      }, '*');
+    }
+  });
+</script><script data-bard-client-injected="true">(function(){'use strict';window.addEventListener("message",a=>{a.data&&a.data.type==="SUPPLEMENTAL_DATA_UPDATE"&&window.dispatchEvent(new CustomEvent("supplementaldataupdate",{detail:a.data.data}))});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  let isUpdatingSelection = false;
+  let lastSentText = '';
+  let lastSentRect = null;
+  let selectionTimeoutId = null;
+  let isMouseDown = false;
+  let mousedownPos = {x: 0, y: 0};
+
+  function notifyParentSelectionCleared() {
+    if (!lastSentText) return;
+    lastSentText = '';
+    lastSentRect = null;
+    window.parent.postMessage({
+      type: 'textSelectionCleared',
+    }, '*');
+  }
+
+  function clearSelectionAndNotifyParent() {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      selection.removeAllRanges();
+    }
+    notifyParentSelectionCleared();
+  }
+
+  function handleSelection() {
+    if (isUpdatingSelection) return;
+
+    const selection = window.getSelection();
+    const selectedText = selection ? selection.toString().trim() : '';
+
+    if (selectedText.length > 0 && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      let rect = range.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) {
+        const rects = range.getClientRects();
+        if (rects.length > 0) {
+          rect = rects[0];
+        }
+      }
+
+      if (
+        selectedText === lastSentText &&
+        lastSentRect &&
+        Math.abs(rect.top - lastSentRect.top) < 1 &&
+        Math.abs(rect.left - lastSentRect.left) < 1 &&
+        Math.abs(rect.width - lastSentRect.width) < 1 &&
+        Math.abs(rect.height - lastSentRect.height) < 1
+      ) {
+        return;
+      }
+
+      isUpdatingSelection = true;
+      try {
+        // Detect backwards selection before DOM manipulation so direction can be restored.
+        const isBackward =
+          selection.anchorNode &&
+          (selection.anchorNode !== range.startContainer ||
+            selection.anchorOffset !== range.startOffset);
+
+        const originalRange = range.cloneRange();
+
+        const startTag = document.createTextNode('<selection-tag>');
+        const endTag = document.createTextNode('</selection-tag>');
+
+        const rangeStart = range.cloneRange();
+        rangeStart.collapse(true);
+
+        const rangeEnd = range.cloneRange();
+        rangeEnd.collapse(false);
+
+        // Insert end tag first to avoid shifting start boundary if they are in the same node.
+        rangeEnd.insertNode(endTag);
+        rangeStart.insertNode(startTag);
+
+        const fullTextWithTags = document.body.innerText
+          .replace(/<selection-tag>/gi, '<selection-tag>')
+          .replace(new RegExp('</selection-tag>', 'gi'), '</selection-tag>');
+
+        if (startTag.parentNode) {
+          startTag.parentNode.removeChild(startTag);
+        }
+        if (endTag.parentNode) {
+          endTag.parentNode.removeChild(endTag);
+        }
+
+        // Explicitly restore the user's original selection range, preserving backwards
+        // direction via setBaseAndExtent if applicable.
+        selection.removeAllRanges();
+        if (isBackward && selection.setBaseAndExtent) {
+          selection.setBaseAndExtent(
+            originalRange.endContainer,
+            originalRange.endOffset,
+            originalRange.startContainer,
+            originalRange.startOffset,
+          );
+        } else {
+          selection.addRange(originalRange);
+        }
+
+        lastSentText = selectedText;
+        lastSentRect = {
+          top: rect.top,
+          left: rect.left,
+          bottom: rect.bottom,
+          right: rect.right,
+          width: rect.width,
+          height: rect.height,
+        };
+
+        window.parent.postMessage({
+          type: 'textSelection',
+          text: selectedText,
+          fullTextWithTags: fullTextWithTags,
+          rect: lastSentRect,
+        }, '*');
+      } finally {
+        isUpdatingSelection = false;
+      }
+    } else {
+      notifyParentSelectionCleared();
+    }
+  }
+
+  // Dismiss co-creation input on keyboard slide navigation or Escape key.
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      clearSelectionAndNotifyParent();
+      return;
+    }
+    const target = e.target;
+    const isEditing = target instanceof Element && (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    );
+    if (!isEditing && !e.shiftKey && ['ArrowRight', 'ArrowLeft', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.key)) {
+      clearSelectionAndNotifyParent();
+    }
+  }, true);
+
+  // Dismiss co-creation input or handle selection when selection changes via keyboard.
+  document.addEventListener('keyup', function() {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+      notifyParentSelectionCleared();
+    } else {
+      handleSelection();
+    }
+  }, true);
+
+  // Listen to selectionchange for screen readers (e.g. VoiceOver), assistive technologies, and accessibility APIs.
+  // Skips handleSelection() while the mouse button is held down to avoid
+  // interfering with an in-progress drag selection (especially backwards).
+  document.addEventListener('selectionchange', function() {
+    if (isUpdatingSelection) return;
+    if (isMouseDown) return;
+    if (selectionTimeoutId) {
+      clearTimeout(selectionTimeoutId);
+    }
+    selectionTimeoutId = setTimeout(function() {
+      selectionTimeoutId = null;
+      handleSelection();
+    }, 50);
+  });
+
+  // Dismiss co-creation input on hash/page navigation.
+  window.addEventListener('hashchange', function() {
+    clearSelectionAndNotifyParent();
+  });
+
+  // Track selection state and mouse position at mousedown to distinguish
+  // plain clicks (which should dismiss) from drag-to-select (which should not).
+  let selectionAtMousedown = '';
+  document.addEventListener('mousedown', function(e) {
+    if (e.button !== 0) return;
+    isMouseDown = true;
+    mousedownPos = {x: e.clientX, y: e.clientY};
+    const selection = window.getSelection();
+    selectionAtMousedown = selection ? selection.toString().trim() : '';
+  }, true);
+
+  document.addEventListener('mouseup', function(e) {
+    if (e.button !== 0) return;
+    isMouseDown = false;
+    const selection = window.getSelection();
+    const selectedText = selection ? selection.toString().trim() : '';
+
+    // Determine if the mouse moved significantly (drag vs plain click).
+    const dx = Math.abs(e.clientX - mousedownPos.x);
+    const dy = Math.abs(e.clientY - mousedownPos.y);
+    const isPlainClick = dx < 4 && dy < 4;
+
+    // If the selection text is the same as at mousedown and the mouse
+    // barely moved, the user performed a plain click (possibly on a nav
+    // arrow) rather than dragging to create a new selection. In this case,
+    // if there was a prior selection, dismiss the co-creation input.
+    if (isPlainClick && selectedText.length > 0 && selectedText === selectionAtMousedown) {
+      clearSelectionAndNotifyParent();
+      return;
+    }
+
+    handleSelection();
+  }, true);
+
+  // Reset mouse drag state if a context menu opens.
+  window.addEventListener('contextmenu', function() {
+    isMouseDown = false;
+  });
+
+  // Handle the case where the user starts a drag inside the iframe but
+  // releases the mouse button outside it. Without this, isMouseDown would
+  // remain true and selectionchange would never fire handleSelection().
+  window.addEventListener('blur', function() {
+    if (isMouseDown) {
+      isMouseDown = false;
+      const selection = window.getSelection();
+      const selectedText = selection ? selection.toString().trim() : '';
+      if (selectedText.length > 0) {
+        handleSelection();
+      }
+    }
+  });
+})();</script><script data-bard-client-injected="true">(function() {
+  // Ensure this script is executed only once
+  if (window.firebaseAuthBridgeScriptLoaded) {
+    return;
+  }
+  window.firebaseAuthBridgeScriptLoaded = true;
+
+  let nextTokenPromiseId = 0;
+
+  // Stores { resolve, reject } for ongoing token requests
+  const pendingTokenPromises = {};
+
+  // Listen for messages from the Host Application
+  window.addEventListener('message', function(event) {
+
+    const messageData = event.data;
+
+  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
+      const { success, token, error, promiseId } = messageData ?? {};
+      if (pendingTokenPromises[promiseId]) {
+        if (success) {
+          pendingTokenPromises[promiseId].resolve(token);
+        } else {
+          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
+        }
+        delete pendingTokenPromises[promiseId];
+      }
+    }
+  });
+
+  // Expose a function for the Generated App to request a new Firebase token
+  window.requestNewFirebaseToken = function() {
+    const currentPromiseId = nextTokenPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingTokenPromises[currentPromiseId] = { resolve, reject };
+    });
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'REQUEST_NEW_FIREBASE_TOKEN',
+        promiseId: currentPromiseId
+      }, '*');
+    } else {
+      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
+      delete pendingTokenPromises[currentPromiseId];
+    }
+    return promise;
+  };
+})();</script><script data-bard-client-injected="true">
+let realOriginalGetUserMedia = null;
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+}
+
+(function() {
+  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
+    try {
+      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
+        get: function() {
+          return undefined; // Or throw an error
+        },
+        configurable: false
+      });
+    } catch (error) {
+      console.error("Error defining prototype getter:", error);
+    }
+  }
+})();
+
+(function() {
+  const pendingMediaResolvers = {};
+  let nextMediaPromiseId = 0;
+
+  function requestMediaPermissions(constraints) {
+    const mediaPromiseId = nextMediaPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingMediaResolvers[mediaPromiseId] = (granted) => {
+        delete pendingMediaResolvers[mediaPromiseId];
+        resolve(granted);
+      };
+    });
+
+    window.parent.postMessage({
+      type: 'requestMediaPermission',
+      constraints: constraints,
+      promiseId: mediaPromiseId,
+    }, '*');
+
+    return promise;
+  }
+
+  let originalGetUserMedia = realOriginalGetUserMedia;
+
+  function interceptGetUserMedia() {
+    if (navigator.mediaDevices) {
+      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+        value: function(constraints) {
+          return requestMediaPermissions(constraints).then((granted) => {
+            if (granted) {
+              if (originalGetUserMedia) {
+                return originalGetUserMedia(constraints);
+              } else {
+                throw new Error("Original getUserMedia not available.");
+              }
+            } else {
+              throw new DOMException('Permission denied', 'NotAllowedError');
+            }
+          });
+        },
+        writable: false,
+        configurable: false
+      });
+    }
+  }
+
+  interceptGetUserMedia();
+
+  const observer = new MutationObserver(function(mutationsList, observer) {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'childList' && mutation.addedNodes) {
+        mutation.addedNodes.forEach(node => {
+          if (node === navigator.mediaDevices) {
+            interceptGetUserMedia();
+          }
+        });
+      }
+    }
+  });
+
+  function interceptSpeechRecognition() {
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      return;
+    }
+
+    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const SpeechRecognitionWrapper = function(...args) {
+      const recognizer = new OriginalSpeechRecognition(...args);
+      const originalStart = recognizer.start.bind(recognizer);
+
+      recognizer.start = function() {
+        requestMediaPermissions({ audio: true }).then(granted => {
+          if (granted) {
+            originalStart();
+          } else {
+            const errorEvent = new SpeechRecognitionErrorEvent('error');
+            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
+            recognizer.dispatchEvent(errorEvent);
+          }
+        });
+      };
+
+      return recognizer;
+    };
+
+    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
+    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
+
+    if (window.SpeechRecognition) {
+      window.SpeechRecognition = SpeechRecognitionWrapper;
+    }
+    if (window.webkitSpeechRecognition) {
+      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
+    }
+  }
+
+  interceptSpeechRecognition();
+
+  window.addEventListener('message', function(event) {
+    if (event.data) {
+      if (event.data.type === 'resolveMediaPermission') {
+        const { promiseId, granted } = event.data;
+        if (pendingMediaResolvers[promiseId]) {
+          pendingMediaResolvers[promiseId](granted);
+        }
+      }
+    }
+  });
+
+})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}" data-bard-client-injected="true">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
+function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
+
+ Copyright The Closure Library Authors.
+ SPDX-License-Identifier: Apache-2.0
+*/
+function A(b,d){function e(){}e.prototype=d.prototype;b.j=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.h=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
+let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
+null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.i="";var l=0,t=null,r=null,q=[],F=new TextEncoder,G=new TextDecoder;
+c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*16|0;return(f===
+"x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;(g=t)==null||g.postMessage(a)}};
+Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
+(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
+url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
+</script><script data-bard-client-injected="true">((function(modelInformation) {
+  const originalFetch = window.fetch;
+  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
+  let googleLlmBaseApiUrls = [
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
+  ];
+  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+    );
+  });
+  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedImageTransformModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+
+  const pendingFetchResolvers = {};
+  let nextPromiseId = 0;
+
+  function handleStringInput(input, optionsArgument) {
+    const actualUrl = input;
+    const fetchCallArgs = [actualUrl, optionsArgument];
+    const effectiveOptions = optionsArgument || {};
+    const bodyForApiKeyCheck = effectiveOptions.body;
+    const bodyForPostMessage = effectiveOptions.body;
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  function handleRequestInput(input, optionsArgument) {
+    const actualUrl = input.url;
+    const fetchCallArgs = [input, optionsArgument];
+    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (optionsArgument) {
+      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
+      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
+      if ('body' in optionsArgument) {
+        bodyForApiKeyCheck = optionsArgument.body;
+        bodyForPostMessage = optionsArgument.body;
+      } else {
+        bodyForApiKeyCheck = undefined;
+        bodyForPostMessage = input.body;
+      }
+    } else {
+      bodyForApiKeyCheck = undefined;
+      bodyForPostMessage = input.body;
+    }
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  window.fetch = function(input, optionsArgument) {
+    let actualUrl;
+    let fetchCallArgs;
+    let effectiveOptions = {};
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (typeof input === 'string') {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
+    } else if (input instanceof Request) {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
+    } else {
+      return originalFetch.apply(window, [input, optionsArgument]);
+    }
+
+    effectiveOptions.method = effectiveOptions.method || 'GET';
+    if (!effectiveOptions.headers) {
+      effectiveOptions.headers = new Headers();
+    }
+
+
+    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
+      let apiKeyIsNull = true;
+
+      const regex = new RegExp("models/([^:]+)");
+      const modelNameMatch = actualUrl.match(regex);
+      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
+
+
+      try {
+        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
+        const apiKeyParam = urlObject.searchParams.get('key');
+        if (apiKeyParam) {
+          apiKeyIsNull = false;
+        }
+      } catch (e) {
+        // Continue checks even if URL parsing fails
+      }
+
+      if (apiKeyIsNull && effectiveOptions.headers) {
+        const h = new Headers(effectiveOptions.headers);
+        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
+        if (apiKeyHeaderValue) {
+          apiKeyIsNull = false;
+          return originalFetch.apply(window, fetchCallArgs);
+        }
+      }
+
+      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
+        try {
+          const bodyData = JSON.parse(bodyForApiKeyCheck);
+          if (bodyData && bodyData.apiKey) {
+            apiKeyIsNull = false;
+            return originalFetch.apply(window, fetchCallArgs);
+          }
+        } catch (e) {
+          // Ignore JSON parsing errors
+        }
+      }
+
+      if(apiKeyIsNull) {
+        const promiseId = nextPromiseId++;
+        const promise = new Promise((resolve) => {
+          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
+            delete pendingFetchResolvers[promiseId];
+            resolve(resolvedResponse);
+          };
+        });
+
+        let serializedBodyForPostMessage;
+        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
+            serializedBodyForPostMessage = bodyForPostMessage;
+        } else if (bodyForPostMessage instanceof ReadableStream) {
+            serializedBodyForPostMessage = null;
+        } else {
+            try {
+                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
+            } catch (e) {
+                serializedBodyForPostMessage = null;
+            }
+        }
+
+        const messageOptions = {
+            method: effectiveOptions.method,
+            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
+            body: serializedBodyForPostMessage
+        };
+
+        window.parent.postMessage({
+          type: 'requestFetch',
+          url: actualUrl,
+          modelName: modelName,
+          options: messageOptions,
+          promiseId: promiseId,
+        }, '*');
+
+        return promise;
+      }
+      return originalFetch.apply(window, fetchCallArgs);
+    }
+    return originalFetch.apply(window, fetchCallArgs);
+  };
+
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'resolveFetch') {
+      const { promiseId, response } = event.data;
+      if (pendingFetchResolvers[promiseId]) {
+        try {
+          const reconstructedResponse = new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: new Headers(response.headers),
+          });
+          pendingFetchResolvers[promiseId](reconstructedResponse);
+        } catch (error) {
+          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
+        }
+      }
+    }
+  });
+
+}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image","imageTransformModelName":"gemini-3-pro-image","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image","gemini-3.1-flash-image-preview"],"deprecatedImageTransformModelNames":["gemini-3-pro-image-preview-11-2025"]})</script><script data-bard-client-injected="true">(function() {
+  function normalizeSlug(str) {
+    try {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[^p{L}p{N}s_-]/gu, '')
+        .replace(/s+/g, '-');
+    } catch (e) {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9s_-]/g, '')
+        .replace(/s+/g, '-');
+    }
+  }
+
+  function findTargetElement(hash) {
+    if (!hash || hash === '#') {
+      return null;
+    }
+    const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
+    let decodedId = rawId;
+    try {
+      decodedId = decodeURIComponent(rawId);
+    } catch (e) {
+      // Ignore URI malformed errors.
+    }
+
+    // 1. Direct ID match (raw and decoded).
+    let target = document.getElementById(rawId) || document.getElementById(decodedId);
+    if (target) {
+      return target;
+    }
+
+    // 2. Name attribute match (<a name="...">).
+    try {
+      if (typeof CSS !== 'undefined' && CSS.escape) {
+        target =
+          document.querySelector('[name="' + CSS.escape(rawId) + '"]') ||
+          document.querySelector('[name="' + CSS.escape(decodedId) + '"]');
+      } else {
+        const namedElements = document.getElementsByName(rawId);
+        if (namedElements && namedElements.length > 0) {
+          return namedElements[0];
+        }
+      }
+    } catch (e) {
+      // Ignore querySelector syntax errors.
+    }
+    if (target) {
+      return target;
+    }
+
+    // 3. Match heading text by slug (for Markdown TOCs where headings lack explicit IDs).
+    const targetSlug = normalizeSlug(decodedId);
+    if (targetSlug) {
+      for (const heading of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
+        if (normalizeSlug(heading.textContent || '') === targetSlug) {
+          return heading;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  document.addEventListener('click', function(event) {
+    const target = event.target;
+    const anchor = target && typeof target.closest === 'function' ? target.closest('a') : null;
+    if (!anchor) {
+      return;
+    }
+
+    const href = anchor.getAttribute('href');
+    if (
+      !href ||
+      href.trim().toLowerCase().startsWith('javascript:') ||
+      anchor.hasAttribute('download')
+    ) {
+      return;
+    }
+
+    // Check if the link is an in-page hash / anchor link.
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      const targetElement = findTargetElement(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+      return;
+    }
+
+    // Check if the URL has the same origin/pathname but with a hash.
+    try {
+      const url = new URL(anchor.href, window.location.href);
+      if (
+        url.hash &&
+        url.origin === window.location.origin &&
+        url.pathname === window.location.pathname
+      ) {
+        event.preventDefault();
+        const targetElement = findTargetElement(url.hash);
+        if (targetElement) {
+          targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+        return;
+      }
+    } catch (e) {
+      // Fall through if URL parsing fails.
+    }
+
+    // For all external or full navigation links, prevent iframe-level navigation
+    // (which breaks in AGSA WebView or sandboxed iframes) and ensure they open
+    // safely in a new tab/window.
+    if (anchor.target !== '_blank') {
+      event.preventDefault();
+      window.open(anchor.href, '_blank', 'noopener,noreferrer');
+    }
+  }, {capture: true});
+})();</script><script data-bard-client-injected="true">(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  const originalConsoleLog = console.log;
+  const originalConsoleError = console.error;
+
+    /**
+   * Normalizes an error event or a promise rejection reason into a structured error object.
+   * @param {*} errorEventOrReason The error object or reason.
+   * @return {object} Structured error data { message, name, stack }.
+   */
+  function getErrorObject(errorEventOrReason) {
+    if (errorEventOrReason instanceof Error) {
+      return {
+        message: errorEventOrReason.message,
+        name: errorEventOrReason.name,
+        stack: errorEventOrReason.stack,
+      };
+    }
+    // Fallback for non-Error objects.
+    try {
+      return {
+        message: JSON.stringify(errorEventOrReason),
+        name: 'UnknownErrorType',
+        stack: null,
+      };
+    } catch (e) {
+      return {
+        message: String(errorEventOrReason),
+        name: 'UnknownErrorTypeNonStringifiable',
+        stack: null,
+      };
+    }
+  }
+
+  /**
+   * Converts an array of arguments (from log/error) into a single string.
+   * Handles Error objects specially to include their message and stack.
+   * @param {Array<*>} args - Arguments passed to console methods.
+   * @return {string} A string representation of the arguments.
+   */
+  function stringifyArgs(args) {
+    return args
+      .map((arg) => {
+        if (arg instanceof Error) {
+          const {message, stack} = arg;
+          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
+        }
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg);
+          } catch (error) {
+            return '[Circular Object]';
+          }
+        } else {
+          return String(arg);
+        }
+      })
+      .join(' ');
+  }
+
+  console.log = function(...args) {
+    const logString = stringifyArgs(args);
+    window.parent.postMessage({ type: 'log', message: logString }, '*');
+    originalConsoleLog.apply(console, args);
+  };
+
+  console.error = function(...args) {
+    let errorData;
+    if (args.length > 0 && args[0] instanceof Error) {
+      const err = args[0];
+      // If the first arg is an Error, capture its details.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        ...getErrorObject(err),
+        rawArgsString: stringifyArgs(args.slice(1)),
+        timestamp: new Date().toISOString(),
+      };
+    } else {
+      // If not an Error object, treat all args as a general error message.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        message: stringifyArgs(args),
+        name: 'ConsoleLoggedError',
+        stack: null,
+        timestamp: new Date().toISOString(),
+      };
+    }
+    window.parent.postMessage(errorData, '*');
+    originalConsoleError.apply(console, args);
+  };
+
+  // Listen for global unhandled synchronous errors.
+  window.addEventListener('error', function(event) {
+    const errorDetails = event.error ? getErrorObject(event.error) : {
+      message: event.message,
+      name: 'GlobalError',
+      stack: null,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+    };
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'global',
+      ...errorDetails,
+      message: errorDetails.message || event.message,
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+  // Listen for unhandled promise rejections (asynchronous errors).
+  window.addEventListener('unhandledrejection', function(event) {
+    const errorDetails = getErrorObject(event.reason);
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'unhandledrejection',
+      ...errorDetails,
+      message: errorDetails.message || 'Unhandled Promise Rejection',
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progettazione e Realizzazione Strutture Metallo-Ceramica EBM</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #090d16;
+      --bg-card: #131c2e;
+      --bg-card-light: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #0284c7;
+      --accent-light: #38bdf8;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --border-color: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 1200px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 820px;
+    }
+
+    .top-bar {
+      background: rgba(19, 28, 46, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--accent-light);
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-grow: 1;
+      max-width: 400px;
+      margin: 0 32px;
+    }
+
+    .progress-bar-bg {
+      flex-grow: 1;
+      height: 8px;
+      background: #1e293b;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      width: 12.5%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 90px;
+    }
+
+    .slide-area {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-header {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title i { color: var(--accent-light); }
+
+    .card-body {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .card-body ul, .card-body ol {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .card-body li {
+      margin-bottom: 6px;
+    }
+
+    .ebm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--accent-light);
+      color: var(--accent-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .custom-table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background: #090d16;
+      color: var(--accent-light);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+    }
+
+    td { color: #cbd5e1; }
+    tr:last-child td { border-bottom: none; }
+
+    .quiz-gate-card {
+      margin-top: auto;
+      background: linear-gradient(135deg, #131c2e 0%, #090d16 100%);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.25);
+    }
+
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .quiz-tag {
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .quiz-question {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .quiz-options { grid-template-columns: 1fr 1fr; }
+    }
+
+    .option-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent-light);
+      background: #1e293b;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success) !important;
+      background: rgba(16, 185, 129, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--error) !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    .quiz-feedback {
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .quiz-feedback.success-msg {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: #6ee7b7;
+    }
+
+    .quiz-feedback.error-msg {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--error);
+      color: #fca5a5;
+    }
+
+    .bottom-nav {
+      background: #131c2e;
+      border-top: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover:not(:disabled) { background: #1e293b; }
+    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-next { background: var(--accent); border-color: var(--accent); }
+    .btn-next:hover:not(:disabled) { background: #0369a1; }
+
+    .summary-screen {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+    }
+
+    .trophy-icon {
+      font-size: 72px;
+      color: #f59e0b;
+      margin-bottom: 24px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .download-bar {
+      background: #0284c7;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .download-btn {
+      background: #ffffff;
+      color: #0284c7;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s ease;
+    }
+
+    .download-btn:hover {
+      background: #e0f2fe;
+    }
+  </style>
+<style>.lms-source-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #e0e0e0;
+    color: #333;
+    border-radius: 10px;
+    padding: 4px 4px;
+    font-family: sans-serif;
+    font-size: 10px;
+    pointer-events: none;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+</style></head>
+<body>
+
+  
+
+  <div class="app-viewport" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+    <div class="top-bar">
+      <div class="brand">
+        <i class="fa-solid fa-tooth"></i>
+        <span>PROTESI METALLO-CERAMICA EBM</span>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill" style="width: 12.5%;"></div>
+        </div>
+        <span class="progress-text" id="progressText">Modulo 1 / 8</span>
+      </div>
+    </div>
+
+    <div class="slide-area" id="slideContent">
+        <div class="slide-header">
+          <p class="eyebrow">Modulo 1 - Statica &amp; Biomeccanica Structural Design</p>
+          <h1 class="slide-title">Statica della Struttura Metallica e Vettori di Carico</h1>
+        </div>
+        
+          <div class="ebm-badge"><i class="fa-solid fa-shield-halved"></i> Evidenza EBM &amp; Biomeccanica Occlusale</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-to-dot"></i> Dinamica dei Carichi Masticatori</div>
+              <p class="card-body">Sulla struttura agiscono contemporaneamente forze di <b>compressione, flessione, taglio e trazione</b>. Mentre il metallo tollera ottimamente queste sollecitazioni, il rivestimento ceramico rigido presenta una scarsissima tolleranza ai <i>movimenti di torsione o flessione</i> della lega sottostante.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-fire-burner"></i> Sollecitazioni Termiche nelle Cotture</div>
+              <p class="card-body">Durante i cicli di cottura della ceramica (sinterizzazione), la struttura viene esposta a temperature prossime ai <b>950°-1000°C</b>. Se gli spessori del metallo sono insufficienti o non omogenei, si verificano deformazioni con irrimediabile perdita della precisione del margine cervicale.</p>
+            </div>
+          </div>
+        
+        
+        <div class="quiz-gate-card">
+          <div class="quiz-header">
+            <span class="quiz-tag"><i class="fa-solid fa-lock"></i> Quiz Gate Obbligatorio</span>
+          </div>
+          <div class="quiz-question">Perché la ceramica da rivestimento richiede una struttura metallica estremamente rigida ed esente da flessioni?</div>
+          <div class="quiz-options">
+      
+          <button class="option-btn" onclick="selectOption(0, 0)">
+            <i class="fa-regular fa-circle"></i>
+            Perché la ceramica possiede un'alta resistenza alla torsione ma soffre la compressione
+          </button>
+        
+          <button class="option-btn" onclick="selectOption(0, 1)">
+            <i class="fa-regular fa-circle"></i>
+            Perché il materiale ceramico ha una bassa resistenza alla trazione/flessione e si incrina se il metallo flette
+          </button>
+        
+          <button class="option-btn" onclick="selectOption(0, 2)">
+            <i class="fa-regular fa-circle"></i>
+            Per aumentare la traslucenza del bordo incisale del restauro
+          </button>
+        
+          <button class="option-btn" onclick="selectOption(0, 3)">
+            <i class="fa-regular fa-circle"></i>
+            Per consentire la brunitura del margine dopo la cementazione
+          </button>
+        </div></div></div>
+
+    <div class="bottom-nav">
+      <button class="btn-nav" id="btnPrev" onclick="navigateSlide(-1)" disabled="">
+        <i class="fa-solid fa-arrow-left"></i> Precedente
+      </button>
+      <button class="btn-nav btn-next" id="btnNext" onclick="navigateSlide(1)" disabled="">
+        Modulo Successivo <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function downloadHTMLFile() {
+      // Clona il documento attuale rimuovendo la barra del download per generare il file pulito
+      const cloneDoc = document.documentElement.cloneNode(true);
+      const bar = cloneDoc.querySelector('.download-bar');
+      if (bar) bar.remove();
+      
+      const content = "<!DOCTYPE html>\n" + cloneDoc.outerHTML;
+      const blob = new Blob([content], { type: 'text/html;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    const slideData = [
+      {
+        id: 1,
+        eyebrow: "Modulo 1 - Statica & Biomeccanica Structural Design",
+        title: "Statica della Struttura Metallica e Vettori di Carico",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-shield-halved"></i> Evidenza EBM & Biomeccanica Occlusale</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-arrows-to-dot"></i> Dinamica dei Carichi Masticatori</div>
+              <p class="card-body">Sulla struttura agiscono contemporaneamente forze di <b>compressione, flessione, taglio e trazione</b>. Mentre il metallo tollera ottimamente queste sollecitazioni, il rivestimento ceramico rigido presenta una scarsissima tolleranza ai <i>movimenti di torsione o flessione</i> della lega sottostante.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-fire-burner"></i> Sollecitazioni Termiche nelle Cotture</div>
+              <p class="card-body">Durante i cicli di cottura della ceramica (sinterizzazione), la struttura viene esposta a temperature prossime ai <b>950°-1000°C</b>. Se gli spessori del metallo sono insufficienti o non omogenei, si verificano deformazioni con irrimediabile perdita della precisione del margine cervicale.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Perché la ceramica da rivestimento richiede una struttura metallica estremamente rigida ed esente da flessioni?",
+          options: [
+            "Perché la ceramica possiede un'alta resistenza alla torsione ma soffre la compressione",
+            "Perché il materiale ceramico ha una bassa resistenza alla trazione/flessione e si incrina se il metallo flette",
+            "Per aumentare la traslucenza del bordo incisale del restauro",
+            "Per consentire la brunitura del margine dopo la cementazione"
+          ],
+          correct: 1,
+          explanation: "Corretto! La ceramica tollera ottimamente i carichi di compressione ma è estremamente fragile di fronte a forze di trazione e torsione causate dalla flessione del sottostante metallo."
+        }
+      },
+      {
+        id: 2,
+        eyebrow: "Modulo 2 - Compatibilità Termo-Meccanica",
+        title: "Il Coefficiente di Espansione Termica (ΔCET) e Compressione Residua",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-temperature-arrow-up"></i> Norma ISO 9693 - Interfaccia Ceramo-Metallica</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-compress"></i> Regola del ΔCET Positivo</div>
+              <p class="card-body">Il Coefficiente di Espansione Termica della lega metallica deve essere lievemente <b>SUPERIORE</b> a quello della ceramica da rivestimento:<br>
+              <b>ΔCET = CET (Lega) - CET (Ceramica) ≈ +0.5 a +1.0 × 10⁻⁶/K</b></p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-link-slash"></i> Meccanismo di Compressione Residua</div>
+              <p class="card-body">Durante la fase di raffreddamento post-cottura, il metallo si contrae leggermente più della ceramica. Questo differenziale "attrae" ed "abbraccia" la ceramica verso la struttura, ponendola sotto uno stato di <i>compressione residua protettiva</i> che evita spaccature.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Cosa si verifica se si accoppia una lega con CET inferiore rispetto alla ceramica da rivestimento?",
+          options: [
+            "Si ottiene un legame chimico perfetto grazie all'ossidazione spinta",
+            "La ceramica subirà trazione durante il raffreddamento, provocando crepe ed il distacco dell'interfaccia",
+            "Aumenta la durezza Vickers della ceramica",
+            "Si elimina la necessità di applicare lo strato di Opaquer"
+          ],
+          correct: 1,
+          explanation: "Esatto! Se il CET del metallo è inferiore, durante il raffreddamento la ceramica verrà posta sotto trazione, generando fratture o scheggiature (chipping)."
+        }
+      },
+      {
+        id: 3,
+        eyebrow: "Modulo 3 - Preparazione dei Pilastri & Margini",
+        title: "Geometria della Preparazione ed Integrità Parodontale",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-ruler-combined"></i> Specifiche di Laboratorio & Clinica</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-scissors"></i> Riduzione Protesica Minima</div>
+              <p class="card-body">L'asporto di sostanza dentale deve essere adeguato per alloggiare metallo e ceramica:
+                <ul>
+                  <li><b>Zona equatoriale/cervicale:</b> ≥ 1.2 - 1.3 mm</li>
+                  <li><b>Bordo incisale / occlusale:</b> 1.5 - 2.0 mm</li>
+                  <li><b>Convergenza dei monconi:</b> circa 6°</li>
+                </ul>
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-circle-dot"></i> Angolatura della Spalla / Chamfer</div>
+              <p class="card-body">La chiusura va conformata a <b>Chamfer profondo o Spalla raccordata (60°-90°)</b>. Angolature acute (< 50°) costringono a sovracontorni ceramici antigienici con scopertura del bordo metallico o dell'opaco poroso.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è lo spessore minimo di asporto occlusale/incisale richiesto per un restauro in metallo-ceramica?",
+          options: [
+            "0.5 mm in tutte le zone",
+            "1.5 - 2.0 mm per garantire lo spessore strutturale di lega e ceramica",
+            "3.0 - 4.0 mm per fare spazio alla ghirlanda",
+            "Non occorre asporto se il dente è devitalizzato"
+          ],
+          correct: 1,
+          explanation: "Corretto! Un asporto incisale/occlusale di 1.5 - 2.0 mm è indispensabile per permettere 0.3-0.5 mm di lega e 1.0-1.5 mm di rivestimento estetico supportato."
+        }
+      },
+      {
+        id: 4,
+        eyebrow: "Modulo 4 - Modellazione & Riduzione Anatomica",
+        title: "Wax-Up Modellato e Ridotto (Supporto Anatomico)",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-cubes"></i> Skill Operativa di Laboratorio</div>
+          <div class="card" style="margin-bottom:24px;">
+            <div class="card-title"><i class="fa-solid fa-layer-group"></i> La Regola del "Full Wax-Up" Ridotto Omogeneamente</div>
+            <p class="card-body">È fondamentale modellare prima la corona in cera <b>interamente anatomica</b> e successivamente eseguirne una riduzione controllata proporzionale (tramite mascherina in silicone). Questo garantisce che lo strato di ceramica applicato successivamente sia di <b>spessore costante (1.0 - 1.5 mm)</b>.</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-check-double"></i> Spessori Minimi di Lega Metallica</div>
+              <p class="card-body">Corone singole: <b>≥ 0.3 mm</b> post-rifinitura.<br>Pilastri di ponte: <b>≥ 0.5 mm</b> per garantire la rigidità durante la cottura e l'esercizio masticatorio.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Rischio da Spessori Irregolari di Ceramica</div>
+              <p class="card-body">Masse ceramiche con spessori disomogenei (es. accumuli > 2 mm senza supporto metallico) sviluppano forti tensioni interne durante la contrazione da sinterizzazione, portando a frattura.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è lo scopo principale della modellazione in cera a 'forma dentale anatomica ridotta'?",
+          options: [
+            "Ridurre il consumo di cera da modellazione",
+            "Garantire uno spessore omogeneo e uniforme della ceramica di rivestimento su tutte le superfici",
+            "Aumentare l'inclinazione dei canali di colata a 90°",
+            "Creare ritenzioni meccaniche microscopiche tramite solchi"
+          ],
+          correct: 1,
+          explanation: "Esatto! La riduzione omogenea del wax-up assicura che la ceramica abbia uno spessore costante supportato dal metallo, prevenendo picchi di tensione."
+        }
+      },
+      {
+        id: 5,
+        eyebrow: "Modulo 5 - Connessioni & Ghirlande di Supporto",
+        title: "Progettazione dei Connettori nei Ponti e Zone di Stabilizzazione",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-diagram-project"></i> Statica delle Strutture Multiple</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-u"></i> Connessioni ad "U" e Sezioni Stabili</div>
+              <p class="card-body">Nelle zone di giunzione tra pilastro ed elemento intermedio, la sezione del connettore va sagomata ad <b>"U" verso la papilla gengivale</b> per rispettare la salute parodontale ed estesa in altezza e larghezza palatale/linguale per assorbire le forze di flessione.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-ring"></i> Ruolo delle Ghirlande Metalliche</div>
+              <p class="card-body">Le ghirlande di rinforzo nel settore linguale/palatale irrigidiscono la struttura mantenendo stabili i margini durante la cottura della ceramica e garantiscono un <b>raffreddamento termico uniforme</b>.</p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Perché le zone di connessione sui canini nei ponti anteriori richiedono un dimensionamento rinforzato?",
+          options: [
+            "Perché il canino è l'unico dente su cui si applica la spalla ceramica",
+            "Perché sono sottoposte ad enormi carichi combinati di trazione, flessione e torsione nelle guide eccentriche",
+            "Per prevenire la decolorazione virante al verde (greening)",
+            "Perché non è possibile applicare l'opaco sui canini"
+          ],
+          correct: 1,
+          explanation: "Corretto! I canini guidano i movimenti di lateralità e ricevono carichi vettoriali complessi che richiedono connettori ad ampia sezione orizzontale e verticale."
+        }
+      },
+      {
+        id: 6,
+        eyebrow: "Modulo 6 - Giunzione Lega-Ceramica & Contatti",
+        title: "Disegno del Passaggio Metallico e Rispetto dei Contatti Occlusali",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-ruler-horizontal"></i> Biomeccanica dei Margini di Chiusura</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-angle-right"></i> Profilo ad Angolo Retto (90°)</div>
+              <p class="card-body">Il passaggio tra metallo e ceramica deve formare un <b>angolo netto di 90°</b> privo di sfumature sottili di metallo. Questo evita l'esposizione o lo sbriciolamento dell'Opaquer e consente un bordo ceramico ben finito.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-bullseye"></i> Distanza dai Punti di Contatto Clinici</div>
+              <p class="card-body">I passaggi tra lega e ceramica <b>NON devono mai trovarsi sui punti di contatto occlusale</b>:
+                <ul>
+                  <li>Distanti almeno <b>2.5 mm</b> dai contatti occlusali.</li>
+                  <li>Distanti almeno <b>1.0 mm</b> dai punti di contatto prossimali.</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Dove deve essere posizionata la linea di transizione/passaggio tra lega metallica e ceramica da rivestimento?",
+          options: [
+            "Esattamente al centro del punto di contatto occlusale",
+            "Fuori dalle zone di contatto funzionale (ad almeno 2.5 mm dalle stop occlusali)",
+            "Lungo il margine sottile incisale sfumando a zero",
+            "Sotto il solco gengivale senza finitura ad angolo retto"
+          ],
+          correct: 1,
+          explanation: "Esatto! La linea di passaggio non deve mai coincidere con i contatti funzionali per evitare la delaminazione della ceramica sotto l'impatto masticatorio."
+        }
+      },
+      {
+        id: 7,
+        eyebrow: "Modulo 7 - Trattamento Termico & Ossidazione",
+        title: "Ossidazione Controllata, Sabbiatura ed Igiene dell'Interfaccia",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-atom"></i> Norma ISO 9693 & Legame Chimico</div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-wind"></i> Sabbiatura con Al₂O₃ Monouso</div>
+              <p class="card-body">La sabbiatura deve essere eseguita unicamente con <b>Ossido di Alluminio puro (Al₂O₃ 110 µm) a 2.0-3.0 bar</b> di pressione. Aumenta l'area superficiale, rimuove i contaminanti ed eleva la bagnabilità dell'opaco.</p>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-temperature-high"></i> Ciclo di Ossidazione Termica</div>
+              <p class="card-body">Svolge due funzioni vitali:
+                <ol>
+                  <li>Consente la <b>degasificazione</b> (espulsione di H₂ inglobato durante la fusione).</li>
+                  <li>Crea lo <b>strato mono-atomico di ossidi</b> essenziale per il legame chimico con la ceramica.</li>
+                </ol>
+              </p>
+            </div>
+          </div>
+        `,
+        quiz: {
+          question: "Qual è la principale conseguenza di un'ossidazione termica sregolata ed eccessiva su leghe non nobili (Cr-Co)?",
+          options: [
+            "Aumento della lucentezza della ceramica",
+            "Formazione di uno strato di ossido troppo spesso e fragile che provoca il distacco della ceramica",
+            "Scomparsa immediata dei micropori superficiali",
+            "Riduzione del punto di fusione della lega di 300°C"
+          ],
+          correct: 1,
+          explanation: "Corretto! Un layer di ossido troppo spesso non aderisce saldamente alla base metallica e tende a fratturarsi portando al distacco (delaminazione) della ceramica."
+        }
+      },
+      {
+        id: 8,
+        eyebrow: "Modulo 8 - Troubleshooting & Guida ai Difetti",
+        title: "Analisi delle Cause di Fallimento ('Cosa Fare Se...')",
+        content: `
+          <div class="ebm-badge"><i class="fa-solid fa-wrench"></i> Prevenzione degli Errori Tecnologici</div>
+          <div class="custom-table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Difetto Riscontrato</th>
+                  <th>Possibili Cause Tecniche</th>
+                  <th>Soluzione Operativa EBM</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Porosità / Bolle nell'Opaco</b></td>
+                  <td>Contaminazione da oli, pressione eccessiva di rifinitura, riutilizzo di Al₂O₃.</td>
+                  <td>Rifinire in una sola direzione con frese dedicate; pulire in bagno ad ultrasuoni; usare sabbia monouso.</td>
+                </tr>
+                <tr>
+                  <td><b>Distacco della Ceramica</b></td>
+                  <td>Struttura flessibile; assenza di ghirlande; ossidazione errata; incompatibilità ΔCET.</td>
+                  <td>Modellazione anatomica ridotta; rispetto degli spessori minimi (0.3-0.5 mm); verifica del CET.</td>
+                </tr>
+                <tr>
+                  <td><b>Fratture / Incrinature</b></td>
+                  <td>Spessori disomogenei di ceramica; contatti occlusali sul passaggio lega-ceramica.</td>
+                  <td>Mantenere 1.0-1.5 mm di ceramica costante; spostare i passaggi a 2.5 mm dai contatti occlusali.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        quiz: {
+          question: "Quale misura tecnica previene la formazione di bolle e porosità nell'interfaccia durante l'applicazione dell'opaco?",
+          options: [
+            "Rifinire la lega metallica sempre in una sola direzione con frese per metallo duro pulite e detergere ad ultrasuoni",
+            "Aumentare lo spessore dell'opaco a 3 mm",
+            "Raffreddare bruscamente il cilindro in acqua fredda dopo la colata",
+            "Sabblare la struttura con perle di vetro a 6 bar di pressione"
+          ],
+          correct: 0,
+          explanation: "Esatto! La rifinitura unidirezionale evita di creare trucioli sovrapposti che inglobano detriti e grasso, prevenendo la formazione di bolle durante le cotture."
+        }
+      }
+    ];
+
+    let currentSlideIndex = 0;
+    let unlockedSlideIndex = 0;
+    let userAnswers = new Array(slideData.length).fill(null);
+    let quizPassed = new Array(slideData.length).fill(false);
+
+    const slideContent = document.getElementById('slideContent');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    function init() {
+      renderSlide(currentSlideIndex);
+    }
+
+    function renderSlide(index) {
+      if (index >= slideData.length) {
+        renderSummaryScreen();
+        return;
+      }
+
+      const data = slideData[index];
+      const percent = ((index + 1) / slideData.length) * 100;
+      progressFill.style.width = percent + '%';
+      progressText.innerText = `Modulo ${index + 1} / ${slideData.length}`;
+
+      let html = `
+        <div class="slide-header">
+          <p class="eyebrow">${data.eyebrow}</p>
+          <h1 class="slide-title">${data.title}</h1>
+        </div>
+        ${data.content}
+        
+        <div class="quiz-gate-card">
+          <div class="quiz-header">
+            <span class="quiz-tag"><i class="fa-solid fa-lock"></i> Quiz Gate Obbligatorio</span>
+          </div>
+          <div class="quiz-question">${data.quiz.question}</div>
+          <div class="quiz-options">
+      `;
+
+      data.quiz.options.forEach((opt, optIdx) => {
+        let btnClass = 'option-btn';
+        if (userAnswers[index] === optIdx) {
+          btnClass += quizPassed[index] ? ' correct' : ' wrong';
+        } else if (quizPassed[index] && optIdx === data.quiz.correct) {
+          btnClass += ' correct';
+        }
+
+        html += `
+          <button class="${btnClass}" 
+                  onclick="selectOption(${index}, ${optIdx})" 
+                  ${quizPassed[index] ? 'disabled' : ''}>
+            <i class="fa-regular ${userAnswers[index] === optIdx ? (quizPassed[index] ? 'fa-circle-check' : 'fa-circle-xmark') : 'fa-circle'}"></i>
+            ${opt}
+          </button>
+        `;
+      });
+
+      html += `</div>`;
+
+      if (userAnswers[index] !== null) {
+        if (quizPassed[index]) {
+          html += `
+            <div class="quiz-feedback success-msg">
+              <i class="fa-solid fa-circle-check"></i> <b>Risposta Corretta!</b> ${data.quiz.explanation}
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="quiz-feedback error-msg">
+              <i class="fa-solid fa-triangle-exclamation"></i> <b>Risposta Errata.</b> Rileggi i concetti scientifici del modulo e seleziona la risposta corretta per procedere!
+            </div>
+          `;
+        }
+      }
+
+      html += `</div>`;
+      slideContent.innerHTML = html;
+
+      btnPrev.disabled = index === 0;
+      btnNext.disabled = !quizPassed[index];
+    }
+
+    function selectOption(slideIdx, optionIdx) {
+      if (quizPassed[slideIdx]) return;
+
+      const data = slideData[slideIdx];
+      userAnswers[slideIdx] = optionIdx;
+
+      if (optionIdx === data.quiz.correct) {
+        quizPassed[slideIdx] = true;
+        if (slideIdx > unlockedSlideIndex) unlockedSlideIndex = slideIdx;
+      } else {
+        quizPassed[slideIdx] = false;
+      }
+
+      renderSlide(slideIdx);
+    }
+
+    function navigateSlide(direction) {
+      currentSlideIndex += direction;
+      if (currentSlideIndex < 0) currentSlideIndex = 0;
+      renderSlide(currentSlideIndex);
+    }
+
+    function renderSummaryScreen() {
+      progressFill.style.width = '100%';
+      progressText.innerText = 'Completato';
+      btnPrev.disabled = false;
+      btnNext.disabled = true;
+
+      slideContent.innerHTML = `
+        <div class="summary-screen">
+          <i class="fa-solid fa-award trophy-icon"></i>
+          <h1 class="summary-title" style="color:#fff; font-size:32px; margin-bottom:12px;">Corso Metallo-Ceramica EBM Completato!</h1>
+          <p class="summary-sub" style="color:#94a3b8; max-width:600px; margin-bottom:28px; line-height:1.6;">
+            Hai superato tutti gli 8 Moduli Formativi sulle Strutture in Metallo-Ceramica, acquisendo le competenze operative per la progettazione statico-biomeccanica, la gestione del ΔCET e l'esecuzione dell'interfaccia secondo le normative ISO.
+          </p>
+          <button class="btn-nav btn-next" onclick="restartCourse()" style="font-size:16px; padding:16px 32px;">
+            <i class="fa-solid fa-rotate-right"></i> Riavvia il Corso
+          </button>
+        </div>
+      `;
+    }
+
+    function restartCourse() {
+      currentSlideIndex = 0;
+      unlockedSlideIndex = 0;
+      userAnswers.fill(null);
+      quizPassed.fill(false);
+      renderSlide(0);
+    }
+
+    window.onload = init;
+  </script>
+
+</body></html>

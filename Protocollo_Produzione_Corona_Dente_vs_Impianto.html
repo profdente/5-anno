@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocollo di Produzione: Corona su Dente Naturale vs Impianto</title>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #e6f0fa;
+            --secondary: #008080;
+            --accent: #d97706;
+            --bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .badge-protocol {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .slide-counter {
+            font-weight: 700;
+            font-size: 0.95rem;
+            background: rgba(0,0,0,0.25);
+            padding: 0.3rem 0.85rem;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-top: 0.75rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin-top: 1.25rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #38bdf8;
+            width: 8.33%;
+            transition: width 0.4s ease;
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .slide-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .slide-card.locked {
+            opacity: 0.6;
+            pointer-events: none;
+            filter: grayscale(40%);
+        }
+        .slide-header {
+            background: var(--primary-light);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .slide-header h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            background: #e2e8f0;
+            color: var(--text-muted);
+        }
+        .slide-card.unlocked .status-badge {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        .slide-body {
+            padding: 1.5rem;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .method-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            background: #f8fafc;
+        }
+        .method-box.analog {
+            border-top: 4px solid var(--secondary);
+        }
+        .method-box.digital {
+            border-top: 4px solid var(--primary);
+        }
+        .method-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .method-box.analog .method-title {
+            color: var(--secondary);
+        }
+        .method-box.digital .method-title {
+            color: var(--primary);
+        }
+        .bilingual-block {
+            margin-bottom: 0.75rem;
+        }
+        .bilingual-block:last-child {
+            margin-bottom: 0;
+        }
+        .lang-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+        .lang-it {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .lang-en {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .text-en {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+        code.ext {
+            font-family: "Roboto Mono", monospace;
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.1rem 0.35rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .learning-check {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .lc-header {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        .lc-question {
+            margin-bottom: 0.5rem;
+        }
+        .answer-box {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed #fcd34d;
+            color: #1e293b;
+        }
+        .answer-box.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .btn-action {
+            margin-top: 1rem;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-action:hover {
+            background: #1e3a8a;
+        }
+        .btn-action.completed {
+            background: var(--success);
+        }
+        .completion-banner {
+            display: none;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
+            margin-top: 2rem;
+        }
+        .completion-banner.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        .completion-banner h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .controls-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: var(--primary-light);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="header-top">
+            <span class="badge-protocol">Bilingual Advanced Didactic Protocol / Corso Odontotecnico</span>
+            <span class="slide-counter" id="slideCounter">Tappa 1 / 12</span>
+        </div>
+        <h1>Protocollo di Produzione: Corona su Dente Naturale vs Corona su Impianto (Analogico vs CAD/CAM)</h1>
+        <p class="subtitle">Advanced Dental Technology Protocol &bull; Percorso Didattico Interattivo</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="controls-bar">
+        <button class="btn-secondary" onclick="unlockAll()">Mostra tutte le tappe / Show All Slides</button>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <section class="slide-card unlocked" id="slide-1">
+        <div class="slide-header">
+            <h2>Slide 1: Introduzione e Obiettivi del Workflow</h2>
+            <span class="status-badge" id="badge-1">Attiva</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Titolo / Title</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        <strong>Il Percorso Protesico:</strong> Dente Naturale vs Impianto (Analogico vs Digitale)
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        <strong>The Prosthetic Pathway:</strong> Natural Tooth vs Implant (Analog vs Digital)
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">Obiettivo / Objective</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Analizzare le 12 tappe critiche di produzione protesica confrontando metodiche tradizionali e flussi digitali CAD/CAM per studenti avanzati.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Analyze the 12 critical prosthetic production steps comparing traditional methods and digital CAD/CAM workflows for advanced students.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; la principale differenza strutturale nel supporto tra una corona su dente naturale e una su impianto?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the main structural difference in support between a natural tooth crown and an implant crown?
+                </div>
+                <button class="btn-action" id="btn-1" onclick="verifyAndUnlock(1)">Verifica Risposta e Sblocca Slide 2</button>
+                <div class="answer-box" id="ans-1">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Il legamento parodontale ammortizzatore nel dente naturale vs l'anchilosi rigida ossea nell'impianto.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> The cushioning periodontal ligament in the natural tooth vs rigid bone ankylosis in the implant.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide-card locked" id="slide-2">
+        <div class="slide-header">
+            <h2>Slide 2: 1. Impronta Preliminare e Studio del Caso</h2>
+            <span class="status-badge" id="badge-2">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Rilevamento con alginato in portaimpronta standard e colata in gesso tipo 3 per modelli di studio e montaggio in articolatore a valori medi.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Impression with alginate in standard tray and type 3 plaster cast for study models and average-value articulator mounting.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Scansione intraorale (IOS) o scansione ottica del modello in gesso; archiviazione cloud dei file <code class="ext">.STL</code> o <code class="ext">.PLY</code>.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Intraoral scan (IOS) or optical scan of the plaster model; cloud archiving of <code class="ext">.STL</code> or <code class="ext">.PLY</code> files.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; il vantaggio principale dell'impronta ottica intraorale rispetto all'alginato nella gestione dello spazio di archivio?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the main advantage of intraoral optical impression over alginate in storage space management?
+                </div>
+                <button class="btn-action" id="btn-2" onclick="verifyAndUnlock(2)">Verifica Risposta e Sblocca Slide 3</button>
+                <div class="answer-box" id="ans-2">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> L'eliminazione dei modelli fisici in gesso e l'archiviazione digitale illimitata a zero ingombro.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> Elimination of physical plaster models and unlimited digital archiving with zero bulk.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide-card locked" id="slide-3">
+        <div class="slide-header">
+            <h2>Slide 3: 2. Preparazione del Moncone vs Posizionamento Impianto</h2>
+            <span class="status-badge" id="badge-3">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Dente Naturale / Natural Tooth</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Riduzione a specchio della corona clinica, rispetto degli spessori biologici, finitura della linea di margine (chamfer o spalla).
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Reduction of the clinical crown, respect for biological thickness, margin line finish (chamfer or shoulder).
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">Impianto / Implant</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Posizionamento chirurgico implantare guidato da dima o chirurgia flapless; gestione della quota crestale e della guarigione transmucosa.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Surgical implant placement guided by stent or flapless surgery; management of crestal height and transmucosal healing.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Nel dente naturale, perch&eacute; la definizione geometrica della linea di margine &egrave; cruciale?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> In the natural tooth, why is the geometric definition of the margin line crucial?
+                </div>
+                <button class="btn-action" id="btn-3" onclick="verifyAndUnlock(3)">Verifica Risposta e Sblocca Slide 4</button>
+                <div class="answer-box" id="ans-3">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Per guidare il tecnico nell'identificazione univoca del limite di chiusura marginale.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> To guide the technician in the unambiguous identification of the marginal closure limit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide-card locked" id="slide-4">
+        <div class="slide-header">
+            <h2>Slide 4: 3. Impronta Definitiva (Master Impression)</h2>
+            <span class="status-badge" id="badge-4">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Tecnica del doppio mix o monofase con siliconi di condensazione/addizione (PVS) o polieteri, previa retrazione gengivale con fili multipli.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Double-mix or single-phase technique with condensation/addition silicones (PVS) or polyethers, following gingival retraction with multiple cords.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM (Impianto / Implant)</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Uso dello <em>Scanbody</em> avvitato sull'impianto o sul Ti-base per registrare tridimensionalmente posizione, orientamento e rotazione.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Use of the <em>Scanbody</em> screwed onto the implant or Ti-base to three-dimensionally record position, orientation, and rotation.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> A cosa serve lo <em>Scanbody</em> digitale in implantologia?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the digital <em>Scanbody</em> used for in implantology?
+                </div>
+                <button class="btn-action" id="btn-4" onclick="verifyAndUnlock(4)">Verifica Risposta e Sblocca Slide 5</button>
+                <div class="answer-box" id="ans-4">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> A trasferire con precisione geometrica tridimensionale la posizione e l'esatto orientamento dell'impianto nel software CAD.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> To transfer with 3D geometric precision the position and exact orientation of the implant into the CAD software.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide-card locked" id="slide-5">
+        <div class="slide-header">
+            <h2>Slide 5: 4. Sviluppo del Master Model e dei Monconi Sfilabili</h2>
+            <span class="status-badge" id="badge-5">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Colata in gesso extraduro (tipo IV) con inserimento di pin metallici e basetta, seguita dal taglio dei monconi sfilabili con sega a lama sottile.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Extra-hard plaster (type IV) casting with metal pins and baseplate, followed by sectioning the removable dies with a thin blade saw.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Nessun modello fisico necessario nel flusso diretto; in caso di modelli ibridi, stampa 3D in resina fotopolimerica ad alta precisione con monconi sfilabili digitali.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        No physical model needed in direct workflow; for hybrid workflows, high-precision photopolymer resin 3D printing with digital removable dies.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; la tolleranza dimensionale tipica richiesta per un modello stampato in 3D per protesi fissa?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the typical dimensional tolerance required for a 3D printed model for fixed prosthetics?
+                </div>
+                <button class="btn-action" id="btn-5" onclick="verifyAndUnlock(5)">Verifica Risposta e Sblocca Slide 6</button>
+                <div class="answer-box" id="ans-5">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Entro i 20&ndash;30 micrometri.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> Within 20&ndash;30 micrometers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide-card locked" id="slide-6">
+        <div class="slide-header">
+            <h2>Slide 6: 5. Modellazione CAD vs Modellazione a Cera (Wax-up)</h2>
+            <span class="status-badge" id="badge-6">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Stratificazione manuale di cera per ricreare anatomia occlusale, contatti interprossimali e profilo di emergenza sul moncone isolato.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Manual wax stratification to recreate occlusal anatomy, interproximal contacts, and emergence profile on the isolated die.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Progettazione virtuale tramite librerie morfologiche 3D biogenetiche, controllo automatico dello spessore minimo e calcolo istantaneo dei contatti occlusali.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Virtual design using biogenetic 3D morphological libraries, automatic control of minimum thickness, and instant calculation of occlusal contacts.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Quale vantaggio offre il software CAD nel controllo dello spazio occlusale antagonista?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What advantage does the CAD software offer in controlling antagonist occlusal space?
+                </div>
+                <button class="btn-action" id="btn-6" onclick="verifyAndUnlock(6)">Verifica Risposta e Sblocca Slide 7</button>
+                <div class="answer-box" id="ans-6">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Una mappa a colori in tempo reale che evidenzia le interferenze e lo spazio disponibile per il materiale.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> A real-time color map highlighting interferences and available material space.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide-card locked" id="slide-7">
+        <div class="slide-header">
+            <h2>Slide 7: 6. Scelta dei Materiali e Preparazione del Supporto</h2>
+            <span class="status-badge" id="badge-7">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Dente Naturale / Natural Tooth</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Scelta tra ossido di zirconio ad alta translucenza (3Y/4Y), disilicato di litio monolitico o metallo-ceramica tradizionale.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Choice between high-translucency zirconia (3Y/4Y), monolithic lithium disilicate, or traditional porcelain-fused-to-metal.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">Impianto / Implant</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Gestione della componente intermedia (Ti-base originale in titanio grado 5) per la connessione meccanica con l'impianto.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Management of the intermediate component (original grade 5 titanium Ti-base) for mechanical connection with the implant.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Perch&eacute; l'uso di una Ti-base originale &egrave; fondamentale nelle connessioni coniche?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> Why is the use of an original Ti-base crucial in conical connections?
+                </div>
+                <button class="btn-action" id="btn-7" onclick="verifyAndUnlock(7)">Verifica Risposta e Sblocca Slide 8</button>
+                <div class="answer-box" id="ans-7">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Per garantire tolleranze micrometriche ed evitare il disadattamento o la frattura della vite.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> To ensure micrometer tolerances and prevent misfit or screw fracture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide-card locked" id="slide-8">
+        <div class="slide-header">
+            <h2>Slide 8: 7. Fresatura (CAM) vs Fusione / Pressatura</h2>
+            <span class="status-badge" id="badge-8">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Tecnica della cera persa con cilindro di rivestimento, fusione della lega metallica o pressatura del disilicato di litio in forno apposito.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Lost-wax technique with investment ring, metal alloy casting, or lithium disilicate pressing in a dedicated furnace.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Fresatura sottrattiva da blocchetti pre-sinterizzati (zirconio) o completamente sinterizzati (disilicato/PMMA) tramite unit&agrave; a 4 o 5 assi.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Subtractive milling from pre-sintered blocks (zirconia) or fully sintered blocks (disilicate/PMMA) using 4 or 5-axis units.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Di quale percentuale si contrae un blocco di zirconio pre-sinterizzato durante la fase di sinterizzazione finale in forno?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> By what percentage does a pre-sintered zirconia block shrink during the final sintering furnace cycle?
+                </div>
+                <button class="btn-action" id="btn-8" onclick="verifyAndUnlock(8)">Verifica Risposta e Sblocca Slide 9</button>
+                <div class="answer-box" id="ans-8">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Circa il 20-25% a seconda della casa produttrice.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> Approximately 20-25% depending on the manufacturer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 9 -->
+    <section class="slide-card locked" id="slide-9">
+        <div class="slide-header">
+            <h2>Slide 9: 8. Sinterizzazione e Adattamento Iniziale</h2>
+            <span class="status-badge" id="badge-9">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Sabbiatura dei getti metallici, rimozione dei canali di colata con dischi diamantati e controllo del posizionamento sul modello master.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Sandblasting of metal castings, removal of sprues with diamond discs, and checking the seating on the master model.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Ciclo di sinterizzazione dello zirconio (fino a 1450&ndash;1500&deg;C), seguito dal controllo dell'adattamento marginale e interno senza tensioni residue.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Zirconia sintering cycle (up to 1450&ndash;1500&deg;C), followed by checking marginal and internal adaptation without residual stresses.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; il rischio principale se si effettua una molatura aggressiva sullo zirconio sinterizzato?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the main risk of aggressive grinding on sintered zirconia?
+                </div>
+                <button class="btn-action" id="btn-9" onclick="verifyAndUnlock(9)">Verifica Risposta e Sblocca Slide 10</button>
+                <div class="answer-box" id="ans-9">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> La generazione di microfratture superficiali e la trasformazione di fase che compromettono la resistenza strutturale.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> The generation of surface microcracks and phase transformation compromising structural strength.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide-card locked" id="slide-10">
+        <div class="slide-header">
+            <h2>Slide 10: 9. Finalizzazione Estetica (Stratificazione o Colorazione)</h2>
+            <span class="status-badge" id="badge-10">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Analogico / Analog</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Stratificazione manuale di ceramica feldspatica (polvere e liquido) con cotture multiple in forno per riprodurre mameloni, traslucenze e texture.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Manual stratification of feldspathic ceramic (powder and liquid) with multiple furnace firings to reproduce mamelons, translucency, and texture.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">CAD/CAM (Monolitico + Cut-back)</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Carotaggio digitale (cut-back) con micro-stratificazione estetica vestibolare o tecnica di colorazione superficiale con glaze e stain digitali.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Digital cut-back with vestibular aesthetic micro-layering or surface staining technique using digital glazes and stains.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; il vantaggio biomeccanico principale dei restauri monolitici in disilicato o zirconio rispetto alla ceramica stratificata?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the main biomechanical advantage of monolithic disilicate or zirconia restorations compared to layered ceramic?
+                </div>
+                <button class="btn-action" id="btn-10" onclick="verifyAndUnlock(10)">Verifica Risposta e Sblocca Slide 11</button>
+                <div class="answer-box" id="ans-10">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Maggiore resistenza alla frattura e assenza di chipping dello strato estetico.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> Greater fracture resistance and absence of aesthetic chipping.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 11 -->
+    <section class="slide-card locked" id="slide-11">
+        <div class="slide-header">
+            <h2>Slide 11: 10. Cementazione Extraorale (Incollaggio su Ti-base per Impianti)</h2>
+            <span class="status-badge" id="badge-11">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid">
+                <div class="method-box analog">
+                    <div class="method-title">Dente Naturale / Natural Tooth</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Cementazione adesiva o convenzionale sul moncone naturale preparato, previa detersione e isolamento con diga di gomma clinica.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Adhesive or conventional cementation on the prepared natural die, following cleaning and isolation with a clinical rubber dam.
+                    </div>
+                </div>
+                <div class="method-box digital">
+                    <div class="method-title">Impianto / Implant</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Trattamento del Ti-base (sabbiatura ad Al<sub>2</sub>O<sub>3</sub>, primer per metallo) e dell'intradosso della corona (acido fluoridrico per disilicato o sabbiatura per zirconio), incollaggio con composito resinoso duale extraorale.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Ti-base treatment (Al<sub>2</sub>O<sub>3</sub> sandblasting, metal primer) and crown intaglio (hydrofluoric acid for disilicate or sandblasting for zirconia), extraoral dual resin composite bonding.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check / Verifica dell'Apprendimento</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Perch&eacute; la cementazione della corona sulla Ti-base viene eseguita <em>extraoralmente</em> in laboratorio?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> Why is crown cementation on the Ti-base performed <em>extraorally</em> in the laboratory?
+                </div>
+                <button class="btn-action" id="btn-11" onclick="verifyAndUnlock(11)">Verifica Risposta e Sblocca Slide 12</button>
+                <div class="answer-box" id="ans-11">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Per impedire assolutamente che residui di cemento in eccesso penetrino nel solco perimplantare causando perimplantite.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> To strictly prevent excess cement residues from penetrating the peri-implant sulcus causing peri-implantitis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 12 -->
+    <section class="slide-card locked" id="slide-12">
+        <div class="slide-header">
+            <h2>Slide 12: 11 &amp; 12. Collaudo Clinico, Consegna e Controllo Occlusale</h2>
+            <span class="status-badge" id="badge-12">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="comparison-grid" style="grid-template-columns: 1fr;">
+                <div class="method-box digital">
+                    <div class="method-title">Finalizzazione / Finalization</div>
+                    <div class="bilingual-block">
+                        <span class="lang-tag lang-it">IT</span>
+                        Controllo dei contatti occlusali (carta articolatrice), passivazione finale della struttura, serraggio con chiave dinamometrica al torque prescritto (es. 25-35 Ncm) per gli impianti e chiusura del foro della vite con materiale estetico.
+                    </div>
+                    <div class="bilingual-block text-en">
+                        <span class="lang-tag lang-en">EN</span>
+                        Check of occlusal contacts (articulating paper), final passivity of the structure, tightening with a torque wrench to the prescribed torque (e.g., 25-35 Ncm) for implants, and sealing the screw access channel with aesthetic material.
+                    </div>
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Blocco Finale di Verifica / Final Learning Check</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; la funzione della chiusura del foro vite implantare prima di applicare il sigillante estetico?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the function of sealing the implant screw access hole before applying the aesthetic sealant?
+                </div>
+                <button class="btn-action" id="btn-12" onclick="verifyAndUnlock(12)">Verifica Risposta e Completa la Lezione</button>
+                <div class="answer-box" id="ans-12">
+                    <p><span class="lang-tag lang-it">IT</span> <strong>Risposta attesa:</strong> Proteggere la vite e impedire infiltrazioni batteriche all'interno del pozzetto implantare.</p>
+                    <p class="text-en"><span class="lang-tag lang-en">EN</span> <strong>Expected answer:</strong> To protect the screw and prevent bacterial leakage inside the implant well.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="completion-banner" id="completionBanner">
+        <h2>&#127881; Complimenti! Lezione Avanzata Completata</h2>
+        <p>Hai superato tutte le 12 tappe di verifica del protocollo protesico (Dente Naturale vs Impianto &bull; Analogico vs CAD/CAM).</p>
+    </div>
+</main>
+
+<script>
+    let unlockedCount = 1;
+    const totalSlides = 12;
+
+    function updateProgress(current) {
+        const pct = (current / totalSlides) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('slideCounter').textContent = `Tappa ${current} / ${totalSlides}`;
+    }
+
+    function verifyAndUnlock(slideNum) {
+        const ans = document.getElementById('ans-' + slideNum);
+        const btn = document.getElementById('btn-' + slideNum);
+        const badge = document.getElementById('badge-' + slideNum);
+
+        ans.classList.add('visible');
+        btn.classList.add('completed');
+        btn.textContent = 'Verificato ✓';
+        badge.textContent = 'Completata';
+
+        if (slideNum < totalSlides) {
+            const nextSlide = document.getElementById('slide-' + (slideNum + 1));
+            const nextBadge = document.getElementById('badge-' + (slideNum + 1));
+            if (nextSlide.classList.contains('locked')) {
+                nextSlide.classList.remove('locked');
+                nextSlide.classList.add('unlocked');
+                nextBadge.textContent = 'Attiva';
+                if (slideNum + 1 > unlockedCount) {
+                    unlockedCount = slideNum + 1;
+                    updateProgress(unlockedCount);
+                }
+                setTimeout(() => {
+                    nextSlide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 400);
+            }
+        } else {
+            const banner = document.getElementById('completionBanner');
+            banner.classList.add('visible');
+            setTimeout(() => {
+                banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 400);
+        }
+    }
+
+    function unlockAll() {
+        for (let i = 1; i <= totalSlides; i++) {
+            const slide = document.getElementById('slide-' + i);
+            const badge = document.getElementById('badge-' + i);
+            const ans = document.getElementById('ans-' + i);
+            const btn = document.getElementById('btn-' + i);
+            slide.classList.remove('locked');
+            slide.classList.add('unlocked');
+            badge.textContent = 'Completata';
+            ans.classList.add('visible');
+            btn.classList.add('completed');
+            btn.textContent = 'Verificato ✓';
+        }
+        unlockedCount = totalSlides;
+        updateProgress(totalSlides);
+        document.getElementById('completionBanner').classList.add('visible');
+    }
+</script>
+
+</body>
+</html>

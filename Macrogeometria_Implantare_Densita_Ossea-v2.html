@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macrogeometria Implantare &amp; Densità Ossea</title>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #e6f0fa;
+            --secondary: #008080;
+            --accent: #d97706;
+            --bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .badge-protocol {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .slide-counter {
+            font-weight: 700;
+            font-size: 0.95rem;
+            background: rgba(0,0,0,0.25);
+            padding: 0.3rem 0.85rem;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-top: 0.75rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin-top: 1.25rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #38bdf8;
+            width: 10%;
+            transition: width 0.4s ease;
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .controls-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover {
+            background: var(--primary-light);
+        }
+        .slide-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .slide-card.locked {
+            opacity: 0.6;
+            pointer-events: none;
+            filter: grayscale(40%);
+        }
+        .slide-header {
+            background: var(--primary-light);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        .slide-header h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            background: #e2e8f0;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .slide-card.unlocked .status-badge {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        .slide-body {
+            padding: 1.5rem;
+        }
+        .content-box {
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            background: #f8fafc;
+            margin-bottom: 1.5rem;
+        }
+        .bilingual-block {
+            margin-bottom: 0.85rem;
+        }
+        .bilingual-block:last-child {
+            margin-bottom: 0;
+        }
+        .lang-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+        .lang-it {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .lang-en {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .text-en {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+        .learning-check {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .lc-header {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        .lc-question {
+            margin-bottom: 0.5rem;
+        }
+        .answer-box {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed #fcd34d;
+            color: #1e293b;
+        }
+        .answer-box.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .btn-action {
+            margin-top: 1rem;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-action:hover {
+            background: #1e3a8a;
+        }
+        .btn-action.completed {
+            background: var(--success);
+        }
+        .completion-banner {
+            display: none;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
+            margin-top: 2rem;
+        }
+        .completion-banner.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        .completion-banner h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .btn-restart {
+            margin-top: 1.25rem;
+            background: #ffffff;
+            color: #15803d;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn-restart:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="header-top">
+            <span class="badge-protocol">Bilingual Advanced Didactic Protocol / Corso Odontotecnico</span>
+            <span class="slide-counter" id="slideCounter">Slide 1 / 10</span>
+        </div>
+        <h1>Macrogeometria Implantare &amp; Densit&agrave; Ossea</h1>
+        <p class="subtitle">Advanced Dental Technology Protocol &bull; Percorso Didattico Interattivo</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="controls-bar">
+        <button class="btn-secondary" onclick="unlockAll()">Mostra tutte le slide / Show All Slides</button>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <section class="slide-card unlocked" id="slide-1">
+        <div class="slide-header">
+            <h2>Slide 1: Introduzione e Razionale Biomeccanico / Introduction &amp; Biomechanical Rationale</h2>
+            <span class="status-badge" id="badge-1">Attiva</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    La forma dell'impianto e il design delle spire non sono scelte estetiche, ma risposte geometriche obbligate alle leggi della fisica dei materiali e alla biologia del tessuto osseo ricevente.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Implant shape and thread design are not aesthetic choices, but mandatory geometric responses to the laws of materials physics and recipient bone biology.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 1</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; il principio logico fondamentale che lega la forma dell'impianto al sito implantare?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the fundamental logical principle linking implant shape to the implant site?
+                </div>
+                <button class="btn-action" id="btn-1" onclick="verifyAndUnlock(1)">Verifica Risposta e Sblocca Slide 2</button>
+                <div class="answer-box" id="ans-1">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> La risposta geometrica obbligata alla densit&agrave; e alle leggi biologiche/fisiche dell'osso ricevente.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> The mandatory geometric response to recipient bone density and biological/physical laws.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide-card locked" id="slide-2">
+        <div class="slide-header">
+            <h2>Slide 2: Il Substrato Osseo (Classificazione di Lekholm &amp; Zarb) / Bone Substrate</h2>
+            <span class="status-badge" id="badge-2">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    La qualit&agrave; ossea si divide in <strong>Tipo I</strong> (corticale spessa e densa), <strong>Tipo II</strong> (corticale spessa + osso trabecolare denso), <strong>Tipo III</strong> (corticale sottile + trabecolare discreto) e <strong>Tipo IV</strong> (corticale sottilissima + osso spugnoso rado e soffice).
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Bone quality is divided into <strong>Type I</strong> (thick dense cortical), <strong>Type II</strong> (thick cortical + dense trabecular), <strong>Type III</strong> (thin cortical + fair trabecular), and <strong>Type IV</strong> (very thin cortical + sparse soft cancellous).
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 2</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Quale tipo di osso presenta una corticale sottilissima e un tessuto spugnoso estremamente rado e soffice?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> Which bone type features a very thin cortical and extremely sparse, soft cancellous tissue?
+                </div>
+                <button class="btn-action" id="btn-2" onclick="verifyAndUnlock(2)">Verifica Risposta e Sblocca Slide 3</button>
+                <div class="answer-box" id="ans-2">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Osso di Tipo IV (Lekholm &amp; Zarb).</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> Type IV bone (Lekholm &amp; Zarb).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide-card locked" id="slide-3">
+        <div class="slide-header">
+            <h2>Slide 3: Il Paradosso della Stabilit&agrave; Primaria / The Paradox of Primary Stability</h2>
+            <span class="status-badge" id="badge-3">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    La stabilit&agrave; primaria &egrave; l'ancoraggio meccanico immediato. Nell'osso denso (Tipo I), una geometria aggressiva genera picchi di stress ischemico e necrosi; nell'osso morbido (Tipo IV), un impianto cilindrico liscio &ldquo;gira a vuoto&rdquo; senza fare presa.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Primary stability is immediate mechanical anchoring. In dense bone (Type I), aggressive geometry causes ischemic stress peaks and necrosis; in soft bone (Type IV), a smooth cylindrical implant spins freely without purchase.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 3</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Cosa rischiamo di provocare se utilizziamo un impianto iper-aggressivo in un osso di Tipo I (corticale densa)?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What risk do we incur if we use a hyper-aggressive implant in Type I bone (dense cortical)?
+                </div>
+                <button class="btn-action" id="btn-3" onclick="verifyAndUnlock(3)">Verifica Risposta e Sblocca Slide 4</button>
+                <div class="answer-box" id="ans-3">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Picchi di stress tensivo/compressivo elevati, necrosi ischemica o frattura ossea.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> High tensile/compressive stress peaks, ischemic necrosis, or bone fracture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide-card locked" id="slide-4">
+        <div class="slide-header">
+            <h2>Slide 4: Geometria del Corpo Implantare (Cilindrico vs Conico) / Implant Body Geometry</h2>
+            <span class="status-badge" id="badge-4">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    I corpi cilindrici o debolmente conici distribuiscono i carichi per frizione calibrata ideale nell'osso denso. I corpi marcatamente conici agiscono come cunei progressivi che compiono un'azione di espansione e condensazione nell'osso povero.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Cylindrical or mildly tapered bodies distribute loads via calibrated friction ideal in dense bone. Markedly tapered bodies act as progressive wedges performing expansion and condensation in poor bone.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 4</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Qual &egrave; la funzione meccanica principale di un corpo fortemente conico nell'osso a bassa densit&agrave;?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What is the main mechanical function of a strongly tapered body in low-density bone?
+                </div>
+                <button class="btn-action" id="btn-4" onclick="verifyAndUnlock(4)">Verifica Risposta e Sblocca Slide 5</button>
+                <div class="answer-box" id="ans-4">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Agire come cuneo progressivo per compattare e condensare l'osso trabecolare circostante.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> To act as a progressive wedge to compact and condense surrounding trabecular bone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide-card locked" id="slide-5">
+        <div class="slide-header">
+            <h2>Slide 5: Architettura delle Spire: Profili e Vettori di Forza / Thread Architecture</h2>
+            <span class="status-badge" id="badge-5">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    Le spire a profilo trapezoidale o quadrato scaricano i vettori di forza in compressione pura (ideale in osso denso). Le spire triangolari o affilate scompongono le forze in direzioni laterali ed espansive, offrendo presa nei tessuti cedevoli.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Trapezoidal or square-profile threads discharge force vectors in pure compression (ideal in dense bone). Triangular or sharp threads break down forces into lateral and expansive directions, gripping yielding tissues.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 5</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> In quale tipo di osso sono preferibili le spire a profilo trapezoidale o quadrato per i carichi di compressione?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> In which bone type are trapezoidal or square profile threads preferable for compressive loads?
+                </div>
+                <button class="btn-action" id="btn-5" onclick="verifyAndUnlock(5)">Verifica Risposta e Sblocca Slide 6</button>
+                <div class="answer-box" id="ans-5">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Nell'osso denso (Tipo I e Tipo II).</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> In dense bone (Type I and Type II).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide-card locked" id="slide-6">
+        <div class="slide-header">
+            <h2>Slide 6: L'Effetto Condensante (<em>Bone Condensing</em>) / Bone Condensing Effect</h2>
+            <span class="status-badge" id="badge-6">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    Negli impianti progettati per osso morbido, il passo largo e le spire taglienti non tagliano come una sega, ma spingono e compattano l'osso trabecolare perifericamente, incrementando localmente la densit&agrave; minerale attorno alla spira.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    In implants designed for soft bone, wide pitch and sharp threads do not cut like a saw, but push and compact trabecular bone peripherally, locally increasing mineral density around the thread.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 6</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Come si definisce l'azione con cui le spire larghe compattano l'osso trabecolare circostante?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> How is the action by which wide threads compact surrounding trabecular bone defined?
+                </div>
+                <button class="btn-action" id="btn-6" onclick="verifyAndUnlock(6)">Verifica Risposta e Sblocca Slide 7</button>
+                <div class="answer-box" id="ans-6">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Effetto condensante o <em>Bone Condensing</em>.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> Condensing effect or <em>Bone Condensing</em>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide-card locked" id="slide-7">
+        <div class="slide-header">
+            <h2>Slide 7: Applicazione Clinica 1: Sweden &amp; Martina Premium (Osso Misto)</h2>
+            <span class="status-badge" id="badge-7">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    La linea <strong>Premium</strong> utilizza un corpo cilindrico-conico con doppia spira a passo rapido. Rappresenta la soluzione bilanciata per il 70% dei casi clinici in osso di Tipo II e Tipo III, unendo velocit&agrave; di inserzione e stabilit&agrave;.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    The <strong>Premium</strong> line uses a cylindrical-conical body with rapid-pitch double threads. It represents the balanced solution for 70% of clinical cases in Type II and III bone, combining insertion speed and stability.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 7</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Quale tipologia di osso &egrave; il target d'elezione per una linea bilanciata come Sweden &amp; Martina Premium?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> What bone type is the target of choice for a balanced line like Sweden &amp; Martina Premium?
+                </div>
+                <button class="btn-action" id="btn-7" onclick="verifyAndUnlock(7)">Verifica Risposta e Sblocca Slide 8</button>
+                <div class="answer-box" id="ans-7">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Osso di Tipo II e Tipo III (osso misto).</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> Type II and Type III bone (mixed bone).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide-card locked" id="slide-8">
+        <div class="slide-header">
+            <h2>Slide 8: Applicazione Clinica 2: Sweden &amp; Martina Prama (Siti Post-Estrattivi)</h2>
+            <span class="status-badge" id="badge-8">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    Nei siti post-estrattivi l'alveolo &egrave; vuoto in superficie. <strong>Prama</strong> sfrutta un apice conico con spire profonde per agganciare l'osso stabile del setto interradicolare, abbinato al collarino convergente BOPT per i tessuti molli.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    In post-extraction sites the socket is empty superficially. <strong>Prama</strong> utilizes a tapered apex with deep threads to engage stable interradicular septum bone, paired with the BOPT converging collar for soft tissues.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 8</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Dove trova l'ancoraggio primario rigido un impianto inserito in un alveolo post-estrattivo fresco?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> Where does an implant inserted in a fresh post-extraction socket find rigid primary anchorage?
+                </div>
+                <button class="btn-action" id="btn-8" onclick="verifyAndUnlock(8)">Verifica Risposta e Sblocca Slide 9</button>
+                <div class="answer-box" id="ans-8">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Nel fondo dell'alveolo / setto interradicolare.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> At the bottom of the socket / interradicular septum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 9 -->
+    <section class="slide-card locked" id="slide-9">
+        <div class="slide-header">
+            <h2>Slide 9: Applicazione Clinica 3: Sweden &amp; Martina Shelta (Osso Morbido Tipo IV)</h2>
+            <span class="status-badge" id="badge-9">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    Nel settore posteriore mascellare con osso Tipo IV, la linea <strong>Shelta</strong> estremizza la conicit&agrave; e l'ampiezza delle spire. L'impianto si comporta come un tassello a espansione che costringe e consolida il tessuto spugnoso rado.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    In the posterior maxilla with Type IV bone, the <strong>Shelta</strong> line maximizes taper and thread width. The implant acts as an expansion anchor that constrains and consolidates sparse cancellous tissue.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Learning Check 9</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> Per quale classe ossea di Lekholm &amp; Zarb &egrave; specificamente progettata la geometria della linea Shelta?
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> For which Lekholm &amp; Zarb bone class is the geometry of the Shelta line specifically designed?
+                </div>
+                <button class="btn-action" id="btn-9" onclick="verifyAndUnlock(9)">Verifica Risposta e Sblocca Slide 10</button>
+                <div class="answer-box" id="ans-9">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> Osso di Tipo IV (osso morbido mascellare posteriore).</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> Type IV bone (posterior maxillary soft bone).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide-card locked" id="slide-10">
+        <div class="slide-header">
+            <h2>Slide 10: Sintesi Logica e Responsabilit&agrave; del Tecnico / Logical Summary</h2>
+            <span class="status-badge" id="badge-10">&#128274; Bloccata</span>
+        </div>
+        <div class="slide-body">
+            <div class="content-box">
+                <div class="bilingual-block">
+                    <span class="lang-tag lang-it">IT</span>
+                    La macrogeometria implantare e la componentistica protesica formano un unicum indissolubile. Il laboratorio odontotecnico deve comprendere questi nessi causali per restituire manufatti protesici che rispettino rigorosamente la biomeccanica clinica.
+                </div>
+                <div class="bilingual-block text-en">
+                    <span class="lang-tag lang-en">EN</span>
+                    Implant macro-geometry and prosthetic components form an indissoluble unicum. The dental laboratory must understand these causal links to deliver restorations that strictly respect clinical biomechanics.
+                </div>
+            </div>
+            <div class="learning-check">
+                <div class="lc-header">&#128274; Blocco Finale di Verifica / Final Learning Check</div>
+                <div class="lc-question">
+                    <span class="lang-tag lang-it">IT</span> La forma dell'impianto e il passo di spira possono essere considerati scelte arbitrarie slegate dalla biologia ossea? (Rispondi con un termine secco)
+                </div>
+                <div class="lc-question text-en">
+                    <span class="lang-tag lang-en">EN</span> Can implant shape and thread pitch be considered arbitrary choices unrelated to bone biology? (Answer with a single term)
+                </div>
+                <button class="btn-action" id="btn-10" onclick="verifyAndUnlock(10)">Verifica Risposta e Completa la Lezione</button>
+                <div class="answer-box" id="ans-10">
+                    <p>&#127470;&#127481; <strong>Risposta attesa:</strong> No.</p>
+                    <p class="text-en">&#127468;&#127463; <strong>Expected answer:</strong> No.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="completion-banner" id="completionBanner">
+        <h2>&#127881; Lezione Avanzata Completata con Successo!</h2>
+        <p>Hai concluso con rigore logico il percorso su macrogeometria, densit&agrave; ossea e componentistica implantoprotesica.</p>
+        <button class="btn-restart" onclick="restartLesson()">Riavvia Lezione / Restart Lesson</button>
+    </div>
+</main>
+
+<script>
+    let unlockedCount = 1;
+    const totalSlides = 10;
+
+    function updateProgress(current) {
+        const pct = (current / totalSlides) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('slideCounter').textContent = `Slide ${current} / ${totalSlides}`;
+    }
+
+    function verifyAndUnlock(slideNum) {
+        const ans = document.getElementById('ans-' + slideNum);
+        const btn = document.getElementById('btn-' + slideNum);
+        const badge = document.getElementById('badge-' + slideNum);
+
+        ans.classList.add('visible');
+        btn.classList.add('completed');
+        btn.textContent = 'Verificato ✓';
+        badge.textContent = 'Completata';
+
+        if (slideNum < totalSlides) {
+            const nextSlide = document.getElementById('slide-' + (slideNum + 1));
+            const nextBadge = document.getElementById('badge-' + (slideNum + 1));
+            if (nextSlide.classList.contains('locked')) {
+                nextSlide.classList.remove('locked');
+                nextSlide.classList.add('unlocked');
+                nextBadge.textContent = 'Attiva';
+                if (slideNum + 1 > unlockedCount) {
+                    unlockedCount = slideNum + 1;
+                    updateProgress(unlockedCount);
+                }
+                setTimeout(() => {
+                    nextSlide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 400);
+            }
+        } else {
+            const banner = document.getElementById('completionBanner');
+            banner.classList.add('visible');
+            setTimeout(() => {
+                banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 400);
+        }
+    }
+
+    function unlockAll() {
+        for (let i = 1; i <= totalSlides; i++) {
+            const slide = document.getElementById('slide-' + i);
+            const badge = document.getElementById('badge-' + i);
+            const ans = document.getElementById('ans-' + i);
+            const btn = document.getElementById('btn-' + i);
+            slide.classList.remove('locked');
+            slide.classList.add('unlocked');
+            badge.textContent = 'Completata';
+            ans.classList.add('visible');
+            btn.classList.add('completed');
+            btn.textContent = 'Verificato ✓';
+        }
+        unlockedCount = totalSlides;
+        updateProgress(totalSlides);
+        document.getElementById('completionBanner').classList.add('visible');
+    }
+
+    function restartLesson() {
+        for (let i = 1; i <= totalSlides; i++) {
+            const slide = document.getElementById('slide-' + i);
+            const badge = document.getElementById('badge-' + i);
+            const ans = document.getElementById('ans-' + i);
+            const btn = document.getElementById('btn-' + i);
+
+            ans.classList.remove('visible');
+            btn.classList.remove('completed');
+
+            if (i === 1) {
+                slide.classList.remove('locked');
+                slide.classList.add('unlocked');
+                badge.textContent = 'Attiva';
+                btn.textContent = 'Verifica Risposta e Sblocca Slide 2';
+            } else {
+                slide.classList.remove('unlocked');
+                slide.classList.add('locked');
+                badge.innerHTML = '&#128274; Bloccata';
+                btn.textContent = i < totalSlides
+                    ? `Verifica Risposta e Sblocca Slide ${i + 1}`
+                    : 'Verifica Risposta e Completa la Lezione';
+            }
+        }
+        unlockedCount = 1;
+        updateProgress(1);
+        document.getElementById('completionBanner').classList.remove('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

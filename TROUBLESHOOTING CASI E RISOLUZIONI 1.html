@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - 07. Troubleshooting & Case Studies</title>
+  <style>
+    body { font-family: sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 15px; }
+    header { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-bottom: 3px solid #ef4444; }
+    h1 { margin: 0; font-size: 18px; color: #ef4444; }
+    p.sub { margin: 4px 0 0 0; font-size: 12px; color: #94a3b8; }
+    
+    /* NAVIGATORE A PULSANTI TAB */
+    .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 10px 14px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; flex: 1; min-width: 100px; text-align: center; }
+    .tab-btn.active { background: #ef4444; color: #ffffff; border-color: #ef4444; }
+
+    .container { max-width: 800px; margin: 0 auto; }
+    
+    /* SCHEDE SLIDE */
+    .slide-panel { display: none; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; }
+    .slide-panel.active { display: block; }
+
+    .slide-tag { display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 15px; margin-bottom: 12px; }
+    
+    h2 { margin-top: 0; font-size: 18px; color: #fff; }
+    p { font-size: 14px; color: #cbd5e1; line-height: 1.5; }
+    
+    .box { background: #0f172a; border-left: 3px solid #ef4444; padding: 12px; border-radius: 6px; font-size: 13px; margin: 15px 0; }
+    .box-title { font-weight: bold; color: #ef4444; margin-bottom: 4px; }
+    
+    .quiz { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 15px; border: 1px solid #334155; }
+    .quiz-title { font-size: 11px; font-weight: bold; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-q { font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+    .quiz-q-en { font-weight: normal; color: #94a3b8; font-size: 12px; }
+    
+    button.opt { display: block; width: 100%; text-align: left; background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 10px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; cursor: pointer; }
+    button.opt:hover { border-color: #ef4444; }
+    
+    .res { display: none; padding: 10px; border-radius: 6px; margin-top: 8px; font-size: 12px; font-weight: bold; }
+    .res.ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+    .res.ko { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+
+    video { width: 100%; max-height: 320px; border-radius: 8px; background: #000; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>LAB 4.0 // 07. TROUBLESHOOTING & CASE STUDIES</h1>
+    <p class="sub">Corso Serale IDA • Modulo Didattico Integrato</p>
+  </header>
+
+  <div class="container">
+
+    <!-- BARRA DI NAVIGAZIONE SLIDE -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="openSlide(1)">Slide 1</button>
+      <button class="tab-btn" onclick="openSlide(2)">Slide 2</button>
+      <button class="tab-btn" onclick="openSlide(3)">Slide 3</button>
+      <button class="tab-btn" onclick="openSlide(4)">Slide 4</button>
+      <button class="tab-btn" onclick="openSlide(5)">Slide 5</button>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <div id="slide-1" class="slide-panel active">
+      <span class="slide-tag">SLIDE 1 DI 5 // MATRICE DIFETTI</span>
+      <h2>1. Matrice Integrata degli Errori di Banco</h2>
+      <p>L'analisi sistematica degli errori di laboratorio consente di identificare la causa radice delle imperfezioni protesiche prima della consegna finale al clinico.</p>
+      
+      <div class="box">
+        <div class="box-title">PREVENZIONE DEGLI ERRORI:</div>
+        La maggior parte dei difetti protesici deriva da inadeguata gestione delle espansioni dei gessi, non corretta calibrazione dei forni di sinterizzazione o inosservanza dei tempi di raffreddamento delle ceramiche.
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 1 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Qual è il primo passo metodologico di fronte ad una rottura protesica in banco?<br>
+          <span class="quiz-q-en">[EN] What is the first methodological step when facing a bench prosthetic failure?</span>
+        </div>
+        <button class="opt" onclick="check('q1', true)">A) Identificare la natura della frattura (coesiva vs adesiva) ed analizzare l'interfaccia. / Identify fracture nature (cohesive vs adhesive) and analyze interface.</button>
+        <button class="opt" onclick="check('q1', false)">B) Rifare immediatamente il pezzo senza analizzare le cause. / Remake the piece immediately without cause analysis.</button>
+        <div id="q1" class="res"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div id="slide-2" class="slide-panel">
+      <span class="slide-tag">SLIDE 2 DI 5 // CHIPPING CERAMICO</span>
+      <h2>2. Analisi delle Fratture Ceramiche: Chipping vs Delaminazione</h2>
+      <p>La frattura della ceramica da rivestimento è una delle complicanze più frequenti nelle strutture metal-free ed in metallo-ceramica.</p>
+      
+      <div class="box">
+        <div class="box-title">DIFFERENZIAZIONE EBM:</div>
+        - <strong>Chipping Coesivo:</strong> Frattura interna al corpo della ceramica di rivestimento, spesso dovuta a raffreddamento troppo rapido.<br>
+        - <strong>Delaminazione Adesiva:</strong> Stacco netto tra ceramica ed estetico/struttura, provocato da contaminazione o mismatch del coefficiente di espansione termica (CTE).
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 2 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Da cosa è provocata principalmente la delaminazione adesiva della ceramica dalla struttura?<br>
+          <span class="quiz-q-en">[EN] What mainly causes adhesive delamination of veneering ceramic from the framework?</span>
+        </div>
+        <button class="opt" onclick="check('q2', false)">A) Da un eccesso di cottura in forno. / From overfiring inside furnace.</button>
+        <button class="opt" onclick="check('q2', true)">B) Da incompatibilità del coefficiente di espansione termica (CTE) o contaminazione della superficie. / From CTE mismatch or surface contamination.</button>
+        <div id="q2" class="res"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div id="slide-3" class="slide-panel">
+      <span class="slide-tag">SLIDE 3 DI 5 // ERRORE MARGINALE</span>
+      <h2>3. Difetti di Precisione Marginometrica e Chiusura Sigmoidea</h2>
+      <p>Un adattamento marginale impreciso porta alla dissoluzione del cemento, infiltrazione batterica e fallimento a lungo termine del manufatto.</p>
+
+      <video controls preload="metadata">
+        <source src="video/troubleshooting_fit.mp4" type="video/mp4">
+      </video>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 3 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Quale valore rappresenta il limite di accettabilità clinica EBM per il gap marginale?<br>
+          <span class="quiz-q-en">[EN] What value represents the EBM clinical acceptability threshold for marginal gap?</span>
+        </div>
+        <button class="opt" onclick="check('q3', true)">A) Entro i 120 micrometri (µm). / Within 120 micrometers (µm).</button>
+        <button class="opt" onclick="check('q3', false)">B) Superiore a 500 micrometri (µm). / Over 500 micrometers (µm).</button>
+        <div id="q3" class="res"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div id="slide-4" class="slide-panel">
+      <span class="slide-tag">SLIDE 4 DI 5 // CASI CLINICI</span>
+      <h2>4. Studio di Casi Clinici Reali e Root Cause Analysis</h2>
+      <p>Esame pratico di manufatti protesici contestati o falliti con protocollo standardizzato di ricerca degli errori.</p>
+      
+      <div class="box">
+        <div class="box-title">PROTOCOLLO DI CHECK:</div>
+        1. Verifica precisione sul modello master in gesso.<br>
+        2. Controllo degli spessori minimi di struttura tramite calibro di precisione.<br>
+        3. Verifica dei punti di contatto occlusali e interprossimali.
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 4 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] In caso di incorretta chiusura occlusale, qual è il primo fattore da controllare nel gesso?<br>
+          <span class="quiz-q-en">[EN] In case of incorrect occlusal fit, what is the first factor to check on the stone model?</span>
+        </div>
+        <button class="opt" onclick="check('q4', false)">A) Il colore della polvere del gesso. / The stone powder color.</button>
+        <button class="opt" onclick="check('q4', true)">B) L'espulsione di bolle d'aria o la deformazione dell'articolatore durante il montaggio. / Air voids or articulator distortion during mounting.</button>
+        <div id="q4" class="res"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div id="slide-5" class="slide-panel">
+      <span class="slide-tag">SLIDE 5 DI 5 // CHECKLIST QUALITÀ</span>
+      <h2>5. Checklist EBM di Controllo Qualità Pre-Consegna</h2>
+      <p>Lista di riscontro finale che ogni odontotecnico deve compilare prima di spedire la protesi allo studio dentistico.</p>
+
+      <div class="box">
+        <div class="box-title">CHECKLIST DI BANCO:</div>
+        ✓ Integrità dei margini di chiusura (nessun gradino o sovrasotto-sottoestensione).<br>
+        ✓ Assenza di micro-cricche superficiali al microscopio/lenti di ingrandimento.<br>
+        ✓ Pulizia ed decontaminazione finale a vapore.
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-title">🧪 Quesito 5 [Bilingual]</div>
+        <div class="quiz-q">
+          [IT] Perché è indispensabile la decontaminazione a vapore prima della consegna?<br>
+          <span class="quiz-q-en">[EN] Why is final steam cleaning mandatory before delivery?</span>
+        </div>
+        <button class="opt" onclick="check('q5', true)">A) Per rimuovere residui di pasta da lucidatura, oli e particelle lavorative dal manufatto. / To remove polishing compounds, oils and machining debris from the restoration.</button>
+        <button class="opt" onclick="check('q5', false)">B) Per modificare il colore finale della struttura. / To change the final shade of the framework.</button>
+        <div id="q5" class="res"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openSlide(n) {
+      const panels = document.querySelectorAll('.slide-panel');
+      panels.forEach(p => p.classList.remove('active'));
+      
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('slide-' + n).classList.add('active');
+      btns[n - 1].classList.add('active');
+    }
+
+    function check(id, isCorrect) {
+      const el = document.getElementById(id);
+      el.style.display = 'block';
+      if(isCorrect) {
+        el.className = 'res ok';
+        el.innerHTML = '✔ ESATTO / CORRECT!';
+      } else {
+        el.className = 'res ko';
+        el.innerHTML = '✖ ERRATO / INCORRECT! Riprova.';
+      }
+    }
+  </script>
+</body>
+</html>

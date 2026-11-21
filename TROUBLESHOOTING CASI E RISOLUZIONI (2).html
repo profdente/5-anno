@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB 4.0 - Troubleshooting & EBM Protocols</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; }
+    .font-tech { font-family: 'Orbitron', sans-serif; }
+    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .glow-cyan { box-shadow: 0 0 25px rgba(6, 182, 212, 0.25); }
+    .glow-orange { box-shadow: 0 0 25px rgba(249, 115, 22, 0.25); }
+    .option-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+    .option-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: #06b6d4; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-900">
+
+  <!-- TOP BAR -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-500 flex items-center justify-center text-slate-950 font-bold font-tech text-xl shadow-lg shadow-cyan-500/30">
+          VT
+        </div>
+        <div>
+          <h1 class="font-tech text-sm sm:text-base font-bold bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+            LAB 4.0 // VIDEO & TROUBLESHOOTING
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Corso Serale IDA • Multilingual EBM Protocol (IT / EN)</p>
+        </div>
+      </div>
+      
+      <button onclick="toggleQRModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 rounded-lg text-xs font-mono flex items-center gap-2">
+        <i class="fa-solid fa-qrcode text-base"></i> <span class="hidden sm:inline">QR Mobile</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+    
+    <!-- SEZIONE VIDEO LAB -->
+    <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 glow-cyan">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+        <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold rounded-full uppercase tracking-wider">
+          🎬 Video Lab // Demonstration & Protocols
+        </span>
+        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-globe"></i> IT / EN Subtitles</span>
+      </div>
+
+      <h2 class="font-tech text-xl sm:text-2xl font-bold text-white">
+        Trattamento dell'Intradosso: Mordenzatura vs Sabbiatura (APC Protocol)<br>
+        <span class="text-sm font-normal text-slate-400">Intaglio Surface Treatment: Etching vs Sandblasting (APC Protocol)</span>
+      </h2>
+      <p class="text-slate-300 text-xs sm:text-sm">
+        <strong>[IT]</strong> Video dimostrativo sulle differenze tra il condizionamento delle ceramiche vetrose (HF 5%) e delle ceramiche policristalline in Zirconia (Sabbiatura Al₂O₃ 50 µm + Monomero 10-MDP).<br>
+        <span class="text-slate-400 font-normal"><strong>[EN]</strong> Demonstration video on the conditioning differences between silica-based glass ceramics (HF 5%) and polycrystalline Zirconia (Al₂O₃ 50 µm sandblasting + 10-MDP monomer).</span>
+      </p>
+
+      <div class="relative aspect-video w-full rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+        <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/rlmsi6cMke0?rel=0" title="Ivoclean and Bonding Protocol" allowfullscreen></iframe>
+      </div>
+
+      <div class="p-3 bg-slate-950/80 rounded-lg border border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <span><i class="fa-solid fa-hard-drive text-cyan-400 mr-2"></i><strong>Versione Offline USB / Offline USB Version:</strong> Apri il video locale / Open local video file.</span>
+        <a href="video/protocollo_bonding.mp4" target="_blank" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-mono">Apri Video (.MP4)</a>
+      </div>
+    </section>
+
+    <!-- CASO 1: CERAMICHE DENTALI -->
+    <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 glow-cyan">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+        <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold rounded-full uppercase tracking-wider">
+          📋 CASO 1 // Ceramica Vetrosa vs Ceramica Policristallina
+        </span>
+        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-tooth"></i> Zirconia & Disilicato</span>
+      </div>
+
+      <div>
+        <h3 class="font-tech text-lg font-bold text-white mb-1">
+          Decementazione Disilicato e Chipping su Zirconia
+        </h3>
+        <p class="text-xs text-slate-400 mb-2">Lithium Disilicate Debonding & Zirconia Layering Chipping</p>
+        <p class="text-xs sm:text-sm text-slate-300">
+          <strong>[IT]</strong> Un paziente presenta la decementazione della corona in Disilicato sull'elemento 2.1 e la scheggiatura (chipping) della ceramica da rivestimento estetico su un ponte inferiore in Zirconia.<br>
+          <span class="text-slate-400 font-normal"><strong>[EN]</strong> A patient presents debonding of a lithium disilicate crown on tooth 2.1 and chipping of the veneering porcelain on a lower zirconia bridge.</span>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex justify-between text-xs font-bold font-tech text-rose-400">
+            <span>DIFETTO / DEFECT</span>
+            <span>DISILICATO DI LITIO</span>
+          </div>
+          <h4 class="text-sm font-bold text-white">Decementazione Corona / Crown Debonding</h4>
+          <p class="text-xs text-slate-400">
+            <strong>Causa / Cause:</strong> Sovra-mordenzatura (>20s HF 5%) o mancata applicazione del silano.<br>
+            <span class="text-slate-500">Over-etching (>20s HF 5%) damaging silicate crystals or missing silane application.</span>
+          </p>
+          <div class="p-2 bg-emerald-950/40 border border-emerald-500/30 rounded text-xs text-emerald-300">
+            <strong>Soluzione EBM / Solution:</strong> Mordenzatura HF 5% per 20 secondi, lavaggio, asciugatura e Silano asciugato con aria calda.<br>
+            <span class="text-emerald-400/80">Etch with HF 5% for exactly 20s, rinse, dry, and apply warm air-dried silane.</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex justify-between text-xs font-bold font-tech text-rose-400">
+            <span>DIFETTO / DEFECT</span>
+            <span>ZIRCONIA STRATIFICATA</span>
+          </div>
+          <h4 class="text-sm font-bold text-white">Chipping / Scheggiatura Ceramica</h4>
+          <p class="text-xs text-slate-400">
+            <strong>Causa / Cause:</strong> Raffreddamento rapido a fine cottura o discrepanza nei coefficienti di espansione termica (CTE).<br>
+            <span class="text-slate-500">Fast cooling rate in ceramic furnace or CTE mismatch.</span>
+          </p>
+          <div class="p-2 bg-emerald-950/40 border border-emerald-500/30 rounded text-xs text-emerald-300">
+            <strong>Soluzione EBM / Solution:</strong> Ciclo di raffreddamento lento (Slow Cooling) a fine cottura per ridurre lo stress termico.<br>
+            <span class="text-emerald-400/80">Extend slow cooling cycle at end of firing to relieve thermal stress.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GATE QUIZ 1 -->
+      <div id="quiz-box-1" class="quiz-container bg-slate-950/90 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase font-tech tracking-wider">
+          <i class="fa-solid fa-lock"></i> Gate di Sblocco #1 // Bilingual Lock Gate
+        </div>
+        
+        <p class="text-sm font-semibold text-slate-200">
+          <strong>[IT]</strong> Qual è il protocollo corretto per il trattamento dell'intradosso del Disilicato di Litio?<br>
+          <span class="text-xs text-slate-400 font-normal"><strong>[EN]</strong> What is the correct protocol for etching the intaglio surface of lithium disilicate crowns?</span>
+        </p>
+
+        <div class="options-grid grid grid-cols-1 gap-2.5">
+          <button onclick="checkAnswer('quiz-box-1', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            A) Mordenzatura con HF 5% per 60 secondi e risciacquo. / Etching with HF 5% for 60 seconds and water rinse.
+          </button>
+          <button onclick="checkAnswer('quiz-box-1', this, true)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            B) Mordenzatura con HF 5% per 20 secondi, lavaggio, asciugatura e Silano asciugato con aria calda. / HF 5% for 20s, rinsing, drying, and warm air-dried silane.
+          </button>
+          <button onclick="checkAnswer('quiz-box-1', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            C) Sabbiatura con Al₂O₃ 50 µm a 4 bar senza silanizzazione. / Sandblasting with Al₂O₃ 50 µm at 4 bar without silane.
+          </button>
+        </div>
+
+        <div class="feedback-msg hidden p-3 rounded-lg text-xs font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- CASO 2: GESSI E RESINE PMMA -->
+    <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 glow-orange">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+        <span class="px-3 py-1 bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono font-bold rounded-full uppercase tracking-wider">
+          📋 CASO 2 // Protesi Mobile e Preparazione Modelli
+        </span>
+        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-cube"></i> Gesso IV & Resina PMMA</span>
+      </div>
+
+      <div>
+        <h3 class="font-tech text-lg font-bold text-white mb-1">
+          Porosità della Resina e Monconi Friabili in Gesso
+        </h3>
+        <p class="text-xs text-slate-400 mb-2">PMMA Acrylic Porosities & Weak Gypsum Die Margins</p>
+        <p class="text-xs sm:text-sm text-slate-300">
+          <strong>[IT]</strong> Una protesi totale acrilica mostra porosità interne e bolle, mentre il modello di lavoro in gesso tipo IV presenta margini poco precisi che si sbriciolano.<br>
+          <span class="text-slate-400 font-normal"><strong>[EN]</strong> A full acrylic denture shows internal porosities and bubbles, while the Type IV plaster working model features fragile margins that crumble.</span>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex justify-between text-xs font-bold font-tech text-rose-400">
+            <span>DIFETTO / DEFECT</span>
+            <span>GESSO TIPO IV</span>
+          </div>
+          <h4 class="text-sm font-bold text-white">Moncone Friabile / Weak Die Margins</h4>
+          <p class="text-xs text-slate-400">
+            <strong>Causa / Cause:</strong> Spatolatura manuale senza vuoto o rapporto acqua/polvere errato con eccesso d'acqua.<br>
+            <span class="text-slate-500">Manual mixing without vacuum or excess water ratio exceeding ISO Type IV standards.</span>
+          </p>
+          <div class="p-2 bg-emerald-950/40 border border-emerald-500/30 rounded text-xs text-emerald-300">
+            <strong>Soluzione EBM / Solution:</strong> Pesata digitale, miscelatore sottovuoto e colatura su vibratore a bassa frequenza.<br>
+            <span class="text-emerald-400/80">Use digital scale, vacuum mixer, and pour impression over low-frequency vibrator.</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex justify-between text-xs font-bold font-tech text-rose-400">
+            <span>DIFETTO / DEFECT</span>
+            <span>RESINA PMMA</span>
+          </div>
+          <h4 class="text-sm font-bold text-white">Porosità Interne / Internal Porosities</h4>
+          <p class="text-xs text-slate-400">
+            <strong>Causa / Cause:</strong> Innalzamento troppo rapido della temperatura dell'acqua sopra i 100°C con evaporazione del monomero.<br>
+            <span class="text-slate-500">Rapid water temperature rise above 100°C causing monomer evaporation.</span>
+          </p>
+          <div class="p-2 bg-emerald-950/40 border border-emerald-500/30 rounded text-xs text-emerald-300">
+            <strong>Soluzione EBM / Solution:</strong> Ciclo di polimerizzazione a 74°C per 8 ore con moffola sotto costante pressione idraulica.<br>
+            <span class="text-emerald-400/80">Maintain thermal curing cycle at 74°C for 8 hours under continuous hydraulic pressure.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GATE QUIZ 2 -->
+      <div id="quiz-box-2" class="quiz-container bg-slate-950/90 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase font-tech tracking-wider">
+          <i class="fa-solid fa-lock"></i> Gate di Sblocco #2 // Bilingual Lock Gate
+        </div>
+        
+        <p class="text-sm font-semibold text-slate-200">
+          <strong>[IT]</strong> Come si prevengono le porosità interne nella resina PMMA durante la polimerizzazione?<br>
+          <span class="text-xs text-slate-400 font-normal"><strong>[EN]</strong> How do you prevent internal porosity in acrylic resin during full denture polymerization?</span>
+        </p>
+
+        <div class="options-grid grid grid-cols-1 gap-2.5">
+          <button onclick="checkAnswer('quiz-box-2', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            A) Portando subito l'acqua ad ebollizione a 100°C. / Boiling water immediately at 100°C.
+          </button>
+          <button onclick="checkAnswer('quiz-box-2', this, true)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            B) Mantenendo il ciclo termico a 74°C per 8 ore con moffola sotto pressione idraulica. / 74°C thermal cycle for 8h with hydraulic pressure.
+          </button>
+          <button onclick="checkAnswer('quiz-box-2', this, false)" class="option-btn text-left p-3.5 rounded-lg border border-slate-800 bg-slate-900/60 text-xs sm:text-sm text-slate-300 hover:bg-slate-800">
+            C) Aumentando la quantità di liquido monomero nella miscela. / Increasing monomer liquid ratio to powder.
+          </button>
+        </div>
+
+        <div class="feedback-msg hidden p-3 rounded-lg text-xs font-semibold"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALE POPUP PER QR CODE LIM -->
+  <div id="qrModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 rounded-2xl text-center space-y-4 border border-cyan-500/40">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <span class="font-tech text-xs text-cyan-400 font-bold uppercase">QR Accesso Mobile LIM</span>
+        <button onclick="toggleQRModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-slate-300">Scansiona con lo smartphone per aprire questo modulo sul tuo dispositivo:</p>
+      
+      <div id="qrcode" class="flex justify-center p-3 bg-white rounded-xl mx-auto w-fit"></div>
+      
+      <p class="text-[10px] font-mono text-slate-500">LAB 4.0 • Corso Serale IDA</p>
+    </div>
+  </div>
+
+  <script>
+    var qrGenerated = false;
+
+    function toggleQRModal() {
+      var modal = document.getElementById('qrModal');
+      modal.classList.toggle('hidden');
+      if (!qrGenerated && typeof QRCode !== 'undefined') {
+        new QRCode(document.getElementById("qrcode"), {
+          text: window.location.href,
+          width: 160,
+          height: 160,
+          colorDark : "#0f172a",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+        qrGenerated = true;
+      }
+    }
+
+    function checkAnswer(containerId, btn, isCorrect) {
+      var container = document.getElementById(containerId);
+      var feedbackEl = container.querySelector('.feedback-msg');
+      var buttons = container.querySelectorAll('.option-btn');
+
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+      }
+
+      if (isCorrect) {
+        btn.style.backgroundColor = '#064e3b';
+        btn.style.borderColor = '#10b981';
+        btn.style.color = '#a7f3d0';
+
+        feedbackEl.className = 'feedback-msg p-3 rounded-lg text-xs font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400';
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> <strong>Corretto / Correct!</strong> Gate sbloccato con successo.';
+        feedbackEl.classList.remove('hidden');
+
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 50, spread: 70, origin: { y: 0.8 } });
+        }
+      } else {
+        btn.style.backgroundColor = '#4c0519';
+        btn.style.borderColor = '#f43f5e';
+        btn.style.color = '#fecdd3';
+
+        feedbackEl.className = 'feedback-msg p-3 rounded-lg text-xs font-semibold bg-rose-500/10 border border-rose-500/30 text-rose-400';
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-xmark mr-1.5"></i> <strong>Errato / Incorrect!</strong> Riprova / Try again.';
+        feedbackEl.classList.remove('hidden');
+
+        setTimeout(function() {
+          for (var j = 0; j < buttons.length; j++) {
+            buttons[j].disabled = false;
+            buttons[j].style.backgroundColor = '';
+            buttons[j].style.borderColor = '';
+            buttons[j].style.color = '';
+          }
+          feedbackEl.classList.add('hidden');
+        }, 1800);
+      }
+    }
+  </script>
+</body>
+</html>

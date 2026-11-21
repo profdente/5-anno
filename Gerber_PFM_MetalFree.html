@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Odontotecnico IV Anno - Corso Didattico EBM & Normative ISO/MDR</title>
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-sidebar: #0f172a;
+            --border: #cbd5e1;
+            --border-dark: #334155;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-ebm: #059669;
+            --accent-ebm-bg: #ecfdf5;
+            --accent-danger: #dc2626;
+            --accent-danger-bg: #fef2f2;
+            --accent-warn: #d97706;
+            --accent-warn-bg: #fffbeb;
+            --course-badge: #0284c7;
+            --course-badge-bg: #e0f2fe;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.65;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Toggle Lingua */
+        body.lang-it .en-text { display: none !important; }
+        body.lang-en .it-text { display: none !important; }
+
+        header {
+            background-color: #0f172a;
+            color: white;
+            border-bottom: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            font-weight: 800;
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+            border: 1.5px solid rgba(255,255,255,0.25);
+        }
+
+        h1 { font-size: 1.35rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
+        .subtitle { font-size: 0.85rem; color: #94a3b8; font-weight: 500; margin-top: 2px; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lang-switch {
+            display: flex;
+            background: #1e293b;
+            border: 1.5px solid #334155;
+            border-radius: 8px;
+            padding: 3px;
+            gap: 3px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 0.45rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 6px;
+            font-family: monospace;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+        .badge-iv {
+            background: rgba(2, 132, 199, 0.25);
+            border-color: #38bdf8;
+            color: #38bdf8;
+            font-weight: 800;
+        }
+        .badge-ebm {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #34d399;
+            font-weight: 700;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            width: 100%;
+            flex-grow: 1;
+            display: grid;
+            grid-template-cols: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-cols: 320px 1fr;
+            }
+        }
+
+        .sidebar {
+            background: #ffffff;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            height: fit-content;
+        }
+
+        .nav-header {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .nav-btn {
+            background: #f1f5f9;
+            border: 1.5px solid var(--border);
+            color: #1e293b;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            user-select: none;
+        }
+
+        .nav-btn:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            border-color: #94a3b8;
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary-hover);
+            box-shadow: 0 3px 6px rgba(2, 132, 199, 0.3);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block !important; }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.85rem;
+        }
+
+        .card-title { font-size: 1.35rem; font-weight: 800; color: #0f172a; }
+        .card-tag { font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .course-banner {
+            background: var(--course-badge-bg);
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: #0369a1;
+        }
+        .course-banner-title { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; color: #0284c7; }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-cols: 1fr;
+            gap: 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        @media (min-width: 640px) {
+            .comparison-grid { grid-template-cols: 1fr 1fr; }
+        }
+
+        .box-old {
+            background: var(--accent-danger-bg);
+            border: 2px solid #fca5a5;
+            border-radius: 12px;
+            padding: 1.1rem;
+        }
+
+        .box-ebm {
+            background: var(--accent-ebm-bg);
+            border: 2px solid #6ee7b7;
+            border-radius: 12px;
+            padding: 1.1rem;
+        }
+
+        .box-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .box-old .box-title { color: var(--accent-danger); }
+        .box-ebm .box-title { color: var(--accent-ebm); }
+
+        .text-body { font-size: 0.95rem; color: #334155; line-height: 1.65; font-weight: 400; }
+        .text-body p { margin-bottom: 0.85rem; }
+
+        .protocol-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: 1.25rem 0;
+        }
+
+        .protocol-step {
+            position: relative;
+            padding-left: 3.2rem;
+            margin-bottom: 1.1rem;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .protocol-step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            background: #f1f5f9;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .diagram-box {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: monospace;
+            padding: 1.1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            overflow-x: auto;
+            margin: 1rem 0;
+            white-space: pre;
+        }
+
+        .table-container { overflow-x: auto; margin: 1.25rem 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; }
+        th { background: #0f172a; color: #ffffff; padding: 0.9rem; border: 1px solid #334155; font-weight: 800; }
+        td { padding: 0.9rem; border: 1px solid var(--border); color: #1e293b; background: #ffffff; font-weight: 500; }
+        tr:nth-child(even) td { background: #f8fafc; }
+
+        .formula-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 0.9rem 1.1rem;
+            margin: 1rem 0;
+            font-family: Cambria, Georgia, serif;
+            font-size: 1.05rem;
+            color: #0f172a;
+            font-weight: bold;
+        }
+
+        .quiz-gate {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .quiz-container {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            background: #ffffff;
+            color: #1e293b;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .quiz-option:hover { border-color: var(--primary); background: #f0f9ff; }
+
+        .btn-check {
+            margin-top: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.35rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-check:hover { background: var(--primary-hover); }
+
+        .btn-next-step {
+            margin-top: 1.75rem;
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            padding: 0.9rem 1.6rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.15s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+
+        .btn-next-step:hover {
+            background: var(--primary);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .feedback-box {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback-box.correct { display: block; background: #dcfce7; border: 2px solid #4ade80; color: #166534; }
+        .feedback-box.wrong { display: block; background: #fee2e2; border: 2px solid #f87171; color: #991b1b; }
+
+        .webinar-card {
+            background: #ffffff;
+            border: 2px solid var(--border);
+            border-left: 6px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .webinar-title { font-weight: 800; font-size: 1rem; color: #0f172a; }
+        .webinar-academy { font-size: 0.78rem; color: var(--accent-warn); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .webinar-desc { font-size: 0.9rem; color: #475569; margin: 0.4rem 0; }
+        .webinar-link { font-size: 0.88rem; color: var(--primary); text-decoration: none; font-weight: 800; display: inline-block; margin-top: 0.3rem; }
+        .webinar-link:hover { text-decoration: underline; color: var(--primary-hover); }
+
+        .ref-item {
+            font-size: 0.88rem;
+            color: #475569;
+            margin-bottom: 0.9rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary);
+            line-height: 1.65;
+        }
+        .ref-item strong { color: #0f172a; }
+    </style>
+</head>
+<body class="lang-it">
+
+    <header>
+        <div class="header-container">
+            <div class="logo-title">
+                <div class="logo-icon">IV</div>
+                <div>
+                    <h1>
+                        <span class="it-text">Corso Didattico Odontotecnico - IV Anno</span>
+                        <span class="en-text">Dental Technology Course - 4th Year</span>
+                    </h1>
+                    <p class="subtitle">
+                        <span class="it-text">Metodo Gerber, Stratificazione Ceramica su Metallo & Tecniche Metal-Free (ISO/MDR)</span>
+                        <span class="en-text">Gerber Method, PFM Layering & Metal-Free Techniques (ISO/MDR Standards)</span>
+                    </p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="lang-switch">
+                    <button id="btn-lang-it" onclick="setLanguage('it')" class="lang-btn active">🇮🇹 IT</button>
+                    <button id="btn-lang-en" onclick="setLanguage('en')" class="lang-btn">🇬🇧 EN</button>
+                </div>
+                <div class="badges">
+                    <span class="badge badge-iv">📚 IV ANNO</span>
+                    <span class="badge">MDR 2017/745</span>
+                    <span class="badge badge-ebm">✓ Advanced EBM</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="nav-header">
+                <span class="it-text">Moduli Didattici IV Anno</span>
+                <span class="en-text">4th Year Learning Modules</span>
+            </div>
+            <button id="btn-mod-1" onclick="openTab('mod-1')" class="nav-btn active">
+                <span>
+                    <span class="it-text">1. Gnatologia & Metodo Gerber</span>
+                    <span class="en-text">1. Gnathology & Gerber Method</span>
+                </span>
+                <span>→</span>
+            </button>
+            <button id="btn-mod-2" onclick="openTab('mod-2')" class="nav-btn">
+                <span>
+                    <span class="it-text">2. Protesi Scheletrata & Attacchi</span>
+                    <span class="en-text">2. Cast RPD & Precision Attachments</span>
+                </span>
+                <span>→</span>
+            </button>
+            <button id="btn-mod-3" onclick="openTab('mod-3')" class="nav-btn">
+                <span>
+                    <span class="it-text">3. Stratificazione Ceramica su Metallo</span>
+                    <span class="en-text">3. PFM Ceramic Layering</span>
+                </span>
+                <span>→</span>
+            </button>
+            <button id="btn-mod-4" onclick="openTab('mod-4')" class="nav-btn">
+                <span>
+                    <span class="it-text">4. Tecniche Metal-Free Avanzate</span>
+                    <span class="en-text">4. Advanced Metal-Free Tech</span>
+                </span>
+                <span>→</span>
+            </button>
+            <button id="btn-mod-5" onclick="openTab('mod-5')" class="nav-btn">
+                <span>
+                    <span class="it-text">5. Laboratorio Digitale CAD/CAM</span>
+                    <span class="en-text">5. Digital CAD/CAM Lab</span>
+                </span>
+                <span>→</span>
+            </button>
+            <button id="btn-mod-6" onclick="openTab('mod-6')" class="nav-btn">
+                <span>
+                    <span class="it-text">6. Normativa MDR & Traccia IV Anno</span>
+                    <span class="en-text">6. MDR Compliance & 4th Year Case</span>
+                </span>
+                <span>→</span>
+            </button>
+        </aside>
+
+        <main>
+            <!-- MODULO 1: GNATOLOGIA CLINICA & MONTAGGIO SECONDO GERBER -->
+            <section id="mod-1" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 01 • Gnatologia & Protesi Totale Fisiologica (IV Anno)</span>
+                                <span class="en-text">Module 01 • Gnathology & Complete Dentures (4th Year)</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Biostetica della Protesi Totale secondo il Metodo Gerber (Condyloform)</span>
+                                <span class="en-text">Bio-Aesthetic Complete Denture setup according to Gerber Method (Condyloform)</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="course-banner">
+                        <div class="course-banner-title">
+                            <span class="it-text">NUCLEO DIDATTICO IV ANNO: MONTAGGIO PROTESICO SECONDO GERBER</span>
+                            <span class="en-text">4TH YEAR CORE TOPIC: GERBER DENTURE SETUP TECHNIQUE</span>
+                        </div>
+                        <p class="text-body" style="font-size:0.88rem; color:#0369a1;">
+                            <span class="it-text">Il programma di Laboratorio Odontotecnico del IV Anno approfondisce il metodo del Prof. Albert Gerber (Università di Zurigo). Il principio cardine si basa sull'autonomizzazione masticatoria "Mortaio e Pestello" (Mortar and Pestle Principle) e sulla centralizzazione del carico masticatorio lungo la linea di stabilità della cresta alveolare inferiore.</span>
+                            <span class="en-text">The 4th Year Dental Technology curriculum details Prof. Albert Gerber's method (University of Zurich). The core concept relies on "Mortar and Pestle" masticatory autonomy and centralizing chewing forces along the lower ridge stability crest line.</span>
+                        </p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="box-old">
+                            <div class="box-title">
+                                <span class="it-text">✕ Montaggio Anatomico Tradizionale</span>
+                                <span class="en-text">✕ Traditional Anatomical Setup</span>
+                            </div>
+                            <p class="text-body">
+                                <span class="it-text">Incastro intercuspidale rigido a guida incisale severa. Induce forze tangenziali destabilizzanti e rapido riassorbimento osseo a causa di scivolamenti e interferenze cuspidali nei movimenti eccentrici.</span>
+                                <span class="en-text">Rigid intercuspation with steep incisal guidance. Causes destabilizing tangential forces and rapid ridge resorption due to cuspal interference during eccentric movements.</span>
+                            </p>
+                        </div>
+                        <div class="box-ebm">
+                            <div class="box-title">
+                                <span class="it-text">✓ Metodo Gerber (Condyloform & Mortaio-Pestello)</span>
+                                <span class="en-text">✓ Gerber Method (Condyloform & Mortar-Pestle)</span>
+                            </div>
+                            <p class="text-body">
+                                <span class="it-text">Cuspide palatina del molare superiore (Pestello) ingranata al centro della fossa del molare inferiore (Mortaio). Garantisce occlusione bilanciata dinamicamente senza instabilità laterale della base protesica.</span>
+                                <span class="en-text">Palatal cusp of upper molar (Pestle) occludes into central fossa of lower molar (Mortar). Guarantees dynamic balanced occlusion without lateral base tilt.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Principi Fondamentali del Metodo Gerber:</span>
+                        <span class="en-text">Core Principles of the Gerber Method:</span>
+                    </h3>
+                    <div class="text-body">
+                        <p>
+                            <span class="it-text">1. <strong>Relazione Centrica & Arco Gotico di Gysi:</strong> Registrazione mediante placca intraorale a puntale centrale. L'apice nitido indica la posizione condilare fisiologica di Relazione Centrica (RC) non forzata. La DVO si calcola sottraendo lo Spazio Libero Interocclusale (Freeway Space = 2.0 - 4.0 mm) dalla Dimensione Verticale di Riposo (DVR).</span>
+                            <span class="en-text">1. <strong>Centric Relation & Gysi Gothic Arch:</strong> Intraoral central bearing pin tracing. The sharp apex identifies non-forced physiological Centric Relation (CR). VDO is calculated subtracting Interocclusal Rest Space (2.0 - 4.0 mm) from Rest Vertical Dimension (VDR).</span>
+                        </p>
+                        <p>
+                            <span class="it-text">2. <strong>Crest Line & Momento di Forza:</strong> I denti diottrici posteriori (denti Condyloform) devono essere posizionati esattamente sopra il cavo della cresta alveolare inferiore (linea di stabilità Gerber). Il primo molare inferiore (dente 36/46) costituisce il centro di masticazione principale e viene collocato nel punto di massimo affossamento della cresta.</span>
+                            <span class="en-text">2. <strong>Crest Line & Force Moment:</strong> Posterior Condyloform teeth must be placed exactly over the lowest curve of the lower alveolar ridge (Gerber stability line). The first lower molar (tooth 36/46) acts as the primary chewing center positioned at the ridge's lowest point.</span>
+                        </p>
+                    </div>
+
+                    <div class="formula-box">
+                        DVO = DVR - Spazio Libero (Freeway Space: 2.0 – 4.0 mm)
+                    </div>
+
+                    <div class="diagram-box">
+Principio "Mortaio e Pestello" di Gerber / Gerber Mortar & Pestle Concept:
+
+     [ Cuspide Palatina Superiore / Upper Palatal Cusp ] ---> (PESTELLO / PESTLE)
+                            |
+                            v
+     [ Fossa Centrale Inferiore / Lower Central Fossa ] ----> (MORTAIO / MORTAR)
+                            |
+    ==================== CRISTA OSSOSA ==================== (Carico Verticale Diretto)
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Protocollo Operativo di Montaggio Gerber (Passo-Passo):</span>
+                        <span class="en-text">Gerber Step-by-Step Bench Protocol:</span>
+                    </h3>
+                    <ol class="protocol-steps">
+                        <li class="protocol-step">
+                            <strong><span class="it-text">Tracciamento delle Linee Guida sul Modello:</span><span class="en-text">Ridge Line Tracing on Cast:</span></strong> 
+                            <span class="it-text">Tracciare la linea della cresta crestale inferiore e trasferire i punti di riferimento sul bordo posteriore del modello con il profilatore Gerber.</span>
+                            <span class="en-text">Trace the lower ridge crest line and project reference points onto the posterior border of the cast using the Gerber profiler.</span>
+                        </li>
+                        <li class="protocol-step">
+                            <strong><span class="it-text">Montaggio del Gruppo Anteriore:</span><span class="en-text">Anterior Teeth Setup:</span></strong> 
+                            <span class="it-text">Montare gli incisivi ed i canini rispettando il piano di Camper e la linea bipupillare, mantenendo un overjet/overbite fisiologico ($1.5\text{--}2.0\text{ mm}$) senza contatto in centrica.</span>
+                            <span class="en-text">Set incisors and canines respecting Camper's plane and interpupillary line, maintaining physiological overjet/overbite ($1.5\text{--}2.0\text{ mm}$) without centric contact.</span>
+                        </li>
+                        <li class="protocol-step">
+                            <strong><span class="it-text">Montaggio del Primo Molare Inferiore (36 / 46):</span><span class="en-text">First Lower Molar Setup (36 / 46):</span></strong> 
+                            <span class="it-text">Posizionare il primo molare nel punto più declive della cresta in inclinazione assiale perpendicolare alla forza masticatoria.</span>
+                            <span class="en-text">Position the first molar at the lowest ridge point, aligned vertically with the direction of maximum masticatory force.</span>
+                        </li>
+                        <li class="protocol-step">
+                            <strong><span class="it-text">Ingranamento dei Molari Condyloform Superiori:</span><span class="en-text">Upper Condyloform Molar Interlock:</span></strong> 
+                            <span class="it-text">Collocare i molari superiori facendo entrare la cuspide portante palatina nella fossa di supporto del dente antagonista inferiore. Verificare l'assenza di scivolamenti e contatti prematuri.</span>
+                            <span class="en-text">Position upper molars ensuring the palatal stamp cusp drops directly into the supporting fossa of the lower antagonist. Verify absence of premature slides.</span>
+                        </li>
+                    </ol>
+
+                    <div class="quiz-gate">
+                        <h4 style="color:#0f172a; font-size:0.95rem;">
+                            <span class="it-text">Verification Gate 1 (Gnatologia & Gerber IV Anno)</span>
+                            <span class="en-text">Verification Gate 1 (Gnathology & Gerber 4th Year)</span>
+                        </h4>
+                        <div class="quiz-container">
+                            <p class="text-body">
+                                <span class="it-text">Nel metodo di montaggio protesico Gerber (Condyloform), quale cuspide funge da "pestello" nell'occlusione bilanciata?</span>
+                                <span class="en-text">In the Gerber denture setup method (Condyloform), which cusp acts as the "pestle" in balanced occlusion?</span>
+                            </p>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="a">
+                                <span>
+                                    <span class="it-text">A) La cuspide palatina dei diottrici molari superiori.</span>
+                                    <span class="en-text">A) The palatal cusp of upper posterior molars.</span>
+                                </span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="b">
+                                <span>
+                                    <span class="it-text">B) La cuspide vestibolare dei premolari inferiori.</span>
+                                    <span class="en-text">B) The buccal cusp of lower premolars.</span>
+                                </span>
+                            </label>
+                            <button onclick="checkQuiz('q1', 'a', 'feedback-1')" class="btn-check">
+                                <span class="it-text">Verifica Risposta</span>
+                                <span class="en-text">Verify Answer</span>
+                            </button>
+                            <div id="feedback-1" class="feedback-box"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openTab('mod-2')" class="btn-next-step">
+                        <span class="it-text">Procedi al Modulo 2: Protesi Scheletrata & Attacchi →</span>
+                        <span class="en-text">Proceed to Module 2: Cast RPD & Precision Attachments →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MODULO 2: PROTESI PARZIALE REMOVIBILE E SCHELETRATO -->
+            <section id="mod-2" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 02 • Protesi Parziale Removibile & Scheletrato (IV Anno)</span>
+                                <span class="en-text">Module 02 • Removable Partial Dentures (4th Year)</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Protesi Scheletrata, Parallelometro & Attacchi di Precisione (ISO 22674)</span>
+                                <span class="en-text">Cast RPD Frameworks, Surveying & Precision Attachments (ISO 22674)</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="text-body">
+                        <p>
+                            <span class="it-text">Le leghe da fusione per scheletrati rientrano nelle classi 4 e 5 della norma <strong>ISO 22674</strong>, caratterizzate da un elevato modulo di elasticità (<i>E</i> &ge; 200 GPa) ed un alto limite di snervamento (&sigma;<sub>0.2</sub> &ge; 500 MPa) indispensabile per l'elasticità dei ganci di ritenzione.</span>
+                            <span class="en-text">Cast RPD alloys belong to Type 4 and Type 5 under <strong>ISO 22674</strong>, featuring high modulus of elasticity (<i>E</i> &ge; 200 GPa) and high yield strength (&sigma;<sub>0.2</sub> &ge; 500 MPa) critical for clasp elasticity.</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Parallelometria & Asse di Inserzione:</span>
+                        <span class="en-text">Surveying & Path of Insertion:</span>
+                    </h3>
+                    <div class="text-body">
+                        <p>
+                            <span class="it-text">Analisi al parallelometro con ricerca dell'inclinazione ideale del piatto. Rilievo dell'equatore protesico anatomico e regolazione della profondità dei sottosquadri utili: <strong>0.25 mm</strong> per ganci rigidi in Cr-Co (Tipo 5) e <strong>0.50 mm</strong> per ganci elastici in leghe auree.</span>
+                            <span class="en-text">Surveying table tilt selection. Identifying the anatomical survey line and measuring undercut depths: <strong>0.25 mm</strong> for rigid Cr-Co clasps (Type 5) and <strong>0.50 mm</strong> for gold alloy clasps.</span>
+                        </p>
+                    </div>
+
+                    <div class="quiz-gate">
+                        <h4 style="color:#0f172a; font-size:0.95rem;">
+                            <span class="it-text">Verification Gate 2 (Scheletrata IV Anno)</span>
+                            <span class="en-text">Verification Gate 2 (RPD Frameworks 4th Year)</span>
+                        </h4>
+                        <div class="quiz-container">
+                            <p class="text-body">
+                                <span class="it-text">Qual è la profondità di sottosquadro corretta per un gancio in lega Cromo-Cobalto Tipo 5 (ISO 22674)?</span>
+                                <span class="en-text">What is the correct undercut retention depth for a Type 5 Cr-Co clasp (ISO 22674)?</span>
+                            </p>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="a">
+                                <span>
+                                    <span class="it-text">A) 0.25 mm, a causa dell'alto modulo elastico del Cr-Co.</span>
+                                    <span class="en-text">A) 0.25 mm, due to high elastic modulus of Cr-Co.</span>
+                                </span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="b">
+                                <span>
+                                    <span class="it-text">B) 0.75 mm.</span>
+                                    <span class="en-text">B) 0.75 mm.</span>
+                                </span>
+                            </label>
+                            <button onclick="checkQuiz('q2', 'a', 'feedback-2')" class="btn-check">
+                                <span class="it-text">Verifica Risposta</span>
+                                <span class="en-text">Verify Answer</span>
+                            </button>
+                            <div id="feedback-2" class="feedback-box"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openTab('mod-3')" class="btn-next-step">
+                        <span class="it-text">Procedi al Modulo 3: Stratificazione Ceramica su Metallo →</span>
+                        <span class="en-text">Proceed to Module 3: PFM Ceramic Layering →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MODULO 3: STRATIFICAZIONE DELLE CERAMICHE SU METALLO -->
+            <section id="mod-3" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 03 • Metalloceramica Avanzata (IV Anno PFM)</span>
+                                <span class="en-text">Module 03 • Advanced Porcelain-Fused-to-Metal (4th Year)</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Stratificazione della Ceramica su Metallo, CDT & Cicli di Cottura</span>
+                                <span class="en-text">PFM Ceramic Layering, CTE Matching & Firing Cycles</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="course-banner">
+                        <div class="course-banner-title">
+                            <span class="it-text">FOCUS IV ANNO: FISICA DEGLI ACCOPPIAMENTI METALLO-CERAMICA</span>
+                            <span class="en-text">4TH YEAR FOCUS: PFM THERMAL PHYSICS</span>
+                        </div>
+                        <p class="text-body" style="font-size:0.88rem; color:#0369a1;">
+                            <span class="it-text">Lo studente del IV Anno deve padroneggiare il concetto di Coefficiente di Dilatazione Termica (CDT). Per evitare scheggiature (chipping) e cricche catastrofiche, il CDT della lega metallica deve essere leggermente superiore a quello della ceramica da rivestimento (&Delta;CDT = +0.5 a +1.0 &times; 10<sup>-6</sup> K<sup>-1</sup>), ponendo la ceramica in uno stato residuo di compressione benefica al raffreddamento.</span>
+                            <span class="en-text">The 4th Year student must master Coefficient of Thermal Expansion (CTE). To prevent chipping and microcracks, the alloy's CTE must be slightly higher than the ceramic cladding CTE (&Delta;CTE = +0.5 to +1.0 &times; 10<sup>-6</sup> K<sup>-1</sup>), placing the ceramic under protective compression upon cooling.</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Fasi di Preparazione della Struttura Metallica:</span>
+                        <span class="en-text">Metallic Substrate Preparation Steps:</span>
+                    </h3>
+                    <div class="text-body">
+                        <p>
+                            1. <strong>Rifinitura con Frese in Carburo di Tungsteno:</strong> Fresare la struttura in un'unica direzione per evitare l'incorporazione di scorie metalliche nel substrato.<br>
+                            2. <strong>Micro-sabbiatura con Ossido di Alluminio (Al<sub>2</sub>O<sub>3</sub>):</strong> Sabbiatura con particelle di 110 &mu;m a 2.5 bar di pressione con un angolo di 45&deg; per micro-irruvidire la superficie.<br>
+                            3. <strong>Cottura di Ossidazione (Degassificazione):</strong> Cottura in forno a vuoto (960&deg;C - 980&deg;C) per produrre lo strato superficiale controllato di ossidi metallici indispensabile per il legame chimico monomolecolare con la ceramica.
+                        </p>
+                    </div>
+
+                    <div class="diagram-box">
+Sequenza di Stratificazione della Ceramica / PFM Layering Sequence:
+
+  [ 6. Glaze / Vetrificazione ] -------------------- (Lucidatura superficiale a 900°C)
+  [ 5. Smalto & Incisali ] ------------------------- (Translucenza ed opalescenza incisale)
+  [ 4. Dentina Body & Cervicale ] ------------------ (Anatomia e massa cromatica principale)
+  [ 3. Ceramica di Spalla / Margin ] --------------- (Chiusura cervicale estetica senza metallo)
+  [ 2. Opaque di Copertura ] ----------------------- (Mascheramento completo del colore grigio)
+  [ 1. Wash Opaque ] ------------------------------- (Bagnatura chimica sullo strato di ossido)
+  ==================== METALLO (Cr-Co / Au-Pd) ====================
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Tabella dei Cicli di Cottura per Ceramica Feldspatica su Lega Cr-Co:</span>
+                        <span class="en-text">Firing Schedule for Feldspathic Porcelain on Co-Cr Alloy:</span>
+                    </h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><span class="it-text">Fase di Cottura</span><span class="en-text">Firing Phase</span></th>
+                                    <th><span class="it-text">Temp. Iniziale</span><span class="en-text">Pre-Dry Temp</span></th>
+                                    <th><span class="it-text">Salita Termica</span><span class="en-text">Heating Rate</span></th>
+                                    <th><span class="it-text">Temp. Finale</span><span class="en-text">Final Temp</span></th>
+                                    <th><span class="it-text">Vuoto (Vacuum)</span><span class="en-text">Vacuum</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Wash Opaque</strong></td>
+                                    <td>500°C</td>
+                                    <td>80°C / min</td>
+                                    <td>960°C</td>
+                                    <td>SÌ (fino a 959°C)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Main Opaque</strong></td>
+                                    <td>500°C</td>
+                                    <td>80°C / min</td>
+                                    <td>940°C</td>
+                                    <td>SÌ (fino a 939°C)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Prima Dentina (Body)</strong></td>
+                                    <td>450°C</td>
+                                    <td>55°C / min</td>
+                                    <td>910°C</td>
+                                    <td>SÌ (fino a 909°C)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Seconda Dentina (Correzione)</strong></td>
+                                    <td>450°C</td>
+                                    <td>55°C / min</td>
+                                    <td>900°C</td>
+                                    <td>SÌ (fino a 899°C)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Glaze (Vetrificazione)</strong></td>
+                                    <td>500°C</td>
+                                    <td>60°C / min</td>
+                                    <td>890°C</td>
+                                    <td>NO (Aria Libera)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="quiz-gate">
+                        <h4 style="color:#0f172a; font-size:0.95rem;">
+                            <span class="it-text">Verification Gate 3 (Stratificazione Ceramica IV Anno)</span>
+                            <span class="en-text">Verification Gate 3 (PFM Layering 4th Year)</span>
+                        </h4>
+                        <div class="quiz-container">
+                            <p class="text-body">
+                                <span class="it-text">Perché il Coefficiente di Dilatazione Termica (CDT) della lega metallica deve essere leggermente SUPERIORE rispetto a quello della ceramica rivestimento?</span>
+                                <span class="en-text">Why must the alloy's Coefficient of Thermal Expansion (CTE) be slightly HIGHER than that of the veneering ceramic?</span>
+                            </p>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="a">
+                                <span>
+                                    <span class="it-text">A) Per fare in modo che la ceramica sia posta in uno stato benefico di compressione al raffreddamento, prevenendo la formazione di cricche.</span>
+                                    <span class="en-text">A) To place the ceramic layer into protective compressive stress during cooling, preventing cracks.</span>
+                                </span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="b">
+                                <span>
+                                    <span class="it-text">B) Per aumentare la velocità di scioglimento della ceramica nel forno.</span>
+                                    <span class="en-text">B) To accelerate ceramic melting inside the furnace.</span>
+                                </span>
+                            </label>
+                            <button onclick="checkQuiz('q3', 'a', 'feedback-3')" class="btn-check">
+                                <span class="it-text">Verifica Risposta</span>
+                                <span class="en-text">Verify Answer</span>
+                            </button>
+                            <div id="feedback-3" class="feedback-box"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openTab('mod-4')" class="btn-next-step">
+                        <span class="it-text">Procedi al Modulo 4: Tecniche Metal-Free Avanzate →</span>
+                        <span class="en-text">Proceed to Module 4: Advanced Metal-Free Tech →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MODULO 4: TECNICHE METAL-FREE AVANZATE -->
+            <section id="mod-4" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 04 • Scienza dei Materiali Metal-Free (IV Anno)</span>
+                                <span class="en-text">Module 04 • Metal-Free Science (4th Year)</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Tecniche Metal-Free: Disilicato di Litio, Zirconia Multistrato (3Y/4Y/5Y) & Cementazione (ISO 6872)</span>
+                                <span class="en-text">Metal-Free Techniques: Lithium Disilicate, Multilayer Zirconia (3Y/4Y/5Y) & Luting (ISO 6872)</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="text-body">
+                        <p>
+                            <span class="it-text">Le tecnologie senza metallo (Metal-Free) costituiscono il cuore dell'odontotecnica del IV Anno. La norma <strong>ISO 6872</strong> definisce i requisiti di resistenza a flessione (&sigma;) e tenacità a frattura (<i>K</i><sub>IC</sub>) per la selezione del materiale ideale in base all'indicazione clinica.</span>
+                            <span class="en-text">Metal-free technology is central to the 4th Year curriculum. Standard <strong>ISO 6872</strong> specifies flexural strength (&sigma;) and fracture toughness (<i>K</i><sub>IC</sub>) requirements for clinical material selection.</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">1. Vetroceramiche al Disilicato di Litio (Li<sub>2</sub>Si<sub>2</sub>O<sub>5</sub>):</span>
+                        <span class="en-text">1. Lithium Disilicate Glass-Ceramics (Li<sub>2</sub>Si<sub>2</sub>O<sub>5</sub>):</span>
+                    </h3>
+                    <div class="text-body">
+                        <p>
+                            • <strong>Tecnica per Pressata (Press Technique):</strong> Modellazione in cera con tecnica anatomica o cut-back. Messa in rivestimento fosfatico e pressatura ad alta temperatura (915°C - 920°C) sotto pressione pneumatica.<br>
+                            • <strong>Tecnica CAD/CAM (Blocchetti Pre-cristallizzati):</strong> Fresaggio del blocchetto in fase morbida di Metasilicato di Litio (Li<sub>2</sub>SiO<sub>3</sub>, colore blu violaceo, resistenza ~130 MPa). Segue il ciclo di cristallizzazione in forno ceramico a 840°C - 850°C che trasforma la struttura in Disilicato di Litio ad alta resistenza (~500 MPa).
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">2. Evoluzione della Zirconia Polimorfa (3Y-TZP vs 4Y-PSZ / 5Y-PSZ):</span>
+                        <span class="en-text">2. Polymorphic Zirconia Generations (3Y-TZP vs 4Y/5Y-PSZ):</span>
+                    </h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><span class="it-text">Tipologia Zirconia</span><span class="en-text">Zirconia Type</span></th>
+                                    <th><span class="it-text">Contenuto Ittrio (Y<sub>2</sub>O<sub>3</sub>)</span><span class="en-text">Yttria Content</span></th>
+                                    <th><span class="it-text">Resistenza Flessione (ISO 6872)</span><span class="en-text">Flexural Strength</span></th>
+                                    <th><span class="it-text">Fase Cristallina & Translucenza</span><span class="en-text">Phase & Translucency</span></th>
+                                    <th><span class="it-text">Indicazione Clinica EBM</span><span class="en-text">Clinical Indication</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>3Y-TZP (I Generazione)</strong></td>
+                                    <td>3 mol% Yttria</td>
+                                    <td>&ge; 1200 MPa (Class 5/6)</td>
+                                    <td>100% Tetragonale (Opaca, Transformation Toughening)</td>
+                                    <td>Strutture estese, Toronto Bridge, ponti posteriori.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4Y-PSZ (Semi-Traslucida)</strong></td>
+                                    <td>4 mol% Yttria</td>
+                                    <td>&ge; 800 - 1000 MPa (Class 4)</td>
+                                    <td>~30% Cubica / ~70% Tetragonale</td>
+                                    <td>Corone singole posteriori e ponti a 3 elementi.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5Y-PSZ (Alta Translucenza)</strong></td>
+                                    <td>5 mol% Yttria</td>
+                                    <td>&ge; 600 - 700 MPa (Class 3)</td>
+                                    <td>> 50% Cubica (Elevatissima estetica simile al vetro)</td>
+                                    <td>Faccette estetiche, corone anteriori monolitiche.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.25rem;">
+                        <span class="it-text">Protocollo di Cementazione Adesiva Comparato:</span>
+                        <span class="en-text">Comparative Adhesive Luting Protocol:</span>
+                    </h3>
+                    <div class="text-body">
+                        <p>
+                            • <strong>Disilicato di Litio:</strong> Mordenzatura chimica con Acido Fluoridrico (HF 4.9%) per esatti <strong>20 secondi</strong> &rarr; Lavaggio con acqua ed asciugatura &rarr; Applicazione di Silano monocomponente per 60 secondi (crea legame covalente tra silice e resina).<br>
+                            • <strong>Ossido di Zirconio (3Y/5Y):</strong> <strong>DIVIETO ASSOLUTO DI ACIDO FLUORIDRICO!</strong> (manca la matrice vetrosa di silice) &rarr; Micro-sabbiatura con Al<sub>2</sub>O<sub>3</sub> 50 &mu;m a 1.5 bar &rarr; Applicazione di Primer contenente monomero fosfato <strong>10-MDP</strong> (legame chimico diretto con gli ossidi di zirconio).
+                        </p>
+                    </div>
+
+                    <div class="quiz-gate">
+                        <h4 style="color:#0f172a; font-size:0.95rem;">
+                            <span class="it-text">Verification Gate 4 (Tecniche Metal-Free IV Anno)</span>
+                            <span class="en-text">Verification Gate 4 (Metal-Free 4th Year)</span>
+                        </h4>
+                        <div class="quiz-container">
+                            <p class="text-body">
+                                <span class="it-text">Qual è la procedura corretta di condizionamento superficiale per la Zirconia prima della cementazione adesiva?</span>
+                                <span class="en-text">What is the correct surface conditioning protocol for Zirconia prior to adhesive luting?</span>
+                            </p>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="a">
+                                <span>
+                                    <span class="it-text">A) Micro-sabbiatura con Al2O3 50 µm a 1.5 bar seguita dall'applicazione di un primer con monomero 10-MDP (NO acido HF).</span>
+                                    <span class="en-text">A) Sandblasting with 50 µm Al2O3 at 1.5 bar followed by 10-MDP monomer primer (NO HF acid).</span>
+                                </span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="b">
+                                <span>
+                                    <span class="it-text">B) Mordenzatura con Acido Fluoridrico HF per 60 secondi.</span>
+                                    <span class="en-text">B) Etching with Hydrofluoric Acid HF for 60 seconds.</span>
+                                </span>
+                            </label>
+                            <button onclick="checkQuiz('q4', 'a', 'feedback-4')" class="btn-check">
+                                <span class="it-text">Verifica Risposta</span>
+                                <span class="en-text">Verify Answer</span>
+                            </button>
+                            <div id="feedback-4" class="feedback-box"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openTab('mod-5')" class="btn-next-step">
+                        <span class="it-text">Procedi al Modulo 5: Laboratorio Digitale CAD/CAM →</span>
+                        <span class="en-text">Proceed to Module 5: Digital CAD/CAM Lab →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MODULO 5: LABORATORIO DIGITALE CAD/CAM PER IL IV ANNO -->
+            <section id="mod-5" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 05 • Digitale & Progettazione (IV Anno)</span>
+                                <span class="en-text">Module 05 • Digital Design (4th Year)</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Flussi di Lavoro CAD/CAM, Scansione 3D & Modellazione Digitale</span>
+                                <span class="en-text">CAD/CAM Workflows, 3D Scanning & Digital Modeling</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="text-body">
+                        <p>
+                            <span class="it-text">La modellazione assistita da computer (CAD) consente la progettazione di anatomie primarie, scheletrati, cut-back anatomici e sottostrutture in metallo o ceramica. La precisione della scansione ottica 3D (Desktop scanner a luce strutturata) garantisce una tolleranza marginale inferiore a <strong>20 &mu;m</strong>.</span>
+                            <span class="en-text">Computer-aided design (CAD) enables accurate modeling of anatomical cut-backs, RPD frameworks, and substructures. 3D structured light optical desktop scanners achieve margin fit tolerances below <strong>20 &mu;m</strong>.</span>
+                        </p>
+                    </div>
+
+                    <div class="quiz-gate">
+                        <h4 style="color:#0f172a; font-size:0.95rem;">
+                            <span class="it-text">Verification Gate 5 (Laboratorio CAD/CAM IV Anno)</span>
+                            <span class="en-text">Verification Gate 5 (CAD/CAM Lab 4th Year)</span>
+                        </h4>
+                        <div class="quiz-container">
+                            <p class="text-body">
+                                <span class="it-text">Quale vantaggio principale offre la tecnica CAD/CAM di cut-back anatomico rispetto al montaggio tradizionale?</span>
+                                <span class="en-text">What is the primary advantage of CAD/CAM anatomical cut-back design over traditional manual techniques?</span>
+                            </p>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="a">
+                                <span>
+                                    <span class="it-text">A) Garantisce uno spessore omogeneo di ceramica e un supporto uniforme della dentina ceramica riducendo i rischi di frattura.</span>
+                                    <span class="en-text">A) Ensures uniform ceramic thickness and core support, reducing fracture risk.</span>
+                                </span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="b">
+                                <span>
+                                    <span class="it-text">B) Elimina la necessità di sinterizzare la zirconia.</span>
+                                    <span class="en-text">B) Eliminates the need for zirconia sintering.</span>
+                                </span>
+                            </label>
+                            <button onclick="checkQuiz('q5', 'a', 'feedback-5')" class="btn-check">
+                                <span class="it-text">Verifica Risposta</span>
+                                <span class="en-text">Verify Answer</span>
+                            </button>
+                            <div id="feedback-5" class="feedback-box"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openTab('mod-6')" class="btn-next-step">
+                        <span class="it-text">Procedi al Modulo 6: Normativa MDR & Traccia IV Anno →</span>
+                        <span class="en-text">Proceed to Module 6: MDR Compliance & 4th Year Case →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- MODULO 6: NORMATIVA MDR 2017/745 & CASO DIDATTICO IV ANNO -->
+            <section id="mod-6" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="card-tag">
+                                <span class="it-text">Modulo 06 • Legislazione & Caso Didattico (IV Anno)</span>
+                                <span class="en-text">Module 06 • Regulations & 4th Year Case Study</span>
+                            </span>
+                            <h2 class="card-title">
+                                <span class="it-text">Regolamento Dispositivi Medici (MDR 2017/745), Dichiarazione di Conformità & Traccia IV Anno</span>
+                                <span class="en-text">Medical Device Regulation (MDR 2017/745), Conformity Declaration & 4th Year Task</span>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="course-banner">
+                        <div class="course-banner-title">
+                            <span class="it-text">NORMATIVA E TRACCIABILITÀ OBLIGATORIA (ALLEGATO XIII MDR 2017/745)</span>
+                            <span class="en-text">MANDATORY REGULATORY COMPLIANCE (ANNEX XIII MDR 2017/745)</span>
+                        </div>
+                        <p class="text-body" style="font-size:0.88rem; color:#0369a1;">
+                            <span class="it-text">Ai sensi del Regolamento Europeo 2017/745 (Allegato XIII), l'odontotecnico è il fabbricante di dispositivi medici "su misura". Nel corso del IV Anno, lo studente apprende la redazione della Dichiarazione di Conformità, la gestione della tracciabilità dei lotti di fabbricazione e l'analisi dei rischi (ISO 14971).</span>
+                            <span class="en-text">Under EU Regulation 2017/745 (Annex XIII), dental technicians act as custom-made medical device manufacturers. 4th Year students learn to draft Declarations of Conformity, manage lot traceability, and perform risk analysis (ISO 14971).</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-bottom:0.85rem;">
+                        <span class="it-text">Traccia Pratica Didattica IV Anno:</span>
+                        <span class="en-text">4th Year Sample Practical Assignment:</span>
+                    </h3>
+                    <div class="text-body" style="background:#f1f5f9; padding:1.1rem; border-radius:10px; border-left:4px solid var(--primary); margin-bottom:1.5rem;">
+                        <p><strong><span class="it-text">Traccia di Lavoro:</span><span class="en-text">Assignment Task:</span></strong></p>
+                        <p>
+                            <span class="it-text">"Si richiede la descrizione del piano di lavoro per la realizzazione di una protesi totale inferiore secondo il metodo Gerber (Condyloform) e di una struttura di ponte a 3 elementi in metallo-ceramica (PFM) per il settore posteriore. Lo studente illustri la scelta del montaggio Mortaio-Pestello, il calcolo della DVO/DVR, la fisica dell'accoppiamento metallo-ceramica (CDT), i cicli di cottura, e le opzioni alternative in Disilicato di Litio o Zirconia Multistrato ai sensi del Regolamento UE 2017/745."</span>
+                            <span class="en-text">"Detail the workflow for constructing a lower complete denture using the Gerber method (Condyloform) and a 3-unit PFM posterior bridge. The student must explain the Mortar-Pestle setup, VDO/VDR calculation, PFM thermal physics (CTE), firing schedules, and alternative Metal-Free materials (Lithium Disilicate / Multilayer Zirconia) under EU Regulation 2017/745."</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-bottom:0.85rem;">
+                        <span class="it-text">Portali Didattici & Academy Ufficiali Consigliate:</span>
+                        <span class="en-text">Recommended Official Academies & Portals:</span>
+                    </h3>
+
+                    <div class="webinar-card">
+                        <div class="webinar-academy">Straumann Dental Academy</div>
+                        <div class="webinar-title">Implant Prosthetic Solutions & Multi-Unit Abutment Workflows</div>
+                        <div class="webinar-desc">
+                            <span class="it-text">Videocorsi avanzati sulla passività delle strutture, fresaggi e gestione protesica.</span>
+                            <span class="en-text">Advanced video courses on framework passivity, milling, and prosthetic design.</span>
+                        </div>
+                        <a href="https://www.straumann.com/academy/" target="_blank" class="webinar-link">→ Access Straumann Education Portal</a>
+                    </div>
+
+                    <div class="webinar-card">
+                        <div class="webinar-academy">Exocad Educational Platform</div>
+                        <div class="webinar-title">Exocad DentalCAD Advanced Design Modules</div>
+                        <div class="webinar-desc">
+                            <span class="it-text">Tutorial ufficiali per la progettazione di barre, scheletrati e cut-back anatomici.</span>
+                            <span class="en-text">Official design tutorials for implant bars, partial frameworks, and anatomical cut-backs.</span>
+                        </div>
+                        <a href="https://exocad.com/our-products/exocad-insights" target="_blank" class="webinar-link">→ Explore Exocad Insights & Training</a>
+                    </div>
+
+                    <div class="webinar-card">
+                        <div class="webinar-academy">Ivoclar & VITA Advanced Academies</div>
+                        <div class="webinar-title">All-Ceramic Processing & ISO 6872 Compliance</div>
+                        <div class="webinar-desc">
+                            <span class="it-text">Guide di sinterizzazione della Zirconia, pressatura del Disilicato di Litio e test di laboratorio.</span>
+                            <span class="en-text">Zirconia sintering protocols, Lithium Disilicate pressing, and mechanical lab testing.</span>
+                        </div>
+                        <a href="https://ivoclarlearning.com/" target="_blank" class="webinar-link">→ Access Ivoclar & VITA Advanced Courses</a>
+                    </div>
+
+                    <h3 style="color:#0f172a; font-size:1.05rem; margin-top:1.5rem; margin-bottom:0.85rem;">
+                        <span class="it-text">Bibliografia Accreditata EBM & Normative di Riferimento:</span>
+                        <span class="en-text">Accredited EBM References & Key Standards:</span>
+                    </h3>
+                    <div class="text-body">
+                        <div class="ref-item">
+                            <strong>Gerber, A. (1979)</strong>: <em>Kondylenposition und Okklusion.</em> Quintessenz Verlag.
+                        </div>
+                        <div class="ref-item">
+                            <strong>Misch, C. E. (2014)</strong>: <em>Dental Implant Prosthetics</em> (2nd ed.). Mosby.
+                        </div>
+                        <div class="ref-item">
+                            <strong>Dawson, P. E. (2007)</strong>: <em>Functional Occlusion: From TMJ to Smile Design.</em> Mosby.
+                        </div>
+                        <div class="ref-item">
+                            <strong>Okeson, J. P. (2019)</strong>: <em>Management of Temporomandibular Disorders and Occlusion</em> (8th ed.). Elsevier.
+                        </div>
+                        <div class="ref-item">
+                            <strong>Regolamento (UE) 2017/745 (MDR)</strong> — <em>Dispositivi Medici e Dispositivi Su Misura (Allegato XIII).</em>
+                        </div>
+                        <div class="ref-item">
+                            <strong>ISO 6872:2015</strong> — <em>Dentistry — Ceramic materials.</em>
+                        </div>
+                        <div class="ref-item">
+                            <strong>ISO 22674:2016</strong> — <em>Dentistry — Metallic materials for fixed and removable restorations.</em>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            document.body.className = "lang-" + lang;
+            document.getElementById("btn-lang-it").classList.toggle("active", lang === 'it');
+            document.getElementById("btn-lang-en").classList.toggle("active", lang === 'en');
+        }
+
+        function openTab(tabId) {
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].style.display = "none";
+                contents[i].classList.remove("active");
+            }
+            
+            var buttons = document.getElementsByClassName("nav-btn");
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove("active");
+            }
+
+            var targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.style.display = "block";
+                targetContent.classList.add("active");
+            }
+
+            var targetBtn = document.getElementById("btn-" + tabId);
+            if (targetBtn) {
+                targetBtn.classList.add("active");
+            }
+
+            try {
+                window.scrollTo(0, 0);
+            } catch(e) {}
+        }
+
+        function checkQuiz(qName, correctAnswer, feedbackId) {
+            var selected = document.querySelector('input[name="' + qName + '"]:checked');
+            var feedbackEl = document.getElementById(feedbackId);
+            if (!feedbackEl) return;
+            
+            var isIt = document.body.classList.contains("lang-it");
+
+            if (!selected) {
+                feedbackEl.textContent = isIt ? "Seleziona una risposta prima di verificare." : "Please select an option before checking.";
+                feedbackEl.className = "feedback-box wrong";
+                return;
+            }
+            if (selected.value === correctAnswer) {
+                feedbackEl.textContent = isIt ? "✓ Corretto! Risposta conforme ai requisiti didattici del IV Anno, EBM e normative ISO/MDR." : "✓ Correct! Answer compliant with 4th Year curriculum, EBM, and ISO/MDR standards.";
+                feedbackEl.className = "feedback-box correct";
+            } else {
+                feedbackEl.textContent = isIt ? "✕ Errato. Rileggi attentamente il modulo didattico e riprova." : "✕ Incorrect. Review the module text carefully and try again.";
+                feedbackEl.className = "feedback-box wrong";
+            }
+        }
+    </script>
+</body>
+</html>
